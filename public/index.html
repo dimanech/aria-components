@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/suggestions.css">
+	<link rel="stylesheet" href="css/menu.css" />
+	<script async src="js/root.js"></script>
+</head>
+<body>
+	<header style="display: flex; justify-content: center; background-color: lightgreen; padding: 20px; ">
+		<form
+				role="search"
+				class="b-header_search"
+				action=""
+				method="get"
+				id="simple-search-form"
+				name="simpleSearch">
+			<div
+					class="b-header_search-input"
+					data-js-search-combobox
+					data-atomic-widget="SearchCombobox"
+			>
+				<!-- by ARIA specs element above should be combobox, but most screen readers not announce it, so
+					we move combobox to input -->
+				<input
+						id="header-search-input"
+						type="search"
+						name="q"
+						value=""
+						autocomplete="off"
+						spellcheck="false"
+						autocapitalize="off"
+						autocorrect="false"
+						required="required"
+						placeholder="What are you looking for?"
+						
+						role="combobox"
+						aria-expanded="false"
+						aria-owns="search-results-listbox"
+						aria-haspopup="listbox"
+						
+						aria-autocomplete="list"
+						aria-controls="search-results-listbox"
+						aria-activedescendant=""
+						aria-label="Search"
+				/>
+				<button
+						type="submit"
+						name="search-button"
+						class="b-header_search-btn_search"
+						tabindex="-1"
+						aria-hidden="true"
+						aria-label="Submit search keywords"
+				>
+					Search
+				</button>
+			</div>
+			<div
+					role="listbox"
+					aria-labelledby="header-search-input"
+					id="search-results-listbox"
+					class="b-header_search-suggestions"
+					data-url="suggestions.html">
+			</div>
+		</form>
+		<div class="b-header_suggestions_flyout_pane" data-js-suggestions-overlay></div>
+		
+		<nav class="utility-menu">
+			<div class="utility-menu__inner">
+				<div class="utility-menu__item">
+					<button
+							data-atomic-widget="Popup"
+							id="account-menu-button"
+							aria-haspopup="true"
+							aria-controls="account-popup-menu"
+					>
+						My account
+					</button>
+					<div
+							class="popup-menu _bottom"
+							id="account-popup-menu"
+							aria-labelledby="account-menu-button"
+					>
+						<ul role="menu" class="popup-menu__list">
+							<li role="none" class="popup-menu__item">
+								<a role="menuitem" href="#">Orders</a>
+							</li>
+							<li role="none" class="popup-menu__item">
+								<a role="menuitem" href="#">Change password</a>
+							</li>
+						</ul>
+						<div role="none" class="popup-menu__tail"></div>
+					</div>
+				</div>
+				<div class="utility-menu__item">
+					<button
+							data-js-popup-button
+							id="orders-menu-button"
+							aria-haspopup="true"
+							aria-controls="orders-popup-menu"
+					>
+						Orders
+					</button>
+					<div
+							class="popup-menu _bottom"
+							id="orders-popup-menu"
+							aria-labelledby="orders-menu-button"
+					>
+						<ul role="menu" class="popup-menu__list">
+							<li role="none" class="popup-menu__item">
+								<a role="menuitem" href="#">Orders</a>
+							</li>
+							<li role="none" class="popup-menu__item">
+								<a role="menuitem" href="#">Change password</a>
+							</li>
+						</ul>
+						<div role="none" class="popup-menu__tail"></div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		
+		<nav
+				data-atomic-widget="MainMenu"
+				role="navigation"
+				class="menu-bar"
+				data-js-nav
+				aria-label="Main menu"
+				itemscope=""
+				itemtype="http://www.schema.org/SiteNavigationElement"
+		>
+			<ul
+					role="menubar"
+					class="menu-bar__inner"
+					data-js-menu-bar
+			>
+				<li role="none" class="menu-bar__item">
+					<a
+							role="menuitem"
+							class="menu-bar__link _level-1"
+							aria-haspopup="true"
+							aria-expanded="false"
+							itemprop="url"
+							href="./menu-a.html"
+					>
+						<span itemprop="name">Menu A</span>
+					</a>
+					<div role="menu" class="menu-bar__popup" data-js-nav-flyout>
+						<ul class="menu-bar__popup-inner">
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-a-i.html"
+								>
+									<span itemprop="name">Menu A I</span>
+								</a>
+							</li>
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-a-ii.html"
+								>
+									<span itemprop="name">Menu A II</span>
+								</a>
+							</li>
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-a-iii.html"
+								>
+									<span itemprop="name">Menu A III</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li role="none" class="menu-bar__item">
+					<a
+							role="menuitem"
+							class="menu-bar__link _level-1"
+							aria-haspopup="true"
+							aria-expanded="false"
+							itemprop="url"
+							href="./menu-b.html"
+					>
+						<span itemprop="name">Menu B</span>
+					</a>
+					<div role="menu" class="menu-bar__popup" data-js-nav-flyout>
+						<ul class="menu-bar__popup-inner">
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-b-i.html"
+								>
+									<span itemprop="name">Menu B I</span>
+								</a>
+							</li>
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-b-ii.html"
+								>
+									<span itemprop="name">Menu B II</span>
+								</a>
+							</li>
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-b-iii.html"
+								>
+									<span itemprop="name">Menu B III</span>
+								</a>
+							</li>
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-b-iv.html"
+								>
+									<span itemprop="name">Menu B IV</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li role="none" class="menu-bar__item">
+					<a
+							role="menuitem"
+							class="menu-bar__link _level-1"
+							aria-haspopup="true"
+							aria-expanded="false"
+							itemprop="url"
+							href="./menu-c.html"
+					>
+						<span itemprop="name">Menu C</span>
+					</a>
+					<div role="menu" class="menu-bar__popup" data-js-nav-flyout>
+						<ul class="menu-bar__popup-inner">
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-c-i.html"
+								>
+									<span itemprop="name">Menu C I</span>
+								</a>
+							</li>
+							<li role="none" class="menu-bar__submenu-item">
+								<a
+										role="menuitem"
+										class="menu-bar__link _level-2"
+										itemprop="url"
+										href="/menu-c-ii.html"
+								>
+									<span itemprop="name">Menu C II</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li role="none" class="menu-bar__item">
+					<a
+							role="menuitem"
+							class="menu-bar__link _level-1"
+							itemprop="url"
+							href="./menu-d.html"
+					>
+						<span itemprop="name">Menu D</span>
+					</a>
+				</li>
+				<li role="none" class="menu-bar__item">
+					<a
+							role="menuitem"
+							class="menu-bar__link _level-1"
+							itemprop="url"
+							href="./menu-e.html"
+					>
+						<span itemprop="name">Menu E</span>
+					</a>
+				</li>
+				<li role="none" class="menu-bar__flyout-pane" data-js-menu-flyout-pane></li>
+			</ul>
+		</nav>
+	</header>
+
+
+</body>
+</html>

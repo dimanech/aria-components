@@ -1,0 +1,19 @@
+{
+  "name": "store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "express": "^4.16.4",
+    "lit-html": "^1.1.2",
+    "webpack": "^4.41.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "babel --watch ./public/src --out-dir ./public/ --presets react-app/prod ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

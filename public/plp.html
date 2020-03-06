@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Questions</title>
+</head>
+<body>
+	
+	<form action="/" method="post">
+		<select name="theme" id="theme">
+			<option value="0">HTML</option>
+		</select>
+		<br>
+		<select name="topic" id="topic">
+			<option value="0">General understanding</option>
+		</select>
+		<br>
+		<select name="level" id="level">
+			<option value="0">Foundation</option>
+			<option value="1">Base</option>
+			<option value="2">Advanced</option>
+			<option value="3">Nuances</option>
+		</select>
+		<br>
+		<label for="question">Question:</label>
+		<textarea name="question" id="question" cols="30" rows="10"></textarea>
+		<br>
+		<label for="comment">Comment:</label>
+		<textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+		<br>
+		<button id="submit" type="submit">Submit</button>
+	</form>
+	<div id="status"></div>
+	
+	<script src="client.js"></script>
+	
+</body>
+</html>

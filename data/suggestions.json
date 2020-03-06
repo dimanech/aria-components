@@ -1,0 +1,59 @@
+{
+	"action": "SearchServices-GetSuggestions",
+	"queryString": "q=produc",
+	"locale": "en_US",
+	"suggestions": {
+		"product": {
+			"available": true,
+			"phrases": [
+				{
+					"exactMatch": false,
+					"value": "product",
+					"posinset": 0
+				}
+			],
+			"products": [
+				{
+					"name": "Product set",
+					"imageUrl": "/on/demandware.static/-/Sites-sitename-catalog/default/dwefa18288/images/medium/product-set.jpg",
+					"url": "/s/sitename/product-set.html",
+					"posinset": 1
+				},
+				{
+					"name": "Product 5",
+					"imageUrl": "/on/demandware.static/-/Sites-sitename-catalog/default/dw2ca1eed1/images/medium/product-3.jpg",
+					"url": "/s/sitename/product-5.html",
+					"posinset": 2
+				},
+				{
+					"name": "Product 3",
+					"imageUrl": "/on/demandware.static/-/Sites-sitename-catalog/default/dwc932e518/images/medium/product-1.jpg",
+					"url": "/s/sitename/product-3.html",
+					"posinset": 3
+				}
+			]
+		},
+		"category": {
+			"categories": [],
+			"available": false
+		},
+		"content": {
+			"contents": [],
+			"available": false
+		},
+		"recent": {
+			"available": false,
+			"phrases": []
+		},
+		"popular": {
+			"available": false,
+			"phrases": []
+		},
+		"brand": {
+			"available": false,
+			"phrases": []
+		},
+		"total": 4,
+		"searchPhrase": "produc"
+	}
+}
