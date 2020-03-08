@@ -1,6 +1,8 @@
 export default class InitComponents {
-	constructor() {
+	constructor(loadedComponents) {
 		this.pageComponents = {};
+		this.loadedComponents = loadedComponents;
+		this.componentsNames = this.loadedComponents.map(element => element[0]);
 	}
 
 	// This is global components initiator
@@ -23,7 +25,6 @@ export default class InitComponents {
 					try {
 						const component = new module.default(domNode, this.pageComponents);
 						component.init();
-						this.addComponentToList(componentName, component);
 						callback();
 					} catch (err) {
 						// if default export not constructor
@@ -38,20 +39,27 @@ export default class InitComponents {
 	}
 
 	loadSync(domNode, componentName) {
-		import('/js/components/' + componentName + '.js')
-	}
+		const componentIndex = this.componentsNames.indexOf(componentName);
 
-	init(domNode, componentsList) {
-		const componentName = domNode.getAttribute('data-widget');
-
-		// if name -async then loading async and init
-		// otherwise make if sync
-
-		if (/-async/g.test(componentName)) {
-			this.loadAsync(domNode, )
-		} else {
-
+		if (componentIndex === -1) {
+			console.warn(`"${componentName}" present on page, but it is import not found!`);
+			return;
 		}
 
+		const component = new this.loadedComponents[componentIndex][1](domNode, this.componentsList);
+		component.init();
+
+		return component;
+	}
+
+	initComponent(domNode) {
+		const componentName = domNode.getAttribute('data-widget');
+
+		if (/-async/g.test(componentName)) {
+			this.loadAsync(domNode, componentName, component => this.addComponentToList(componentName, component))
+		} else {
+			const component = this.loadSync(domNode, componentName);
+			this.addComponentToList(componentName, component);
+		}
 	}
 }

@@ -1,13 +1,4 @@
-import MainMenu from './components/menus/MainMenu.js';
-import Popup from './components/menus/Popup.js';
-import SearchCombobox from './components/forms/SearchCombobox.js';
-
-const loadedComponents = [
-	['MainMenu', MainMenu],
-	['Popup', Popup],
-	['SearchCombobox', SearchCombobox]
-];
-
+import loadedComponents from './components-aggrigation-main.js'
 const componentsList = {};
 
 function addComponentToList(componentName, component) {
@@ -22,7 +13,7 @@ function initComponent(domNode) {
 	const componentIndex = loadedComponentsNames.indexOf(componentName);
 
 	if (componentIndex === -1) {
-		console.warn(`"${componentName}" present on page, but it is import not found!`)
+		console.warn(`"${componentName}" present on page, but it is import not found!`);
 		return;
 	}
 
