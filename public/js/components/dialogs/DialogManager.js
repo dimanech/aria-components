@@ -1,5 +1,5 @@
-const Dialog = import('./Dialog');
-const Modal = import('./Modal');
+import Dialog from './Dialog';
+import Modal from './Modal';
 
 export default class DialogManager {
     /**

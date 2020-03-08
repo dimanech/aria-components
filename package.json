@@ -1,19 +1,26 @@
 {
-  "name": "store",
+  "name": "componentsTest",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "dependencies": {
     "babel-cli": "^6.26.0",
-    "express": "^4.16.4",
+    "diff-dom": "^4.1.6",
     "lit-html": "^1.1.2",
-    "webpack": "^4.41.6"
+    "mustache": "^4.0.0",
+    "whatwg-fetch": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "connect": "^3.7.0",
+    "serve-static": "^1.14.1",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
   "scripts": {
     "dev": "babel --watch ./public/src --out-dir ./public/ --presets react-app/prod ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buils": "webpack"
   },
-  "author": "",
+  "author": "D.Nechepurenko",
   "license": "ISC"
 }

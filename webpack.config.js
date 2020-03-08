@@ -1,9 +1,12 @@
 const path = require('path');
 
 module.exports = {
-	entry: './public/js/index.js',
+	mode: 'production',
+	entry: { 'initiator': './public/js/initiator.js' },
 	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: 'bundle.js'
+		path: path.resolve(__dirname, 'public', 'dist', 'js'),
+		filename: '[name].bundle.js',
+		chunkFilename: '[name].bundle.js',
+		publicPath: 'dist/js/'
 	}
 };

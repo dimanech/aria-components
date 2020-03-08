@@ -1,4 +1,4 @@
-import PopupMenu from './menus/PopupMenu.js';
+import PopupMenu from './PopupMenu.js';
 
 export default class Popup {
 	/*

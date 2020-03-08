@@ -1,50 +1,20 @@
-(function () {
-	let pageComponents = {};
+import ComponentsInitiator from './components/ComponentsInitiator.js';
 
-	function addComponentToList(componentName, component) {
-		//if (/Mgr/g.test(componentName)) {
-		//	// push singletones
-		//	pageComponents[componentName] = component;
-		//}
-		if (pageComponents[componentName]) {
-			if (pageComponents[componentName].length) {
-				pageComponents[componentName].push(component);
-				return;
-			}
-			const componentsArray = [];
-			componentsArray.push(pageComponents[componentName]);
-			componentsArray.push(component);
-			pageComponents[componentName] = componentsArray;
-		} else {
+(async function() {
+	let loadedComponents = [];
 
-			pageComponents[componentName] = component;
-		}
+	const commonComponents = await import(/* webpackChunkName: "common" */ './components-aggregation-common.js');
+	loadedComponents = loadedComponents.concat(commonComponents.default);
+
+	switch (window.appScope) {
+		case 'plp':
+			const plpComponents = await import(/* webpackChunkName: "plp" */ './components-aggregation-plp.js');
+			loadedComponents = loadedComponents.concat(plpComponents.default);
+			break;
+		default:
 	}
 
-	function initComponent(domNode) {
-		const componentName = domNode.getAttribute('data-atomic-widget');
-
-		import("/js/components/" + componentName + '.js')
-				.then(module => {
-					if (typeof module.default !== 'function') {
-						console.log('Component could not be inited', componentName);
-						return;
-					}
-					try {
-						const component = new module.default(domNode, pageComponents);
-						component.init();
-						addComponentToList(componentName, component);
-					} catch (err) {
-						module.default(domNode);
-					}
-				}).catch(err => {
-			console.log('Fetch error', componentName, err)
-		});
-	}
-
-	document.querySelectorAll('[data-atomic-widget]')
-			.forEach(node => initComponent(node));
-
-	console.log(pageComponents)
-}());
-
+	const initiator = new ComponentsInitiator(loadedComponents);
+	document.querySelectorAll('[data-widget]')
+			.forEach(node => initiator.initComponent(node));
+})();

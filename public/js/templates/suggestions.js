@@ -1,4 +1,12 @@
 import { html } from 'lit-html';
+import {repeat} from 'lit-html/directives/repeat';
+
+const myTemplate = () => html`
+  <ul>
+    ${repeat(items, (i) => i.id, (i, index) => html`
+      <li>${index}: ${i.name}</li>`)}
+  </ul>
+`;
 
 const phraseSuggestion = html`
 		<div role="none" class="b-suggestions-section m-guess">
@@ -40,12 +48,12 @@ const productSuggestion = html`
                     data-suggestion-value="${suggestions.product.products[i].name}"
                 >
                     ${suggestions.product.products[i].imageURL
-					? html`
+		? html`
 					<picture class="b-suggestions_product-image">
                         <img alt="${suggestions.product.products[i].name}" src="${suggestions.product.products[i].imageURL}" width="30" height="30" />
                     </picture>
 					` : ''
-					}
+}
                     <div class="b-suggestions_product-title">${suggestions.product.products[i].name}</div>
                     <svg class="b-suggestions-option_help" aria-hidden="true" width="70" height="20"><use xlink:href="#option-activation-hint"></use></svg>
                 </a>
@@ -61,10 +69,10 @@ export default html`
 >
 	${(suggestions.product.phrase && !suggestions.product.phrase.exactMatch)
 		? phraseSuggestion : ''
-	}
+}
 	${(suggestions.product.available)
 		? productSuggestion : ''
-	}
+}
 
     <div role="alert" class="b-suggestions-message" id="search-result-count">
         ${suggestions.total}

@@ -7,7 +7,7 @@ export default class Expand {
     /**
      * Expand (Disclosure / Summary)
      * This is expand button implementation that could be used for several different
-     * cases like disclosure / summary component (show-hide), panel control button etc.
+     * cases like disclosure / summary / "see more" component (show-hide), panel control button etc.
      * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#disclosure
      *
      * @param {HTMLElement} button - toggle button with `aria-controls`
