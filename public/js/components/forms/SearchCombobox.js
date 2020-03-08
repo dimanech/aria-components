@@ -1,13 +1,14 @@
-import Combobox from './forms/Combobox.js';
+import Combobox from './Combobox.js';
 
 export default class SearchCombo extends Combobox {
 	/**
 	 * SearchCombo
 	 * @param {Object} comboboxNode - DOM node that contains input and list
+	 * @param {Object} pageComponents - object of page global components
 	 * @description This is simple search implementation. It also could be used as inplace search.
 	 */
-	constructor(comboboxNode) {
-		super(comboboxNode);
+	constructor(comboboxNode, pageComponents) {
+		super(comboboxNode, pageComponents);
 		this.suggestionsOvelay = document.querySelector('[data-js-suggestions-overlay]');
 		this.endpoint = this.listbox.getAttribute('data-url');
 		this.setupXHR();

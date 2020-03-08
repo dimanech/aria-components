@@ -1,9 +1,9 @@
-import Menubar from './menus/Menubar.js';
-import Hamburger from './menus/HamburgerMenu.js';
-import ComposeComponents from './utils/ComposeComponents.js';
+import Menubar from './Menubar.js';
+import Hamburger from './HamburgerMenu.js';
+import ComposeComponents from '../ComposeComponents.js';
 
 export default class MainMenu {
-	constructor(props) {
+	constructor(domNode, pageComponents) {
 		this.menuList = document.querySelector('[data-js-nav]');
 		this.menuBar = document.querySelector('[data-js-menu-bar]');
 	}

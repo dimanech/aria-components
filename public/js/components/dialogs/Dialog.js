@@ -1,4 +1,4 @@
-const FocusUtils = import('./FocusUtils');
+const FocusUtils = import('../utils/FocusUtils');
 
 export default class Dialog {
     /*

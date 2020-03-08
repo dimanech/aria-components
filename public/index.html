@@ -7,7 +7,7 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="css/suggestions.css">
 	<link rel="stylesheet" href="css/menu.css" />
-	<script async src="js/root.js"></script>
+	<script defer type="module" src="js/initiator.js"></script>
 </head>
 <body>
 	<header style="display: flex; justify-content: center; background-color: lightgreen; padding: 20px; ">
@@ -21,7 +21,7 @@
 			<div
 					class="b-header_search-input"
 					data-js-search-combobox
-					data-atomic-widget="SearchCombobox"
+					data-widget="SearchCombobox"
 			>
 				<!-- by ARIA specs element above should be combobox, but most screen readers not announce it, so
 					we move combobox to input -->
@@ -72,7 +72,7 @@
 			<div class="utility-menu__inner">
 				<div class="utility-menu__item">
 					<button
-							data-atomic-widget="Popup"
+							data-widget="Popup"
 							id="account-menu-button"
 							aria-haspopup="true"
 							aria-controls="account-popup-menu"
@@ -124,7 +124,7 @@
 		</nav>
 		
 		<nav
-				data-atomic-widget="MainMenu"
+				data-widget="MainMenu"
 				role="navigation"
 				class="menu-bar"
 				data-js-nav

@@ -1,4 +1,4 @@
-import { listenBreakpointChange } from './media.js';
+import { listenBreakpointChange } from './utils/media.js';
 
 export default class ComposeComponents {
     constructor(before, breakpoint, after) {

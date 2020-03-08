@@ -14,7 +14,7 @@ export default class Combobox {
 	 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 	 * PARTICULAR PURPOSE.
 	 */
-	constructor(comboboxNode) {
+	constructor(comboboxNode, pageComponents) {
 		this.combobox = comboboxNode;
 		this.input = this.combobox.querySelector('input[aria-autocomplete]');
 		this.listbox = document.getElementById(this.input.getAttribute('aria-controls'));
