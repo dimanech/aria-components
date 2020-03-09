@@ -1,0 +1,1 @@
+export Mustache from 'mustache';

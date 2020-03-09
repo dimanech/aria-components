@@ -1,4 +1,4 @@
-const FocusUtils = import('../utils/FocusUtils');
+import {focusFirstDescendant, focusLastDescendant, searchingFocusedElement} from '../../utils/focus';
 
 export default class Dialog {
     /*
@@ -19,9 +19,9 @@ export default class Dialog {
         this.backdropNode = null;
 
         // Additional methods
-        this.focusFirstDescendant = FocusUtils.focusFirstDescendant;
-        this.focusLastDescendant = FocusUtils.focusLastDescendant;
-        this.searchingFocusedElement = FocusUtils.searchingFocusedElement;
+        this.focusFirstDescendant = focusFirstDescendant;
+        this.focusLastDescendant = focusLastDescendant;
+        this.searchingFocusedElement = searchingFocusedElement;
 
         this.handleFocus = this.handleFocus.bind(this);
         this.handleBackdropClick = this.handleBackdropClick.bind(this);

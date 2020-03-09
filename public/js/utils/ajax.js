@@ -1,5 +1,6 @@
-// TO BE REVIEWED
-import { showErrorLayout, appendParamsToUrl } from './util';
+import { showErrorLayout } from './error.js';
+import { appendParamsToUrl } from './url.js';
+
 const SAME_ORIGIN = 'same-origin';
 let tokenName = '';
 let tokenValue = '';
@@ -142,7 +143,7 @@ export function getContentByUrl(url, params = {}) {
 		referrer: 'no-referrer' // no-referrer, *client
 		// body: formData // body data type must match "Content-Type" header
 	})).then((response) => {
-		var contentType = response.headers.get('content-type');
+		const contentType = response.headers.get('content-type');
 
 		if (response.ok) {
 			if (contentType && contentType.includes('text/html')) {
@@ -161,9 +162,9 @@ export function getContentByUrl(url, params = {}) {
 }
 
 /**
- *
  * @param {string} url URL to get data
  * @param {object} [params] optional params to url
+ * @param {boolean} [skipToken] skip token
  */
 export function getJSONByUrl(url, params = {}, skipToken = true) {
 	return submitFormJson(url, params, 'GET', skipToken);

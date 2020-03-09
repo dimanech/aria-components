@@ -2,37 +2,36 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Questions</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/suggestions.css">
+	<link rel="stylesheet" href="./css/menu.css"/>
+	<script>
+		window.appScope = 'plp';
+	</script>
+	<script defer type="module" src="./js/initiator.js"></script>
 </head>
 <body>
-	
-	<form action="/" method="post">
-		<select name="theme" id="theme">
-			<option value="0">HTML</option>
-		</select>
-		<br>
-		<select name="topic" id="topic">
-			<option value="0">General understanding</option>
-		</select>
-		<br>
-		<select name="level" id="level">
-			<option value="0">Foundation</option>
-			<option value="1">Base</option>
-			<option value="2">Advanced</option>
-			<option value="3">Nuances</option>
-		</select>
-		<br>
-		<label for="question">Question:</label>
-		<textarea name="question" id="question" cols="30" rows="10"></textarea>
-		<br>
-		<label for="comment">Comment:</label>
-		<textarea name="comment" id="comment" cols="30" rows="10"></textarea>
-		<br>
-		<button id="submit" type="submit">Submit</button>
-	</form>
-	<div id="status"></div>
-	
-	<script src="client.js"></script>
-	
+	<div data-widget="ProductListingMgr">
+		<div data-js-product-grid>
+			<div>
+				<a href="./filterA.html" data-js-plp-filter>Filter a</a>
+				<a href="./filterB.html" data-js-plp-filter>Filter b</a>
+			</div>
+			<select name="" id="" data-js-plp-sort>
+				<option value="sortingA.html">Top rated</option>
+				<option value="sortingB.html">Alphabetical</option>
+			</select>
+			<ul>
+				<li>
+					<a href="./productA.html">Product A</a>
+				</li>
+				<li>
+					<a href="./productB.html">Product B</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </body>
 </html>

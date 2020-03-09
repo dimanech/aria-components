@@ -1,10 +1,20 @@
 import ComponentsInitiator from './components/ComponentsInitiator.js';
 
-import('./components-aggregation-main.js')
-		.then(module => {
-			const loadedComponents = module.default;
-			const initiator = new ComponentsInitiator(loadedComponents);
+(async function() {
+	let loadedComponents = [];
 
-			document.querySelectorAll('[data-widget]')
-					.forEach(node => initiator.initComponent(node));
-		});
+	const commonComponents = await import('./components-aggregation-common.js');
+	loadedComponents = loadedComponents.concat(commonComponents.default);
+
+	switch (window.appScope) {
+		case 'plp':
+			const plpComponents = await import('./components-aggregation-plp.js');
+			loadedComponents = loadedComponents.concat(plpComponents.default);
+			break;
+		default:
+	}
+
+	const initiator = new ComponentsInitiator(loadedComponents);
+	document.querySelectorAll('[data-widget]')
+			.forEach(node => initiator.initComponent(node));
+})();

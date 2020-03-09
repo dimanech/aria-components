@@ -1,5 +1,5 @@
 {
-  "name": "store",
+  "name": "componentsTest",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -16,6 +16,6 @@
     "dev": "babel --watch ./public/src --out-dir ./public/ --presets react-app/prod ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "D.Nechepurenko",
   "license": "ISC"
 }
