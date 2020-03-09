@@ -1,6 +1,6 @@
 import Menubar from './Menubar.js';
 import Hamburger from './HamburgerMenu.js';
-import ComposeComponents from '../ComposeComponents.js';
+import ComponentsComposer from '../ComponentsComposer.js';
 
 export default class MainMenu {
 	constructor(domNode, pageComponents) {
@@ -10,7 +10,7 @@ export default class MainMenu {
 
 	init() {
 		if (this.menuList && this.menuBar) {
-			new ComposeComponents(new Hamburger(this.menuList), 767, new Menubar(this.menuBar));
+			new ComponentsComposer(new Hamburger(this.menuList), 767, new Menubar(this.menuBar));
 		}
 	}
 };

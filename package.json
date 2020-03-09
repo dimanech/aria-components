@@ -5,11 +5,13 @@
   "main": "server.js",
   "dependencies": {
     "babel-cli": "^6.26.0",
-    "express": "^4.16.4",
     "lit-html": "^1.1.2",
     "webpack": "^4.41.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "connect": "^3.7.0",
+    "serve-static": "^1.14.1"
+  },
   "scripts": {
     "dev": "babel --watch ./public/src --out-dir ./public/ --presets react-app/prod ",
     "test": "echo \"Error: no test specified\" && exit 1"

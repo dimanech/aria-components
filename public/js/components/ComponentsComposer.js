@@ -1,6 +1,6 @@
 import { listenBreakpointChange } from './utils/media.js';
 
-export default class ComposeComponents {
+export default class ComponentsComposer {
     constructor(before, breakpoint, after) {
         this.desktopComponent = after;
         this.mobileComponent = before;

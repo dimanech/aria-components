@@ -1,15 +1,17 @@
-export default class InitComponents {
+/**
+ * @description This is initiator for all global components. Eg: "data-widget="
+ * Composite components should initiate other components by themselves
+ * using explicite imports and control theirs lifecycle.
+ */
+export default class ComponentsInitiator {
 	constructor(loadedComponents) {
 		this.pageComponents = {};
 		this.loadedComponents = loadedComponents;
 		this.componentsNames = this.loadedComponents.map(element => element[0]);
 	}
 
-	// This is global components initiator
-	// it init all global components.
-	// Composite components could initiate other components by themsels and control theirs lifecycle.
-
 	addComponentToList(componentName, component) {
+		// Managers should be available for other components (ex. Modal, Notification, Event)
 		if (/Manager/g.test(componentName)) {
 			this.pageComponents[componentName] = component;
 		}
