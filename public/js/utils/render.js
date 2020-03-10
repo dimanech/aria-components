@@ -1,6 +1,8 @@
 // NOT PRODUCTION READY! - add hot reload
 import DiffDOM from '../libs/DiffDOM.js';
-import Mustache from '../libs/Mustache.js';
+import { default as Mustache } from '../libs/Mustache.js';
+
+let cachedTemplates = {};
 
 /**
  * @param {HTMLElement} el
@@ -23,23 +25,19 @@ function applyDiff(el, diffNode) {
 	});
 	const diff = dd.diff(el, diffNode.firstElementChild);
 	if (diff && diff.length) {
-		// console.log(diff);
+		 console.log(diff);
 		dd.apply(el, diff);
 	}
 }
 
 export function render(templateId, data = {}, renderTo, strToRender) {
-	if (!this.cachedTemplates) {
-		this.cachedTemplates = {};
-	}
-
-	let template = this.cachedTemplates && this.cachedTemplates[templateId];
+	let template = cachedTemplates && cachedTemplates[templateId];
 	const templateElement = document.getElementById(templateId);
 
 	if (!strToRender && templateElement) {
 		template = templateElement.innerHTML;
 		Mustache.parse(template);
-		this.cachedTemplates[templateId] = template;
+		cachedTemplates[templateId] = template;
 	}
 
 	const renderedStr = strToRender || Mustache.render(template, data);
@@ -47,9 +45,9 @@ export function render(templateId, data = {}, renderTo, strToRender) {
 	if (renderTo && renderTo.parentNode) {
 		// use new document to avoid loading images when diffing
 		const newHTMLDocument = document.implementation.createHTMLDocument('diffDOM');
-		const diffNode = /** @type {HTMLElement} */(newHTMLDocument.createElement('div'));
+		const diffNode = newHTMLDocument.createElement('div');
 
-		diffNode.innerHTML = renderedStr;// .replace(/<!--.*?-->/ig, '');
+		diffNode.innerHTML = renderedStr;
 
 		applyDiff(renderTo, diffNode);
 	} else {

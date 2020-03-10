@@ -1,11 +1,12 @@
 import { getContentByUrl } from '../../utils/ajax.js';
 import { appendParamToURL } from '../../utils/url.js';
 import { render } from '../../utils/render.js';
-import { Accordion } from '../../components/togglers/Accordion.js';
+//import { Accordion } from '../../components/togglers/Accordion.js';
+//import { GTM } from '../../components/analytics/GTM.js';
 
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
-		this.productGrid = domNode.querySelector('data-js-product-grid');
+		this.productGrid = domNode.querySelector('[data-js-product-grid]');
 	}
 
 	init() {
@@ -50,7 +51,7 @@ export default class ProductListingMgr {
 			return;
 		}
 		const button = event.target;
-		const url = button.getAttribute('href') || button.getAttribute('data-url');
+		const url = button.getAttribute('data-url');
 		button.classList.add('m-loading');
 
 		this.toggleBusy(true);

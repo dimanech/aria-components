@@ -10,18 +10,18 @@
 	<script>
 		window.appScope = 'plp';
 	</script>
-	<script defer type="module" src="./js/initiator.js"></script>
+	<script defer type="module" src="js/initiator.js"></script>
 </head>
 <body>
-	<div data-widget="ProductListingMgr">
+	<div data-widget="ProductListingManager">
 		<div data-js-product-grid>
 			<div>
-				<a href="./filterA.html" data-js-plp-filter>Filter a</a>
-				<a href="./filterB.html" data-js-plp-filter>Filter b</a>
+				<button data-href="./plp/filterA.html" data-js-plp-filter>Filter a</button>
+				<button data-href="./plp/filterB.html" data-js-plp-filter>Filter b</button>
 			</div>
 			<select name="sort" data-js-plp-sort>
-				<option value="sortingA.html">Top rated</option>
-				<option value="sortingB.html">Alphabetical</option>
+				<option value="./plp/sortingA.html">Top rated</option>
+				<option value="./plp/sortingB.html">Alphabetical</option>
 			</select>
 			<ul>
 				<li>
@@ -37,6 +37,7 @@
 					<a href="./productB.html">Product D</a>
 				</li>
 			</ul>
+			<button data-js-load-more data-url="./plp/more.html">Load more</button>
 		</div>
 	</div>
 </body>

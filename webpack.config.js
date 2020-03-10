@@ -7,8 +7,6 @@ module.exports = {
 		path: path.resolve(__dirname, 'public', 'dist', 'js'),
 		filename: '[name].bundle.js',
 		chunkFilename: '[name].bundle.js',
-		publicPath: 'dist/js/',
-		crossOriginLoading: 'anonymous',
-		jsonpScriptType: 'module'
+		publicPath: 'dist/js/'
 	}
 };
