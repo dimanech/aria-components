@@ -18,7 +18,7 @@ export default class ComponentsInitiator {
 	}
 
 	loadAsync(domNode, componentName, callback) {
-		import('/js/components/' + componentName + '.js')
+		import(/* webpackIgnore: true */ '/js/components/' + componentName + '.js')
 				.then(module => {
 					if (typeof module.default !== 'function') {
 						console.log('Component could not be inited', componentName);

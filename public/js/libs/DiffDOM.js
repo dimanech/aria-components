@@ -1,1 +1,1 @@
-export { DiffDOM } from 'diff-dom/dist/index';
+import { DiffDOM } from 'diff-dom/dist/index';

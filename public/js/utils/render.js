@@ -28,7 +28,7 @@ function applyDiff(el, diffNode) {
 	}
 }
 
-export default function render(templateId, data = {}, renderTo, strToRender) {
+export function render(templateId, data = {}, renderTo, strToRender) {
 	if (!this.cachedTemplates) {
 		this.cachedTemplates = {};
 	}

@@ -1,1 +1,1 @@
-export Mustache from 'mustache';
+import Mustache from 'mustache/mustache.mjs';
