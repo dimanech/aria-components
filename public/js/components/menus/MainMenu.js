@@ -10,7 +10,11 @@ export default class MainMenu {
 
 	init() {
 		if (this.menuList && this.menuBar) {
-			new ComponentsComposer(new Hamburger(this.menuList), 767, new Menubar(this.menuBar));
+			this.composer = new ComponentsComposer(new Hamburger(this.menuList), 767, new Menubar(this.menuBar));
 		}
+	}
+
+	destroy() {
+		this.composer.destroy()
 	}
 };

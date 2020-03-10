@@ -18,7 +18,7 @@ export default class ComponentsInitiator {
 	}
 
 	loadAsync(domNode, componentName, callback) {
-		import(/* webpackIgnore: true */ '/js/components/' + componentName + '.js')
+		import(/* webpackIgnore: true */ componentName + '.js')
 				.then(module => {
 					if (typeof module.default !== 'function') {
 						console.log('Component could not be inited', componentName);
@@ -57,7 +57,7 @@ export default class ComponentsInitiator {
 	initComponent(domNode) {
 		const componentName = domNode.getAttribute('data-widget');
 
-		if (/-async/g.test(componentName)) {
+		if (/\//g.test(componentName)) { // if component has path in name load async - data-widget="js/components/carousels/Carousel"
 			this.loadAsync(domNode, componentName, component => this.addComponentToList(componentName, component))
 		} else {
 			const component = this.loadSync(domNode, componentName);

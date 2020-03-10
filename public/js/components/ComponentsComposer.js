@@ -54,4 +54,13 @@ export default class ComponentsComposer {
     addEventListeners() {
         listenBreakpointChange(this.toggleComponents.bind(this));
     }
+
+    destroy() {
+        if (this.desktopComponentInited) {
+            this.desktopComponent.destroy();
+        }
+        if (this.mobileComponentInited) {
+            this.mobileComponent.destroy();
+        }
+    }
 };
