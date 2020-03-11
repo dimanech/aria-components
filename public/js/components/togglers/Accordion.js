@@ -18,8 +18,8 @@ export default class Accordion {
      * `data-allow-multiple` - Allow for multiple accordion sections to be expanded
      *  at the same time.
      */
-    constructor(group) {
-        this.group = group;
+    constructor(groupNode) {
+        this.group = groupNode;
         this.buttons = Array.from(this.group.querySelectorAll('[data-aria-controls]:not([data-role=tab])'));
         this.allowToggle = this.isAttributeSet(this.group.getAttribute('data-allow-toggle'));
         this.allowMultiple = this.isAttributeSet(this.group.getAttribute('data-allow-multiple'));
@@ -29,13 +29,11 @@ export default class Accordion {
     init() {
         this.initRoles();
         this.addEventListeners();
-        this.addComponentReference();
     }
 
     destroy() {
         this.destroyRoles();
         this.removeEventListeners();
-        this.removeComponentReference();
     }
 
     addEventListeners() {
@@ -58,13 +56,7 @@ export default class Accordion {
         });
     }
 
-    addComponentReference() {
-        this.group.widget = this;
-    }
-
-    removeComponentReference() {
-        delete this.group.widget;
-    }
+    reinit() {}
 
     handleClick(event) {
         event.preventDefault();

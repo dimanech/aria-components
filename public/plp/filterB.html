@@ -1,7 +1,13 @@
 <div data-js-product-grid>
-	<div>
-		<button data-href="./plp/filterA.html" data-js-plp-filter>Filter a</button>
-		<button data-href="./plp/filterB.html" data-js-plp-filter>Filter b (applied)</button>
+	<div data-js-refinments data-allow-multiple>
+		<button data-aria-controls="section-1">Section 1</button>
+		<div id="section-1">
+			<button data-href="./plp/filterA.html" data-js-plp-filter>Filter a</button>
+		</div>
+		<button data-aria-controls="section-2">Section 1</button>
+		<div id="section-2">
+			<button data-href="./plp/filterB.html" data-js-plp-filter>Filter b (applied)</button>
+		</div>
 	</div>
 	<select name="sort" data-js-plp-sort>
 		<option value="./plp/sortingA.html">Top rated</option>

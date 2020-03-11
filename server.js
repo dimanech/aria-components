@@ -13,5 +13,4 @@ const app = connect('https://127.0.0.1');
 app.use(serveStatic(path.join(__dirname, 'public')));
 app.listen();
 http2.createSecureServer(certs, app).listen(process.env.PORT || port);
-
-
+console.log('https://127.0.0.1:' + (process.env.PORT || port));
