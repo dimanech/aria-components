@@ -42,7 +42,7 @@ export default class InputClear {
     }
 
     destroy() {
-        this.input.removeEventListener('input', this.showClearButton);
+        this.input.removeEventListener('input', this.toggleClearButton);
         this.button.removeEventListener('click', this.clearInput);
     }
 };

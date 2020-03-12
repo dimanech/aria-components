@@ -269,11 +269,9 @@ export default class SnapScrollCarousel {
 
 		switch (true) {
 			case (this.deltaX <= -8):
-				console.log(this.getCurrentPageIndex())
 				this.prev();
 				break;
 			case (this.deltaX >= 8):
-				console.log(this.getCurrentPageIndex())
 				this.next();
 				break;
 			default:

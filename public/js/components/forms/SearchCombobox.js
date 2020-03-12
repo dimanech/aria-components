@@ -97,7 +97,7 @@ export default class SearchCombo extends Combobox {
 		const clearInput = () => {
 			this.input.value = '';
 		};
-		setTimeout(clearInput, 150); // In case if user decide to submit form with search button
+		this.timeout = setTimeout(clearInput, 150); // In case if user decide to submit form with search button
 	}
 
 	toggleOverlay(isShown) {
@@ -158,5 +158,10 @@ export default class SearchCombo extends Combobox {
 				behavior: 'smooth',
 			});
 		}
+	}
+
+	destroy() {
+		super.destroy();
+		clearTimeout(this.timeout);
 	}
 };

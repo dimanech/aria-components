@@ -22,7 +22,6 @@ export default class Menubar {
 
 		this.activationDelay = 500;
 
-		this.body = document.body;
 		this.flyout = this.domNode.querySelector('[data-js-menu-flyout-pane]');
 
 		this.cssClassNames = {
@@ -158,6 +157,7 @@ export default class Menubar {
 	destroy() {
 		this.domNode.removeEventListener('mouseenter', this.handleMouseEnter);
 		this.domNode.removeEventListener('mouseleave', this.handleMouseLeave);
+		clearTimeout(this.timeout);
 		this.menubarItems.forEach((item) => {
 			item.domNode.tabIndex = 0;
 			item.destroy();

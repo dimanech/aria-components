@@ -1,6 +1,10 @@
 import Accordion from './Accordion.js';
 
 export default class AccordionUnified extends Accordion {
+	/**
+	 * This class specially designed to be initiated on clear, unified base to cover case when
+	 * several components could be initiated on same base. Ex: Tabs on desktop become Accordion on mobile.
+	 */
 	constructor(groupNode) {
 		super(groupNode);
 		this.buttons = Array.from(this.group.querySelectorAll('[data-aria-controls-acc]'));

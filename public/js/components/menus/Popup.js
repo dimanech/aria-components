@@ -1,5 +1,20 @@
 import PopupMenu from './PopupMenu.js';
 
+const keyCode = Object.freeze({
+	TAB: 9,
+	RETURN: 13,
+	ESC: 27,
+	SPACE: 32,
+	PAGEUP: 33,
+	PAGEDOWN: 34,
+	END: 35,
+	HOME: 36,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40
+});
+
 export default class Popup {
 	/*
 	 * This content is based on w3.org design pattern examples and licensed according to the
@@ -16,21 +31,6 @@ export default class Popup {
 		this.hasHover = false;
 
 		this.timeout = 90;
-
-		this.keyCode = Object.freeze({
-			TAB: 9,
-			RETURN: 13,
-			ESC: 27,
-			SPACE: 32,
-			PAGEUP: 33,
-			PAGEDOWN: 34,
-			END: 35,
-			HOME: 36,
-			LEFT: 37,
-			UP: 38,
-			RIGHT: 39,
-			DOWN: 40
-		});
 	}
 
 	init() {
@@ -73,22 +73,22 @@ export default class Popup {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.SPACE:
-			case this.keyCode.RETURN:
-			case this.keyCode.DOWN:
+			case keyCode.SPACE:
+			case keyCode.RETURN:
+			case keyCode.DOWN:
 				this.popupMenu.open();
 				this.popupMenu.setFocusToFirstItem();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.UP:
+			case keyCode.UP:
 				this.popupMenu.open();
 				this.popupMenu.setFocusToLastItem();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.TAB:
-			case this.keyCode.ESC:
+			case keyCode.TAB:
+			case keyCode.ESC:
 				this.popupMenu.close(true);
 				break;
 
@@ -115,7 +115,7 @@ export default class Popup {
 				this.popupMenu.close();
 			}
 		};
-		setTimeout(closePopup, this.timeout);
+		this.timeout = setTimeout(closePopup, this.timeout);
 	}
 
 	handleFocus() {
@@ -129,7 +129,7 @@ export default class Popup {
 				this.popupMenu.close();
 			}
 		};
-		setTimeout(closePopup, this.timeout);
+		this.timeout = setTimeout(closePopup, this.timeout);
 	}
 
 	destroy() {
@@ -138,6 +138,7 @@ export default class Popup {
 		this.domNode.removeEventListener('keydown', this.handleKeydown);
 		this.domNode.removeEventListener('focus', this.handleFocus);
 		this.domNode.removeEventListener('blur', this.handleBlur);
+		clearTimeout(this.timeout);
 		this.popupMenu.destroy();
 	}
 };

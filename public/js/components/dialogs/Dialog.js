@@ -1,4 +1,8 @@
-import {focusFirstDescendant, focusLastDescendant, searchingFocusedElement} from '../../utils/focus';
+import {
+    focusFirstDescendant,
+    focusLastDescendant,
+    searchingFocusedElement
+} from '../../utils/focus.js';
 
 export default class Dialog {
     /*

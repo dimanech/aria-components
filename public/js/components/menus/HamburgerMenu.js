@@ -80,7 +80,7 @@ export default class HamburgerMenu {
     }
 
     resetHamburgerState() {
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.resetClasses();
             this.currentLevel = 0;
             this.openedPanel = null;
@@ -95,6 +95,7 @@ export default class HamburgerMenu {
     destroy() {
         this.domeNode.removeEventListener('click', this.forward);
         this.backBtn.removeEventListener('click', this.back);
+        clearTimeout(this.timeout);
         document.body.removeEventListener('hamburger:close', this.resetHamburgerState);
 
         this.resetClasses();

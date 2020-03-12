@@ -1,5 +1,20 @@
 import PopupMenu from './PopupMenu.js';
 
+const keyCode = Object.freeze({
+	TAB: 9,
+	RETURN: 13,
+	ESC: 27,
+	SPACE: 32,
+	PAGEUP: 33,
+	PAGEDOWN: 34,
+	END: 35,
+	HOME: 36,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40
+});
+
 export default class MenubarItem {
 	/*
 	 * This content is based on w3.org design pattern examples
@@ -23,21 +38,6 @@ export default class MenubarItem {
 		this.cssClassNames = {
 			hover: '_hover'
 		};
-
-		this.keyCode = Object.freeze({
-			TAB: 9,
-			RETURN: 13,
-			ESC: 27,
-			SPACE: 32,
-			PAGEUP: 33,
-			PAGEDOWN: 34,
-			END: 35,
-			HOME: 36,
-			LEFT: 37,
-			UP: 38,
-			RIGHT: 39,
-			DOWN: 40
-		});
 	}
 
 	init() {
@@ -70,9 +70,9 @@ export default class MenubarItem {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.SPACE:
-			case this.keyCode.RETURN:
-			case this.keyCode.DOWN:
+			case keyCode.SPACE:
+			case keyCode.RETURN:
+			case keyCode.DOWN:
 				if (this.popupMenu) {
 					this.popupMenu.open();
 					this.popupMenu.setFocusToFirstItem(); // NB. This will not work on transformed elements
@@ -80,17 +80,17 @@ export default class MenubarItem {
 				}
 				break;
 
-			case this.keyCode.LEFT:
+			case keyCode.LEFT:
 				this.menuBar.setFocusToPreviousItem(this);
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.RIGHT:
+			case keyCode.RIGHT:
 				this.menuBar.setFocusToNextItem(this);
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.UP:
+			case keyCode.UP:
 				if (this.popupMenu) {
 					this.popupMenu.open();
 					this.popupMenu.setFocusToLastItem(); // NB. This will not work on transformed elements
@@ -98,25 +98,25 @@ export default class MenubarItem {
 				}
 				break;
 
-			case this.keyCode.HOME:
-			case this.keyCode.PAGEUP:
+			case keyCode.HOME:
+			case keyCode.PAGEUP:
 				this.menuBar.setFocusToFirstItem();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.END:
-			case this.keyCode.PAGEDOWN:
+			case keyCode.END:
+			case keyCode.PAGEDOWN:
 				this.menuBar.setFocusToLastItem();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.TAB:
+			case keyCode.TAB:
 				if (this.popupMenu) {
 					this.popupMenu.close(true);
 				}
 				break;
 
-			case this.keyCode.ESC:
+			case keyCode.ESC:
 				if (this.popupMenu) {
 					this.popupMenu.close(true);
 				}

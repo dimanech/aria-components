@@ -28,7 +28,6 @@ export default class Tabs {
         this.selectionFollowFocus = !this.hasFalseValue(this.tablist.getAttribute('data-selection-follow-focus'));
         this.orientation = this.tablist.getAttribute('aria-orientation') || 'horizontal';
         this.preSelectTab = this.tablist.getAttribute('[aria-selected=true]');
-        this.keyCode = keyCode;
     }
 
     init() {
@@ -133,31 +132,30 @@ export default class Tabs {
     }
 
     handleKeydown(event) {
-        const key = event.which || event.keyCode;
         let preventEventActions = false;
 
-        switch (key) {
-            case this.keyCode.SPACE:
+        switch (event.keyCode) {
+            case keyCode.SPACE:
                 this.handleClick(event);
                 break;
-            case this.keyCode.RETURN:
+            case keyCode.RETURN:
                 this.handleClick(event);
                 break;
-            case this.keyCode.RIGHT:
-            case this.keyCode.DOWN:
+            case keyCode.RIGHT:
+            case keyCode.DOWN:
                 this.focusButtonByIndex(this.getButtonIndex(event.target) + 1);
                 preventEventActions = true;
                 break;
-            case this.keyCode.LEFT:
-            case this.keyCode.UP:
+            case keyCode.LEFT:
+            case keyCode.UP:
                 this.focusButtonByIndex(this.getButtonIndex(event.target) - 1);
                 preventEventActions = true;
                 break;
-            case this.keyCode.HOME:
+            case keyCode.HOME:
                 this.focusButtonByIndex(0);
                 preventEventActions = true;
                 break;
-            case this.keyCode.END:
+            case keyCode.END:
                 this.focusButtonByIndex(-1);
                 preventEventActions = true;
                 break;

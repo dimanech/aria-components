@@ -1,21 +1,19 @@
-import Dialog from './Dialog';
-import Modal from './Modal';
+import Dialog from './Dialog.js';
+
+const keyCode = Object.freeze({
+    ESC: 27
+});
 
 export default class DialogManager {
     /**
      * DialogManager
      *
-     * Instantiated as single tone (window.dialogManager).
      * This dialog manger is responsible to open, manage dialog stack (bring down,
      * bring up, replace) and close dialogs. It also broadcast events about status
      * of the dialogs (close and open states).
      * @class
      */
     constructor() {
-        this.keyCode = Object.freeze({
-            ESC: 27
-        });
-
         this.dialogsStack = [];
     }
 
@@ -181,7 +179,7 @@ export default class DialogManager {
     }
 
     _handleEscape(event) {
-        if (event.keyCode === this.keyCode.ESC && this.closeDialogFromOutside()) {
+        if (event.keyCode === keyCode.ESC && this.closeDialogFromOutside()) {
             event.stopPropagation();
         }
     }
@@ -199,8 +197,9 @@ export default class DialogManager {
         const focusAfterCloseElement = focusAfterClose || document.activeElement;
 
         if (dialogType === 'modal') {
-            dialog = new Modal(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
-            isDialogOpen = dialog.create();
+            // backword compatibility with bootstrap modals
+            //dialog = new Modal(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
+            //isDialogOpen = dialog.create();
         } else {
             dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
             isDialogOpen = dialog.create();

@@ -1,6 +1,10 @@
 import Tabs from './Tabs';
 
 export default class TabsUnified extends Tabs {
+    /**
+     * This class specially designed to be initiated on clear, unified base to cover case when
+     * several components could be initiated on same base. Ex: Tabs on desktop become Accordion on mobile.
+     */
     constructor(tablist) {
         super(tablist);
         this.tabs = Array.from(this.tablist.querySelectorAll('[data-role=tab]'));

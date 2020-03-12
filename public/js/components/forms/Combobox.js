@@ -1,3 +1,17 @@
+const keyCode = Object.freeze({
+	TAB: 9,
+	RETURN: 13,
+	ESC: 27,
+	SPACE: 32,
+	END: 35,
+	HOME: 36,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+	BACKSPACE: 8,
+});
+
 export default class Combobox {
 	/*
 	 * Combobox
@@ -27,20 +41,6 @@ export default class Combobox {
 		this.activeIndex = -1;
 		this.resultsCount = 0;
 		this.isListboxOpen = false;
-
-		this.keyCode = Object.freeze({
-			TAB: 9,
-			RETURN: 13,
-			ESC: 27,
-			SPACE: 32,
-			END: 35,
-			HOME: 36,
-			LEFT: 37,
-			UP: 38,
-			RIGHT: 39,
-			DOWN: 40,
-			BACKSPACE: 8,
-		});
 	}
 
 	init() {
@@ -112,25 +112,25 @@ export default class Combobox {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.ESC:
+			case keyCode.ESC:
 				this.closeListbox();
 				this.input.value = '';
 				preventEventActions = true;
 				break;
-			case this.keyCode.UP:
+			case keyCode.UP:
 				this.setActiveToNextItem();
 				this.activateItem();
 				preventEventActions = true;
 				break;
-			case this.keyCode.DOWN:
+			case keyCode.DOWN:
 				this.setActiveToPreviousItem();
 				this.activateItem();
 				preventEventActions = true;
 				break;
-			case this.keyCode.RETURN:
+			case keyCode.RETURN:
 				this.selectItem(this.getItemByIndex(this.activeIndex));
 				return;
-			case this.keyCode.TAB:
+			case keyCode.TAB:
 				this.closeListbox();
 				return;
 			default:
@@ -251,6 +251,7 @@ export default class Combobox {
 	}
 
 	destroy() {
+		clearTimeout(this.timeout);
 		document.body.removeEventListener('click', this.handleOuterClick);
 		this.input.removeEventListener('keydown', this.handleKeydown);
 		this.input.removeEventListener('focus', this.handleFocus);

@@ -1,26 +1,30 @@
+const keyCode = Object.freeze({
+    PAGEUP: 33,
+    PAGEDOWN: 34,
+    END: 35,
+    HOME: 36,
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
+    CTRL: 17
+});
+
 export default class Grid {
+    /**
+     * Grid
+     * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#grid
+     * @param domNode
+     */
     constructor(domNode) {
         this.domNode = domNode;
         this.grid = [];
         this.currentRow = 0;
         this.currentColumn = 0;
         this.navigationDisabled = false;
-
-        this.keyCode = Object.freeze({
-            PAGEUP: 33,
-            PAGEDOWN: 34,
-            END: 35,
-            HOME: 36,
-            LEFT: 37,
-            UP: 38,
-            RIGHT: 39,
-            DOWN: 40,
-            CTRL: 17
-        });
     }
 
     init() {
-        this.setupRoles();
         this.grid = this.setUpGridModel();
         this.setUpBoundariesBehavior();
         this.addEventListeners();
@@ -51,32 +55,32 @@ export default class Grid {
         let preventEventActions = false;
 
         switch (event.keyCode) {
-            case this.keyCode.UP:
+            case keyCode.UP:
                 this.moveFocusTo(this.currentRow - 1, this.currentColumn);
                 preventEventActions = true;
                 break;
 
-            case this.keyCode.DOWN:
+            case keyCode.DOWN:
                 this.moveFocusTo(this.currentRow + 1, this.currentColumn);
                 preventEventActions = true;
                 break;
 
-            case this.keyCode.LEFT:
+            case keyCode.LEFT:
                 this.moveFocusTo(this.currentRow, this.currentColumn - 1);
                 preventEventActions = true;
                 break;
 
-            case this.keyCode.RIGHT:
+            case keyCode.RIGHT:
                 this.moveFocusTo(this.currentRow, this.currentColumn + 1);
                 preventEventActions = true;
                 break;
 
-            case this.keyCode.HOME:
+            case keyCode.HOME:
                 this.moveFocusTo(event.ctrlKey ? 0 : this.currentRow, 0);
                 preventEventActions = true;
                 break;
 
-            case this.keyCode.END:
+            case keyCode.END:
                 this.moveFocusTo(
                     event.ctrlKey ? (this.grid.length - 1) : this.currentRow,
                     this.grid[this.currentRow].length - 1
@@ -316,26 +320,7 @@ export default class Grid {
         return attr === '' || attr === 'true';
     }
 
-    setupRoles() {
-        if (!this.domNode.hasAttribute('data-role')) {
-            return;
-        }
-
-        this.domNode.parentElement.querySelectorAll('[data-role]').forEach(node =>
-            node.setAttribute('role', node.getAttribute('data-role')));
-    }
-
-    destroyRoles() {
-        if (!this.domNode.hasAttribute('data-role')) {
-            return;
-        }
-
-        this.domNode.parentElement.querySelectorAll('[data-role]').forEach(node =>
-            node.removeAttribute('role'));
-    }
-
     destroy() {
-        this.destroyRoles();
         this.domNode.removeEventListener('keydown', this.handleKeydown);
         this.domNode.removeEventListener('click', this.handleClick);
         this.domNode.querySelectorAll('[data-roving-tab-target]').forEach(item => {

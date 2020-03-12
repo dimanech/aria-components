@@ -69,7 +69,7 @@ export default class PopupMenu {
 		this.hasHover = false;
 		// Need timeout to improve UX. Note that controller should implement this
 		// timeout also.
-		setTimeout(this.close.bind(this), this.mouseOutTimeout);
+		this.timeout = setTimeout(this.close.bind(this), this.mouseOutTimeout);
 	}
 
 	setFocusToController(cmd) {
@@ -154,6 +154,7 @@ export default class PopupMenu {
 		this.domNode.removeEventListener('mouseenter', this.handleMouseover);
 		this.domNode.removeEventListener('mouseleave', this.handleMouseout);
 		this.close(true);
+		clearTimeout(this.timeout);
 		this.menuitems.forEach(item => item.destroy());
 	}
 

@@ -100,10 +100,9 @@ export default class Accordion {
     }
 
     handleKeydown(event) {
-        const key = event.which || event.keyCode;
         let preventEventActions = false;
 
-        switch (key) {
+        switch (event.keyCode) {
             case this.keyCode.SPACE:
                 this.handleClick(event);
                 preventEventActions = true;
@@ -137,7 +136,7 @@ export default class Accordion {
     }
 
     handleKeyup(event) {
-        const key = event.which || event.keyCode;
+        const key = event.keyCode;
         // FF fires click event on button node after keyup
         if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
             event.preventDefault();

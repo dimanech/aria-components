@@ -10,13 +10,13 @@ export default class Expand {
      * cases like disclosure / summary / "see more" component (show-hide), panel control button etc.
      * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#disclosure
      *
-     * @param {HTMLElement} button - toggle button with `aria-controls`
+     * @param {HTMLElement} domNode - toggle button with `aria-controls`
      * @example
      * <button aria-expanded="false" aria-controls="more-details">Read more...</button>
      * <div id="more-details">Lorem ipsum...</div>
      */
-    constructor(button) {
-        this.button = button;
+    constructor(domNode) {
+        this.button = domNode;
         this.isOpen = false;
         this.keyCode = keyCode;
     }
@@ -26,14 +26,12 @@ export default class Expand {
         if (!this.controledElement) {
             return;
         }
-        this.addComponentReference();
         this.addEventListeners();
         this.initState();
     }
 
     destroy() {
         this.removeEventListeners();
-        this.removeComponentReference();
         this.destroyState();
     }
 
@@ -51,14 +49,6 @@ export default class Expand {
         this.button.removeEventListener('click', this.handleClick);
         this.button.removeEventListener('keydown', this.handleKeydown);
         this.button.removeEventListener('keyup', this.handleKeyup);
-    }
-
-    addComponentReference() {
-        this.button.widget = this;
-    }
-
-    removeComponentReference() {
-        delete this.button.widget;
     }
 
     initState() {
@@ -99,10 +89,9 @@ export default class Expand {
     }
 
     handleKeydown(event) {
-        const key = event.which || event.keyCode;
         let preventEventActions = false;
 
-        switch (key) {
+        switch (event.keyCode) {
             case this.keyCode.SPACE:
                 this.handleClick(event);
                 preventEventActions = true;
@@ -120,7 +109,7 @@ export default class Expand {
     }
 
     handleKeyup(event) {
-        const key = event.which || event.keyCode;
+        const key = event.keyCode;
         // FF fires click event on button node after keyup
         if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
             event.preventDefault();

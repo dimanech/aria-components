@@ -19,7 +19,7 @@ export default class DialogButton {
 		this.button.addEventListener('click', this.openDialog);
 	}
 
-	openDialog (event) {
+	openDialog(event) {
 		event.preventDefault();
 
 		this.dialogManager.openDialog(

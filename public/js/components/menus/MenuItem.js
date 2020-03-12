@@ -1,3 +1,18 @@
+const keyCode = Object.freeze({
+	TAB: 9,
+	RETURN: 13,
+	ESC: 27,
+	SPACE: 32,
+	PAGEUP: 33,
+	PAGEDOWN: 34,
+	END: 35,
+	HOME: 36,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40
+});
+
 export default class MenuItem {
 	/*
 	 * This content is based on w3.org design pattern examples and licensed according to the
@@ -15,21 +30,6 @@ export default class MenuItem {
 		this.cssClassNames = {
 			active: '_active'
 		};
-
-		this.keyCode = Object.freeze({
-			TAB: 9,
-			RETURN: 13,
-			ESC: 27,
-			SPACE: 32,
-			PAGEUP: 33,
-			PAGEDOWN: 34,
-			END: 35,
-			HOME: 36,
-			LEFT: 37,
-			UP: 38,
-			RIGHT: 39,
-			DOWN: 40
-		});
 	}
 
 	init() {
@@ -53,50 +53,50 @@ export default class MenuItem {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.SPACE:
-			case this.keyCode.RETURN:
+			case keyCode.SPACE:
+			case keyCode.RETURN:
 				this.handleKeyReturn(event);
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.UP:
+			case keyCode.UP:
 				this.menu.setFocusToPreviousItem(this);
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.DOWN:
+			case keyCode.DOWN:
 				this.menu.setFocusToNextItem(this);
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.LEFT:
+			case keyCode.LEFT:
 				this.handleKeyLeft();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.RIGHT:
+			case keyCode.RIGHT:
 				this.handleKeyRight();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.HOME:
-			case this.keyCode.PAGEUP:
+			case keyCode.HOME:
+			case keyCode.PAGEUP:
 				this.menu.setFocusToFirstItem();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.END:
-			case this.keyCode.PAGEDOWN:
+			case keyCode.END:
+			case keyCode.PAGEDOWN:
 				this.menu.setFocusToLastItem();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.ESC:
+			case keyCode.ESC:
 				this.menu.setFocusToController();
 				preventEventActions = true;
 				break;
 
-			case this.keyCode.TAB:
+			case keyCode.TAB:
 				this.menu.setFocusToController();
 				preventEventActions = true;
 				break;

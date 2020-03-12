@@ -1,34 +1,34 @@
-/**
- * SpinButton
- * See full specs https://www.w3.org/TR/wai-aria-practices/#spinbutton
- * @example:
- *  <div class="spinbutton">
- *      <button tabindex="-1">-</button>
- *      <input
- *          type="text"
- *          role="spinbutton"
- *          value="0"
- *          aria-valuenow="0"
- *          aria-valuemin="0"
- *          aria-valuemax="50"
- *      />
- *      <button tabindex="-1">+</button>
- *  </div>
- */
+const keyCode = Object.freeze({
+    PAGEUP: 33,
+    PAGEDOWN: 34,
+    END: 35,
+    HOME: 36,
+    UP: 38,
+    DOWN: 40
+});
+
 export default class SpinButton {
+    /**
+     * SpinButton
+     * See full specs https://www.w3.org/TR/wai-aria-practices/#spinbutton
+     * @example:
+     *  <div class="spinbutton">
+     *      <button tabindex="-1">-</button>
+     *      <input
+     *          type="text"
+     *          role="spinbutton"
+     *          value="0"
+     *          aria-valuenow="0"
+     *          aria-valuemin="0"
+     *          aria-valuemax="50"
+     *      />
+     *      <button tabindex="-1">+</button>
+     *  </div>
+     */
     constructor(domNode) {
         this.input = domNode;
         this.incrementButton = this.input.nextElementSibling;
         this.decrementButton = this.input.previousElementSibling;
-
-        this.keyCode = Object.freeze({
-            PAGEUP: 33,
-            PAGEDOWN: 34,
-            END: 35,
-            HOME: 36,
-            UP: 38,
-            DOWN: 40
-        });
     }
 
     initOptions() {
@@ -40,7 +40,6 @@ export default class SpinButton {
     }
 
     init() {
-        this.input.spinbutton = this;
         this.initOptions();
         this.addEventListeners();
         this.setInputValue(this.currentValue);
@@ -68,7 +67,7 @@ export default class SpinButton {
     }
 
     destroy() {
-        delete this.input.spinbutton;
+        window.clearTimeout(this.eventTimeout);
         this.removeEventListeners();
     }
 
@@ -97,27 +96,27 @@ export default class SpinButton {
         let preventEventActions = false;
 
         switch (event.keyCode) {
-            case this.keyCode.UP:
+            case keyCode.UP:
                 this.increment();
                 preventEventActions = true;
                 break;
-            case this.keyCode.DOWN:
+            case keyCode.DOWN:
                 this.decrement();
                 preventEventActions = true;
                 break;
-            case this.keyCode.PAGEUP:
+            case keyCode.PAGEUP:
                 this.setInputValue(this.filterInput(this.currentValue += 10));
                 preventEventActions = true;
                 break;
-            case this.keyCode.PAGEDOWN:
+            case keyCode.PAGEDOWN:
                 this.setInputValue(this.filterInput(this.currentValue -= 10));
                 preventEventActions = true;
                 break;
-            case this.keyCode.HOME:
+            case keyCode.HOME:
                 this.setInputValue(this.minValue);
                 preventEventActions = true;
                 break;
-            case this.keyCode.END:
+            case keyCode.END:
                 this.setInputValue(this.maxValue);
                 preventEventActions = true;
                 break;
@@ -186,7 +185,6 @@ export default class SpinButton {
             this.updateState();
             this.dispatchChange();
         }
-
     }
 
     dispatchChange() {
