@@ -109,9 +109,9 @@ export default class ProductListingMgr {
 	}
 
 	destroy() {
-		this.productGrid.removeEventListener(this.loadMore);
-		this.productGrid.removeEventListener(this.applyFiltering);
-		this.productGrid.removeEventListener(this.applySorting);
+		this.productGrid.removeEventListener('click', this.loadMore);
+		this.productGrid.removeEventListener('click', this.applyFiltering);
+		this.productGrid.removeEventListener('change', this.applySorting);
 
 		this.places.destroy();
 		this.accordion.destroy();
