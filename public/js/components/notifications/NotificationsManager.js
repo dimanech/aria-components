@@ -1,4 +1,4 @@
-export default class NotificationManager {
+export default class NotificationsManager {
 	constructor(domNode) {
 		this.notifier = domNode;
 		this.hideTimer = null;
