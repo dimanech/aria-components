@@ -9,8 +9,8 @@ export function appendParamToURL(url, name, value) {
 		return url;
 	}
 	const [urlWithoutHash, hash] = url.split('#');
-
 	const separator = urlWithoutHash.includes('?') ? '&' : '?';
+
 	return urlWithoutHash + separator + name + '=' + encodeURIComponent(value) + (hash ? '#' + hash : '');
 }
 
