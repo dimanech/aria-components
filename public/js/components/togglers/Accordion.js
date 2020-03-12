@@ -20,19 +20,17 @@ export default class Accordion {
      */
     constructor(groupNode) {
         this.group = groupNode;
-        this.buttons = Array.from(this.group.querySelectorAll('[data-aria-controls]:not([data-role=tab])'));
+        this.buttons = Array.from(this.group.querySelectorAll('[aria-controls]'));
         this.allowToggle = this.isAttributeSet(this.group.getAttribute('data-allow-toggle'));
         this.allowMultiple = this.isAttributeSet(this.group.getAttribute('data-allow-multiple'));
         this.keyCode = keyCode;
     }
 
     init() {
-        this.initRoles();
         this.addEventListeners();
     }
 
     destroy() {
-        this.destroyRoles();
         this.removeEventListeners();
     }
 
@@ -81,7 +79,7 @@ export default class Accordion {
         button.setAttribute('aria-expanded', 'false');
         button.classList.remove('m-expanded');
 
-        const controlledSection = document.getElementById(button.getAttribute('data-aria-controls'));
+        const controlledSection = document.getElementById(button.getAttribute('aria-controls'));
         if (!controlledSection) {
             return;
         }
@@ -93,7 +91,7 @@ export default class Accordion {
         button.setAttribute('aria-expanded', 'true');
         button.classList.add('m-expanded');
 
-        const controlledSection = document.getElementById(button.getAttribute('data-aria-controls'));
+        const controlledSection = document.getElementById(button.getAttribute('aria-controls'));
         if (!controlledSection) {
             return;
         }
@@ -162,29 +160,6 @@ export default class Accordion {
         }
 
         this.buttons[nextIndex].focus();
-    }
-
-    initRoles() {
-        this.buttons.forEach(button => {
-            button.setAttribute('role', 'button');
-            button.tabIndex = 0;
-            button.setAttribute('aria-controls', button.getAttribute('data-aria-controls'));
-            button.setAttribute('aria-expanded', 'false');
-            document.getElementById(button.getAttribute('data-aria-controls')).setAttribute('role', 'region');
-        });
-    }
-
-    destroyRoles() {
-        this.buttons.forEach(button => {
-            button.removeAttribute('role');
-            button.tabIndex = -1;
-            button.removeAttribute('aria-controls');
-            button.removeAttribute('aria-expanded');
-            const controlledSection = document.getElementById(button.getAttribute('data-aria-controls'));
-            controlledSection.removeAttribute('role');
-            controlledSection.removeAttribute('aria-hidden');
-            controlledSection.classList.remove('m-expanded');
-        });
     }
 
     isAttributeSet(attr) {

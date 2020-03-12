@@ -3,6 +3,7 @@ import { appendParamToURL } from '../../utils/url.js';
 import { render } from '../../utils/render.js';
 import GoogleAddresses from '../../components/forms/GoogleAddresses.js';
 import Accordion from '../../components/togglers/Accordion.js';
+//import Feed from '../../components/a11y/Feed.js';
 //import { GTM } from '../../components/analytics/GTM.js';
 
 export default class ProductListingMgr {
@@ -42,19 +43,20 @@ export default class ProductListingMgr {
 		//	country: '',
 		//	state: this.stateCodeInput
 		//};
-		this.places = new GoogleAddresses(this.placesInput, this.pageComponents);
+		this.places = new GoogleAddresses(this.placesInput, this.pageComponents, {});
 		this.places.init();
 	}
 
 	initAccordion() {
-		this.accordion = new Accordion(this.refinments, );
+		this.accordion = new Accordion(this.refinments);
 		this.accordion.init();
 	}
 
-	updateByUrl(url, type) {
+	updateByUrl(url, message) {
 		this.toggleBusy(true);
 		getContentByUrl(url).then(response => {
 			render(undefined, undefined, this.productGrid, response);
+			this.productGrid.dispatchEvent(new CustomEvent('notifier:notify', { detail: message }));
 			this.accordion.reinit();
 		}).finally(() => {
 			this.toggleBusy(false);
@@ -65,14 +67,14 @@ export default class ProductListingMgr {
 		if (!this.isEventDelegatedFrom(this.filterButton, event)) {
 			return;
 		}
-		this.updateByUrl(event.target.getAttribute('data-href'), 'filter');
+		this.updateByUrl(event.target.getAttribute('data-href'), this.filterButton.text + ' filter applied');
 	}
 
 	applySorting(event) {
 		if (!this.isEventDelegatedFrom(this.sortingSelect, event)) {
 			return;
 		}
-		this.updateByUrl(event.target.value, 'sorting');
+		this.updateByUrl(event.target.value, 'sorting applied');
 	}
 
 	loadMore(event) {
@@ -91,6 +93,7 @@ export default class ProductListingMgr {
 					const tempEl = document.createElement('div');
 					tempEl.innerHTML = response;
 					this.productGrid.appendChild(tempEl);
+					this.productGrid.dispatchEvent(new CustomEvent('notifier:notify', { detail: 'Loaded more products' }));
 				}).finally(() => {
 					this.toggleBusy(false);
 				});

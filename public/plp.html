@@ -5,25 +5,31 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
+	<link rel="stylesheet" href="./css/common.css">
 	<link rel="stylesheet" href="./css/suggestions.css">
 	<link rel="stylesheet" href="./css/menu.css"/>
 	<script>
 		window.appScope = 'plp';
 	</script>
-	<script defer type="module" src="js/initiator.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
+	<script async type="module" src="js/initiator.js"></script>
+	<script>
+		function googleApiCallback() {
+			document.dispatchEvent(new CustomEvent('googleApi:ready'));
+		}
+	</script>
+	<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhSK7xaF31APCJ5VkowI5mkWa7hP8WbfM&libraries=places&callback=googleApiCallback"></script>
 </head>
-<body>
+<body data-widget="NotifierManager">
 	<div data-widget="ProductListingManager">
 		<input type="text" id="places" />
 		<div data-js-product-grid>
 			<div data-js-refinments data-allow-multiple>
-				<button data-aria-controls="section-1">Section 1</button>
-				<div id="section-1">
+				<button aria-controls="section-1" aria-expanded="true">Filters 1</button>
+				<div id="section-1" role="region">
 					<button data-href="./plp/filterA.html" data-js-plp-filter>Filter a</button>
 				</div>
-				<button data-aria-controls="section-2">Section 1</button>
-				<div id="section-2">
+				<button aria-controls="section-2" aria-expanded="false">Filters 2</button>
+				<div id="section-2" role="region">
 					<button data-href="./plp/filterB.html" data-js-plp-filter>Filter b</button>
 				</div>
 			</div>
@@ -48,5 +54,6 @@
 			<button data-js-load-more data-url="./plp/more.html">Load more</button>
 		</div>
 	</div>
+	<div data-notification></div>
 </body>
 </html>

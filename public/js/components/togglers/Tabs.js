@@ -23,16 +23,15 @@ export default class Tabs {
      */
     constructor(tablist) {
         this.tablist = tablist;
-        this.tabs = Array.from(this.tablist.querySelectorAll('[data-role=tab]'));
+        this.tabs = Array.from(this.tablist.querySelectorAll('[role=tab]'));
         this.selectedTab = null;
         this.selectionFollowFocus = !this.hasFalseValue(this.tablist.getAttribute('data-selection-follow-focus'));
         this.orientation = this.tablist.getAttribute('aria-orientation') || 'horizontal';
-        this.preSelectTab = this.tablist.getAttribute('data-preselect-tab');
+        this.preSelectTab = this.tablist.getAttribute('[aria-selected=true]');
         this.keyCode = keyCode;
     }
 
     init() {
-        this.initRoles();
         this.addEventListeners();
         this.addComponentReference();
         if (this.preSelectTab && document.getElementById(this.preSelectTab)) {
@@ -43,7 +42,6 @@ export default class Tabs {
     }
 
     destroy() {
-        this.destroyRoles();
         this.removeEventListeners();
         this.removeComponentReference();
     }
@@ -103,7 +101,7 @@ export default class Tabs {
         tab.setAttribute('tabindex', '-1');
         tab.classList.remove('m-selected');
 
-        const controlledTabPanel = document.getElementById(tab.getAttribute('data-aria-controls'));
+        const controlledTabPanel = document.getElementById(tab.getAttribute('aria-controls'));
         if (controlledTabPanel) {
             controlledTabPanel.setAttribute('aria-hidden', 'true');
             controlledTabPanel.removeAttribute('tabindex');
@@ -120,7 +118,7 @@ export default class Tabs {
         tab.setAttribute('tabindex', '0');
         tab.classList.add('m-selected');
 
-        const controlledTabPanel = document.getElementById(tab.getAttribute('data-aria-controls'));
+        const controlledTabPanel = document.getElementById(tab.getAttribute('aria-controls'));
         if (controlledTabPanel) {
             controlledTabPanel.setAttribute('aria-hidden', 'false');
             controlledTabPanel.setAttribute('tabindex', 0);
@@ -192,42 +190,6 @@ export default class Tabs {
 
         this.focusedTab = this.tabs[nextIndex];
         this.tabs[nextIndex].focus();
-    }
-
-    initRoles() {
-        this.tablist.setAttribute('role', 'tablist');
-        this.tabs.forEach(tab => {
-            const controlledTabPanel = tab.getAttribute('data-aria-controls');
-            tab.setAttribute('role', 'tab');
-            tab.setAttribute('aria-controls', controlledTabPanel);
-            tab.setAttribute('aria-selected', 'false');
-            tab.setAttribute('tabindex', '-1');
-            const controlledTabPanelNode = document.getElementById(controlledTabPanel);
-            if (controlledTabPanelNode) {
-                controlledTabPanelNode.setAttribute('role', 'tabpanel');
-                controlledTabPanelNode.setAttribute('aria-hidden', 'true');
-                controlledTabPanelNode.setAttribute('tabindex', '0');
-            }
-        });
-    }
-
-    destroyRoles() {
-        this.tablist.removeAttribute('role');
-        this.tabs.forEach(tab => {
-            tab.removeAttribute('role');
-            tab.removeAttribute('tabindex');
-            tab.removeAttribute('aria-controls');
-            tab.removeAttribute('aria-selected');
-            tab.tabIndex = -1;
-            const controlledTabPanel = document.getElementById(tab.getAttribute('data-aria-controls'));
-            if (controlledTabPanel) {
-                controlledTabPanel.classList.remove('m-selected');
-                controlledTabPanel.removeAttribute('aria-hidden');
-                controlledTabPanel.removeAttribute('role');
-                controlledTabPanel.removeAttribute('tabindex');
-                controlledTabPanel.tabIndex = -1;
-            }
-        });
     }
 
     hasFalseValue(attr) {

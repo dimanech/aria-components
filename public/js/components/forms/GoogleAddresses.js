@@ -4,7 +4,7 @@ export default class GoogleAddresses {
 	constructor(domNode, pageComponents, options) {
 		this.inputField = domNode;
 		this.autocomplete = null;
-		this.formInfo = options.formInfo;
+		this.formInfo = options.formInfo || null;
 		this.options = options.options || {
 			types: ['geocode'],
 			componentRestrictions: {
@@ -14,9 +14,17 @@ export default class GoogleAddresses {
 	}
 
 	init() {
+		if (typeof google === 'object' && typeof google.maps === 'object') {
+			this.handleApiReady();
+		} else {
+			this.handleApiReady = this.handleApiReady.bind(this);
+			document.addEventListener('googleApi:ready', this.handleApiReady);
+		}
+	}
+
+	handleApiReady() {
 		this.autocomplete = new google.maps.places.Autocomplete(this.inputField, this.options);
 		this.autocomplete.setFields(['address_component']);
-
 		this.addEventListeners();
 	}
 
@@ -92,6 +100,7 @@ export default class GoogleAddresses {
 	}
 
 	destroy() {
+		document.removeEventListener('googleApi:ready', this.handleApiReady);
 		this.autocomplete = null;
 	}
 }
