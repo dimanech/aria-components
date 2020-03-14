@@ -5,8 +5,7 @@ import { render } from '../../utils/render.js';
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
 		this.pageComponents = pageComponents;
-		this.productGrid = domNode.querySelector('[data-js-product-grid]');
-		this.refinments = domNode.querySelector('[data-js-refinments]');
+		this.productGrid = domNode.querySelector('[data-js-plp-content]');
 		this.filterButton = 'data-js-plp-filter';
 		this.sortingSelect = 'data-js-plp-sort';
 		this.loadMoreButton = 'data-js-load-more';
@@ -31,7 +30,6 @@ export default class ProductListingMgr {
 		getContentByUrl(url).then(response => {
 			render(undefined, undefined, this.productGrid, response);
 			this.productGrid.dispatchEvent(new CustomEvent('notifier:notify', { detail: message }));
-			this.accordion.reinit();
 		}).finally(() => {
 			this.toggleBusy(false);
 		});
@@ -63,7 +61,6 @@ export default class ProductListingMgr {
 		getContentByUrl(appendParamToURL(url, 'selectedUrl', url))
 				.then(response => {
 					button.remove();
-
 					const tempEl = document.createElement('div');
 					tempEl.innerHTML = response;
 					this.productGrid.appendChild(tempEl);
@@ -74,7 +71,6 @@ export default class ProductListingMgr {
 	}
 
 	toggleBusy(isBusy) {
-		this.productGrid.classList.toggle('m-busy', isBusy);
 		this.productGrid.setAttribute('aria-busy', isBusy);
 	}
 

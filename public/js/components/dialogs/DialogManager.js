@@ -1,4 +1,5 @@
 import Dialog from './Dialog.js';
+import Panel from './Panel.js';
 
 const keyCode = Object.freeze({
     ESC: 27
@@ -48,7 +49,7 @@ export default class DialogManager {
         if (createDialog) {
             document.body.classList.add('has-dialog');
 
-            const event = new CustomEvent('dialog:open', { bubbles: true, cancelable: true });
+            const event = new Event('dialog:open');
             dialogNode.dispatchEvent(event);
         }
     }
@@ -69,13 +70,8 @@ export default class DialogManager {
         const lastDialog = currentDialog;
         this._destroyCurrentDialog();
 
-        const event = new CustomEvent('dialog:closed', { bubbles: true, cancelable: true });
-        if (lastDialog.enclosedNode) {
-            // bootstrap compatibility workaround. Should be removed after dialog structure normalization.
-            lastDialog.enclosedNode.dispatchEvent(event);
-        } else {
-            lastDialog.dialogNode.dispatchEvent(event);
-        }
+        const event = new Event('dialog:closed');
+        lastDialog.dialogNode.dispatchEvent(event);
 
         if (this.dialogsStack.length > 0) {
             this._bringCurrentDialogToTop(); // after destroy previous one is currentDialog
@@ -159,10 +155,7 @@ export default class DialogManager {
      * @returns {Boolean}
      */
     isDialogInStack(domNode) {
-        return this.dialogsStack.some(dialog =>
-            dialog.dialogNode === domNode || dialog.enclosedNode === domNode
-            // enclosedNode used for bootstrap modals compatibility. Should be removed in future.
-        );
+        return this.dialogsStack.some(dialog => (dialog.dialogNode === domNode));
     }
 
     _addEventListeners() {
@@ -196,10 +189,9 @@ export default class DialogManager {
         let isDialogOpen;
         const focusAfterCloseElement = focusAfterClose || document.activeElement;
 
-        if (dialogType === 'modal') {
-            // backword compatibility with bootstrap modals
-            //dialog = new Modal(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
-            //isDialogOpen = dialog.create();
+        if (dialogType === 'panel') {
+            dialog = new Panel(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
+            isDialogOpen = dialog.create();
         } else {
             dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
             isDialogOpen = dialog.create();

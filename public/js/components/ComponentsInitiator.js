@@ -1,5 +1,5 @@
 /**
- * @description This is initiator for all global components. Eg: "data-widget="
+ * @description This is initiator for all global components. Eg: "data-component="
  * Composite components should initiate other components by themselves
  * using explicite imports and control theirs lifecycle.
  */
@@ -11,14 +11,14 @@ export default class ComponentsInitiator {
 	}
 
 	addComponentToList(componentName, component) {
-		// Managers should be available for other components (ex. Modal, Notification, Event)
-		if (/Manager/g.test(componentName)) {
+		// Managers and Services should be available for other components (ex. Modal, Notification, Event)
+		if (/Manager|Service/g.test(componentName)) {
 			this.pageComponents[componentName] = component;
 		}
 	}
 
 	loadAsync(domNode, componentName, callback) {
-		import(/* webpackIgnore: true */'./' + componentName + '.js')
+		import(/* webpackIgnore: true */componentName + '.js')
 				.then(module => {
 					if (typeof module.default !== 'function') {
 						console.log('Component could not be inited', componentName);
@@ -55,9 +55,9 @@ export default class ComponentsInitiator {
 	}
 
 	initComponent(domNode) {
-		const componentName = domNode.getAttribute('data-widget');
+		const componentName = domNode.getAttribute('data-component');
 
-		if (/\//g.test(componentName)) { // if component has path in name load async - data-widget="carousels/Carousel" path is relative to components root (e.g. ComponentsInitiator placement)
+		if (/\//g.test(componentName)) { // if component has path in name load async - data-component="carousels/Carousel" path is relative to components root (e.g. ComponentsInitiator placement)
 			this.loadAsync(domNode, componentName, component => this.addComponentToList(componentName, component))
 		} else {
 			const component = this.loadSync(domNode, componentName);

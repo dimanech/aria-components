@@ -15,6 +15,6 @@ import ComponentsInitiator from './components/ComponentsInitiator.js';
 	}
 
 	const initiator = new ComponentsInitiator(loadedComponents);
-	document.querySelectorAll('[data-widget]')
+	document.querySelectorAll('[data-component]')
 			.forEach(node => initiator.initComponent(node));
 })();

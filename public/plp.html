@@ -4,10 +4,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
-	<link rel="stylesheet" href="./css/common.css">
-	<link rel="stylesheet" href="./css/suggestions.css">
-	<link rel="stylesheet" href="./css/menu.css"/>
+	<title>PLP</title>
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/suggestions.css">
+	<link rel="stylesheet" href="css/menu.css"/>
 	<script>
 		window.appScope = 'plp';
 		function googleApiCallback() {
@@ -18,39 +18,40 @@
 <!--	<script async type="module" src="dist/js/initiator.bundle.js"></script>-->
 	<script async src="https://maps.googleapis.com/maps/api/js?key=API&libraries=places&callback=googleApiCallback"></script>
 </head>
-<body data-widget="NotifierManager">
-	<div data-widget="ProductListingManager">
-		<input type="text" id="places" />
-		<div data-js-product-grid>
-			<div data-js-refinments data-allow-multiple>
-				<button aria-controls="section-1" aria-expanded="true">Filters 1</button>
-				<div id="section-1" role="region">
-					<button data-href="./plp/filterA.html" data-js-plp-filter>Filter a</button>
-				</div>
-				<button aria-controls="section-2" aria-expanded="false">Filters 2</button>
-				<div id="section-2" role="region">
-					<button data-href="./plp/filterB.html" data-js-plp-filter>Filter b</button>
+<body data-component="NotifierManager">
+	<div data-component="ProductListingManager">
+		<div data-js-plp-content>
+			<div data-js-refinments>
+				<div data-component="togglers/Accordion" data-allow-multiple>
+					<button aria-controls="section-1" aria-expanded="true">Filters 1</button>
+					<div id="section-1" role="region">
+						<button data-href="plp/filterA.html" data-js-plp-filter>Filter a</button>
+					</div>
+					<button aria-controls="section-2" aria-expanded="false">Filters 2</button>
+					<div id="section-2" role="region" aria-hidden="true">
+						<button data-href="plp/filterB.html" data-js-plp-filter>Filter b</button>
+					</div>
 				</div>
 			</div>
-			<select name="sort" data-js-plp-sort>
-				<option value="./plp/sortingA.html">Top rated</option>
-				<option value="./plp/sortingB.html">Alphabetical</option>
+			<select data-js-plp-sort name="sort">
+				<option value="plp/sortingA.html">Top rated</option>
+				<option value="plp/sortingB.html">Alphabetical</option>
 			</select>
 			<ul>
 				<li>
-					<a href="./productA.html">Product A</a>
+					<a href="productA.html">Product A</a>
 				</li>
 				<li>
-					<a href="./productB.html">Product B</a>
+					<a href="productB.html">Product B</a>
 				</li>
 				<li>
-					<a href="./productB.html">Product C</a>
+					<a href="productB.html">Product C</a>
 				</li>
 				<li>
-					<a href="./productB.html">Product D</a>
+					<a href="productB.html">Product D</a>
 				</li>
 			</ul>
-			<button data-js-load-more data-url="./plp/more.html">Load more</button>
+			<button data-js-load-more data-url="plp/more.html">Load more</button>
 		</div>
 	</div>
 	<div data-notification></div>
