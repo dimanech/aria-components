@@ -1,10 +1,6 @@
 import { getContentByUrl } from '../../utils/ajax.js';
 import { appendParamToURL } from '../../utils/url.js';
 import { render } from '../../utils/render.js';
-import GoogleAddresses from '../../components/forms/GoogleAddresses.js';
-import Accordion from '../../components/togglers/Accordion.js';
-//import Feed from '../../components/a11y/Feed.js';
-//import { GTM } from '../../components/analytics/GTM.js';
 
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
@@ -14,14 +10,10 @@ export default class ProductListingMgr {
 		this.filterButton = 'data-js-plp-filter';
 		this.sortingSelect = 'data-js-plp-sort';
 		this.loadMoreButton = 'data-js-load-more';
-
-		this.placesInput = document.getElementById('places');
 	}
 
 	init() {
 		this.addEventListeners();
-		this.initGooglePlaces();
-		this.initAccordion();
 	}
 
 	addEventListeners() {
@@ -32,24 +24,6 @@ export default class ProductListingMgr {
 		this.productGrid.addEventListener('click', this.loadMore);
 		this.productGrid.addEventListener('click', this.applyFiltering);
 		this.productGrid.addEventListener('change', this.applySorting);
-	}
-
-	initGooglePlaces() {
-		// pass to GoogleAddresses constructor for autocomplete inputs
-		//const formInfo = {
-		//	address: this.address1Input,
-		//	postal_code: this.postalCodeInput,
-		//	city: this.cityInput,
-		//	country: '',
-		//	state: this.stateCodeInput
-		//};
-		this.places = new GoogleAddresses(this.placesInput, this.pageComponents, {});
-		this.places.init();
-	}
-
-	initAccordion() {
-		this.accordion = new Accordion(this.refinments);
-		this.accordion.init();
 	}
 
 	updateByUrl(url, message) {
@@ -112,8 +86,5 @@ export default class ProductListingMgr {
 		this.productGrid.removeEventListener('click', this.loadMore);
 		this.productGrid.removeEventListener('click', this.applyFiltering);
 		this.productGrid.removeEventListener('change', this.applySorting);
-
-		this.places.destroy();
-		this.accordion.destroy();
 	}
 };
