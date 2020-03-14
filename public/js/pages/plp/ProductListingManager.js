@@ -48,7 +48,8 @@ export default class ProductListingMgr {
 		if (!this.isEventDelegatedFrom(this.sortingSelect, event)) {
 			return;
 		}
-		this.updateByUrl(event.target.value, 'sorting applied');
+		const select = event.target;
+		this.updateByUrl(select.value, select.options[select.selectedIndex].text + ' sorting applied');
 	}
 
 	loadMore(event) {
