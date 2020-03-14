@@ -1,46 +1,33 @@
+import Notification from './Notification.js';
+
 export default class NotificationsManager {
-	constructor(domNode) {
-		this.notifier = domNode;
-		this.hideTimer = null;
+	constructor(domNode, pageComponents) {
+		this.notifications = domNode;
+		this.notificationsStack = [];
 	}
 
 	init() {
-		this.initRoles();
+		this.addEventListeners();
 	}
 
-	destroy() {
-		this.hide();
+	addEventListeners() {
+		this.notify = this.notify.bind(this);
+		document.body.addEventListener('notifier:notify', this.notify);
 	}
 
 	/**
 	 * @public
 	 */
-	notify(message) {
-		if (this.hideTimer) {
-			window.clearTimeout(this.hideTimer);
+	notify(event) {
+		if (!event.detail || !event.detail.message) {
+			console.warn(event.target + ' send event. But message is missed! Notification not showed');
+			return;
 		}
-
-		if (this.notifier.innerText === '') {
-			this.notifier.innerText = message;
-		} else {
-			this.notifier.innerText += '\n' + message;
-		}
-
-		this.show();
+		const notification = new Notification(this.notifications, event.detail.message, event.detail.type);
+		notification.init();
 	}
 
-	show() {
-		this.notifier.setAttribute('aria-hidden', 'false');
-		this.hideTimer = window.setTimeout(this.hide.bind(this), 2000);
-	}
-
-	hide() {
-		this.notifier.setAttribute('aria-hidden', 'true');
-		this.notifier.innerText = '';
-	}
-
-	initRoles() {
-		this.notifier.setAttribute('role', 'alert');
-		this.notifier.setAttribute('aria-hidden', 'true');
+	destroy() {
+		document.body.removeEventListener('notifier:notify', this.notify);
 	}
 }

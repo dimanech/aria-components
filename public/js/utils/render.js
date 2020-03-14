@@ -25,7 +25,7 @@ function applyDiff(el, diffNode) {
 	});
 	const diff = dd.diff(el, diffNode.firstElementChild);
 	if (diff && diff.length) {
-		 console.log(diff);
+		 //console.log(diff);
 		dd.apply(el, diff);
 	}
 }

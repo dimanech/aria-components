@@ -30,7 +30,7 @@ export default class ProductListingMgr {
 		this.toggleBusy(true);
 		getContentByUrl(url).then(response => {
 			render(undefined, undefined, this.content, response);
-			this.content.dispatchEvent(new CustomEvent('notifier:notify', { detail: message }));
+			this.content.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message } }));
 		}).finally(() => {
 			this.toggleBusy(false);
 		});
@@ -40,7 +40,8 @@ export default class ProductListingMgr {
 		if (!this.isEventDelegatedFrom(this.filterButton, event)) {
 			return;
 		}
-		this.updateByUrl(event.target.getAttribute('data-href'), this.filterButton.text + ' filter applied');
+		const button = event.target;
+		this.updateByUrl(button.getAttribute('data-href'), button.textContent + ' filter applied');
 	}
 
 	applySorting(event) {
@@ -65,7 +66,7 @@ export default class ProductListingMgr {
 					const tmpEl = document.createElement('div');
 					tmpEl.innerHTML = response;
 					this.grid.appendChild(tmpEl);
-					this.grid.dispatchEvent(new CustomEvent('notifier:notify', { detail: 'Loaded more products' }));
+					this.grid.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'Loaded more products'} }));
 				}).finally(() => {
 					this.toggleBusy(false);
 				});

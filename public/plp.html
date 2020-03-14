@@ -18,11 +18,11 @@
 <!--	<script async type="module" src="dist/js/initiator.bundle.js"></script>-->
 	<script async src="https://maps.googleapis.com/maps/api/js?key=API&libraries=places&callback=googleApiCallback"></script>
 </head>
-<body data-component="NotifierManager">
+<body>
 	<div data-component="ProductListingManager">
 		<div data-js-plp-content>
 			<div data-js-refinments>
-				<div data-component="togglers/Accordion" data-allow-multiple>
+				<div data-component="./togglers/Accordion" data-allow-multiple>
 					<button aria-controls="section-1" aria-expanded="true">Filters 1</button>
 					<div id="section-1" role="region">
 						<button data-href="plp/filterA.html" data-js-plp-filter>Filter a</button>
@@ -54,6 +54,6 @@
 			<button data-js-load-more data-url="plp/more.html">Load more</button>
 		</div>
 	</div>
-	<div data-notification></div>
+	<div class="b-notifier" data-component="NotificationsManager"></div>
 </body>
 </html>
