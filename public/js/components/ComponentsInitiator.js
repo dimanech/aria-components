@@ -57,7 +57,9 @@ export default class ComponentsInitiator {
 	initComponent(domNode) {
 		const componentName = domNode.getAttribute('data-component');
 
-		if (/\//g.test(componentName)) { // if component has path in name load async - data-component="carousels/Carousel" path is relative to components root (e.g. ComponentsInitiator placement)
+		if (/\//g.test(componentName)) {
+			// if component has path in the name we load it async
+			// eg. data-component="/js/components/togglers/Accordion" or relative to Initiator data-component="./togglers/Accordion"
 			this.loadAsync(domNode, componentName, component => this.addComponentToList(componentName, component))
 		} else {
 			const component = this.loadSync(domNode, componentName);
