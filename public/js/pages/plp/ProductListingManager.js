@@ -5,7 +5,8 @@ import { render } from '../../utils/render.js';
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
 		this.pageComponents = pageComponents;
-		this.productGrid = domNode.querySelector('[data-js-plp-content]');
+		this.content = domNode.querySelector('[data-js-plp-content]');
+		this.grid = domNode.querySelector('[data-js-plp-grid]');
 		this.filterButton = 'data-js-plp-filter';
 		this.sortingSelect = 'data-js-plp-sort';
 		this.loadMoreButton = 'data-js-load-more';
@@ -20,16 +21,16 @@ export default class ProductListingMgr {
 		this.applySorting = this.applySorting.bind(this);
 		this.applyFiltering = this.applyFiltering.bind(this);
 
-		this.productGrid.addEventListener('click', this.loadMore);
-		this.productGrid.addEventListener('click', this.applyFiltering);
-		this.productGrid.addEventListener('change', this.applySorting);
+		this.content.addEventListener('click', this.loadMore);
+		this.content.addEventListener('click', this.applyFiltering);
+		this.content.addEventListener('change', this.applySorting);
 	}
 
 	updateByUrl(url, message) {
 		this.toggleBusy(true);
 		getContentByUrl(url).then(response => {
-			render(undefined, undefined, this.productGrid, response);
-			this.productGrid.dispatchEvent(new CustomEvent('notifier:notify', { detail: message }));
+			render(undefined, undefined, this.content, response);
+			this.content.dispatchEvent(new CustomEvent('notifier:notify', { detail: message }));
 		}).finally(() => {
 			this.toggleBusy(false);
 		});
@@ -61,17 +62,17 @@ export default class ProductListingMgr {
 		getContentByUrl(appendParamToURL(url, 'selectedUrl', url))
 				.then(response => {
 					button.remove();
-					const tempEl = document.createElement('div');
-					tempEl.innerHTML = response;
-					this.productGrid.appendChild(tempEl);
-					this.productGrid.dispatchEvent(new CustomEvent('notifier:notify', { detail: 'Loaded more products' }));
+					const tmpEl = document.createElement('div');
+					tmpEl.innerHTML = response;
+					this.grid.appendChild(tmpEl);
+					this.grid.dispatchEvent(new CustomEvent('notifier:notify', { detail: 'Loaded more products' }));
 				}).finally(() => {
 					this.toggleBusy(false);
 				});
 	}
 
 	toggleBusy(isBusy) {
-		this.productGrid.setAttribute('aria-busy', isBusy);
+		this.content.setAttribute('aria-busy', isBusy);
 	}
 
 	isEventDelegatedFrom(attributeName, event) {
@@ -79,8 +80,8 @@ export default class ProductListingMgr {
 	}
 
 	destroy() {
-		this.productGrid.removeEventListener('click', this.loadMore);
-		this.productGrid.removeEventListener('click', this.applyFiltering);
-		this.productGrid.removeEventListener('change', this.applySorting);
+		this.content.removeEventListener('click', this.loadMore);
+		this.content.removeEventListener('click', this.applyFiltering);
+		this.content.removeEventListener('change', this.applySorting);
 	}
 };
