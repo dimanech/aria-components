@@ -15,6 +15,8 @@ export default class MainMenu {
 	}
 
 	destroy() {
-		this.composer.destroy()
+		if (this.composer) {
+			this.composer.destroy()
+		}
 	}
 };
