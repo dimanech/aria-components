@@ -50,7 +50,16 @@ export default class Panel extends Dialog {
 		}
 	}
 
-	onTouchStart(event) {
+	onTouchStart() {
+		this.onTouching = this.onTouching.bind(this);
+		this.onMouseOut = this.onMouseOut.bind(this);
+
+		this.backdropNode.addEventListener('mouseover', this.onTouching);
+		this.backdropNode.addEventListener('mouseout', this.onMouseOut);
+	}
+
+	onTouching(event) {
+		this.mouseOverPanel = true;
 		this.initialX = event.pageX || event.touches[0].pageX;
 		this.panelWidth = this.dialogNode.clientWidth;
 		this.deltaX = 0;
@@ -62,14 +71,17 @@ export default class Panel extends Dialog {
 	}
 
 	onTouchEnd() {
+		this.backdropNode.removeEventListener('mouseover', this.onTouching);
+		this.backdropNode.removeEventListener('mouseout', this.onMouseOut);
+
 		this.backdropNode.removeEventListener('mousemove', this.onTouchMove);
 		this.backdropNode.removeEventListener('touchmove', this.onTouchMove);
 		this.backdropNode.removeEventListener('mouseleave', this.onTouchEnd);
 		this.backdropNode.classList.remove('m-grabbing');
 
-		if ((this.deltaX <= -40) && this.position === 'right') {
+		if ((this.deltaX <= -50) && this.position === 'right') {
 			this.dialogManager.closeDialogFromOutside();
-		} else if ((this.deltaX >= 40) && this.position === 'left') {
+		} else if ((this.deltaX >= 50) && this.position === 'left') {
 			this.dialogManager.closeDialogFromOutside();
 		}
 
@@ -78,7 +90,15 @@ export default class Panel extends Dialog {
 		this.deltaX = 0;
 	}
 
-	handleBackdropClick(event) {}
+	onMouseOut() {
+		this.mouseOverPanel = false;
+	}
+
+	handleBackdropClick(event) {
+		if(!this.mouseOverPanel) {
+			super.handleBackdropClick(event);
+		}
+	}
 
 	destroy() {
 		this.removeDragEventListeners();

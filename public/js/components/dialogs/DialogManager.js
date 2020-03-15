@@ -1,4 +1,5 @@
 import Dialog from './Dialog.js';
+import Panel from './Panel.js';
 
 const keyCode = Object.freeze({
     ESC: 27
@@ -208,7 +209,7 @@ export default class DialogManager {
         const focusAfterCloseElement = focusAfterClose || document.activeElement;
 
         if (dialogType === 'panel') {
-            dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
+            dialog = new Panel(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
             isDialogOpen = dialog.init();
         } else {
             dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);

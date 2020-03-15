@@ -67,6 +67,7 @@ body {
 }
 
 .dialog-backdrop.m-grabbing {
+	transition: none;
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
@@ -120,6 +121,11 @@ body {
 	box-shadow: var(--depth-1);
 	transform: translateX(0%);
 	visibility: visible;
+}
+
+.dialog-backdrop.m-grabbing .panel {
+	user-select: none;
+	transition: none;
 }
 
 .close {
