@@ -1,4 +1,4 @@
-// JUST AN EXAMPLE!
+// Example
 import Dialog from './Dialog.js';
 
 export default class Panel extends Dialog {
@@ -18,11 +18,13 @@ export default class Panel extends Dialog {
 		this.onTouchStart = this.onTouchStart.bind(this);
 		this.onTouchEnd = this.onTouchEnd.bind(this);
 
+		this.onTouching = this.onTouching.bind(this);
+		this.onMouseOut = this.onMouseOut.bind(this);
+
 		this.backdropNode.addEventListener('mousedown', this.onTouchStart);
 		this.backdropNode.addEventListener('touchstart', this.onTouchStart, { passive: true });
 		this.backdropNode.addEventListener('mouseup', this.onTouchEnd);
 		this.backdropNode.addEventListener('touchend', this.onTouchEnd, { passive: true });
-		this.backdropNode.addEventListener('dragstart', this.onDragStart);
 	}
 
 	removeDragEventListeners() {
@@ -30,11 +32,6 @@ export default class Panel extends Dialog {
 		this.backdropNode.removeEventListener('touchstart', this.onTouchStart);
 		this.backdropNode.removeEventListener('mouseup', this.onTouchEnd);
 		this.backdropNode.removeEventListener('touchend', this.onTouchEnd);
-		this.backdropNode.removeEventListener('dragstart', this.onDragStart);
-	}
-
-	onDragStart(event) {
-		event.preventDefault();
 	}
 
 	onTouchMove(event) {
@@ -51,9 +48,6 @@ export default class Panel extends Dialog {
 	}
 
 	onTouchStart() {
-		this.onTouching = this.onTouching.bind(this);
-		this.onMouseOut = this.onMouseOut.bind(this);
-
 		this.backdropNode.addEventListener('mouseover', this.onTouching);
 		this.backdropNode.addEventListener('mouseout', this.onMouseOut);
 	}

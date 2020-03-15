@@ -17,10 +17,7 @@ export default class ScrollCarousel {
 		this.updateCarouselState();
 		this.initPagination();
 		this.carousel.classList.add('_inited');
-		this.afterInit();
 	}
-
-	afterInit() {}
 
 	addEventListeners() {
 		this.onScroll = this.onScroll.bind(this);
@@ -230,16 +227,11 @@ export default class ScrollCarousel {
 		this.carouselTrack.addEventListener('touchstart', this.onTouchStart, { passive: true });
 		this.carouselTrack.addEventListener('mouseup', this.onTouchEnd);
 		this.carouselTrack.addEventListener('touchend', this.onTouchEnd, { passive: true });
-		this.carouselTrack.addEventListener('dragstart', this.onDragStart);
-	}
-
-	onDragStart(event) {
-		event.preventDefault();
 	}
 
 	onTouchMove(event) {
 		const x = event.touches !== undefined ? event.touches[0].pageX : event.clientX;
-		this.deltaX = (this.initialX - x) / this.windowWidth * 70;
+		this.deltaX = (this.initialX - x) / this.carouselWidth * 100;
 
 		this.carouselTrack.scrollTo({
 			top: 0,
@@ -249,7 +241,7 @@ export default class ScrollCarousel {
 
 	onTouchStart(event) {
 		this.initialX = event.pageX || event.touches[0].pageX;
-		this.windowWidth = this.carousel.clientWidth; //window.innerWidth;
+		this.carouselWidth = this.carousel.clientWidth;
 		this.deltaX = 0;
 
 		this.carouselTrack.addEventListener('mousemove', this.onTouchMove);
@@ -265,10 +257,10 @@ export default class ScrollCarousel {
 		this.carouselTrack.classList.remove('_grabbing');
 
 		switch (true) {
-			case (this.deltaX <= -8):
+			case (this.deltaX <= -10):
 				this.prev();
 				break;
-			case (this.deltaX >= 8):
+			case (this.deltaX >= 10):
 				this.next();
 				break;
 			default:
@@ -291,8 +283,5 @@ export default class ScrollCarousel {
 				this.carousel.removeChild(this.pagination);
 			}
 		}
-		this.afterDestroy();
 	}
-
-	afterDestroy() {}
 }
