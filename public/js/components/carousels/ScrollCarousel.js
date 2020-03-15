@@ -94,12 +94,14 @@ export default class ScrollCarousel {
 	getCurrentPageIndex() {
 		const currentPosition = this.carouselDirection === 'horizontal' ? this.carouselTrack.scrollLeft : this.carouselTrack.scrollTop;
 		const pageWidth = this.carouselDirection === 'horizontal' ? this.carouselTrack.clientWidth : this.carouselTrack.clientHeight;
-		return Math.ceil(currentPosition / pageWidth);
+		return Math.round(currentPosition / pageWidth);
 	}
 
 	next() {
 		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0, (this.getCurrentPageIndex() + 1) * this.carouselTrack.clientWidth);
+			const curPage = this.getCurrentPageIndex() + 1;
+			const caruselWidth = this.carouselTrack.clientWidth;
+			this.scrollToPoint(0, curPage * this.carouselTrack.clientWidth);
 		} else {
 			this.scrollToPoint((this.getCurrentPageIndex() + 1) * this.carouselTrack.clientHeight, 0);
 		}

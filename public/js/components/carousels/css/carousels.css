@@ -54,6 +54,7 @@ body {
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
+	user-select: none;
 }
 
 .carousel__track._grabbing::before {
