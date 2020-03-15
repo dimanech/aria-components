@@ -13,7 +13,9 @@ export default class NotificationsManager {
 	addEventListeners() {
 		this.notify = this.notify.bind(this);
 		this.removeHandler = this.removeHandler.bind(this);
+		this.hideHandler = this.hideHandler.bind(this);
 		document.body.addEventListener('notifier:notify', this.notify);
+		document.body.addEventListener('notifier:hide', this.hideHandler);
 		this.notificationsContainer.addEventListener('notifier:notification:removed', this.removeHandler);
 	}
 
@@ -25,12 +27,13 @@ export default class NotificationsManager {
 			console.warn(event.target + ' send event. But message is missed! Notification not showed');
 			return;
 		}
-		const id = 'notification-' + this.notificationsStack.length + (event.detail.id || '');
+		const id = event.detail.id ? ('n-' + event.detail.id) : 'n-' + this.notificationsStack.length;
 
 		const options = {
 			message: event.detail.message,
 			type: event.detail.type,
 			id: id,
+			isPersistent: event.detail.isPersistent || false
 		};
 		const notification = new Notification(this.notificationsContainer, options);
 		notification.init();
@@ -50,7 +53,7 @@ export default class NotificationsManager {
 			return;
 		}
 		this.notificationsStack.forEach((notification, index) => {
-			if (notification.id === id) {
+			if (notification.id === 'n-' + id) {
 				notification.notification.destroy();
 				this.notificationsStack.splice(index, 1);
 			}
@@ -75,17 +78,21 @@ export default class NotificationsManager {
 	removeHandler(event) {
 		event.stopPropagation();
 		this.notificationsStack.forEach((notification, index) => {
-			if (notification.id === event.detail) {
+			if (notification.id === event.detail.id) {
 				this.notificationsStack.splice(index, 1);
 			}
 		});
+	}
 
-		console.log(this.notificationsStack)
+	hideHandler(event) {
+		event.stopPropagation();
+		this.hide(event.detail.id);
 	}
 
 	destroy() {
 		this.notificationsStack = [];
 		this.notificationsContainer.removeEventListener('notifier:notification:removed', this.removeHandler);
+		document.body.removeEventListener('notifier:hide', this.hideHandler);
 		document.body.removeEventListener('notifier:notify', this.notify);
 	}
 }
