@@ -54,8 +54,6 @@ export default class Accordion {
         });
     }
 
-    reinit() {}
-
     handleClick(event) {
         event.preventDefault();
         this.toggleSection(event.target);

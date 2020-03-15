@@ -1,0 +1,33 @@
+.accordion {
+	border-bottom: 1px solid;
+}
+
+.accordion__control {
+	appearance: none;
+	background: lightgrey;
+	border: none;
+	border-top: 1px solid;
+	display: flex;
+	font: inherit;
+	text-align: left;
+	width: 100%;
+	padding: 10px 0;
+	font-weight: bold;
+}
+
+.accordion__control svg {
+	margin-left: auto;
+	margin-right: 10px;
+}
+
+.accordion__control[aria-expanded=true] .icon-plus__line-2 {
+	display: none;
+}
+
+.accordion__content {
+	display: none;
+}
+
+.accordion__content[aria-hidden=false] {
+	display: block;
+}

@@ -1,0 +1,33 @@
+.disclosure-control {
+	appearance: none;
+	background: none;
+	border: none;
+	font: inherit;
+	font-weight: bold;
+}
+
+.disclosure-control::before {
+	content: "▶";
+	display: inline-block;
+}
+
+.disclosure-control[aria-expanded=true]::before {
+	transform: rotate(90deg);
+	transform-origin: center;
+}
+
+.disclosure-content {
+	display: none;
+}
+
+.disclosure-content[aria-hidden=false] {
+	display: block;
+}
+
+.search-box {
+	display: none;
+}
+
+.search-box[aria-hidden=false] {
+	display: block;
+}

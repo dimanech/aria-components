@@ -74,18 +74,18 @@ export default class Expand {
         }
     }
 
-    close() {
-        this.button.setAttribute('aria-expanded', 'false');
-        this.controledElement.setAttribute('aria-hidden', 'true');
-        this.isOpen = false;
-        this.button.dispatchEvent(new CustomEvent('toggle:close', { bubbles: true, cancelable: true }));
-    }
-
     open() {
         this.button.setAttribute('aria-expanded', 'true');
         this.controledElement.setAttribute('aria-hidden', 'false');
         this.isOpen = true;
-        this.button.dispatchEvent(new CustomEvent('toggle:open', { bubbles: true, cancelable: true }));
+        this.button.dispatchEvent(new Event('toggle:open'));
+    }
+
+    close() {
+        this.button.setAttribute('aria-expanded', 'false');
+        this.controledElement.setAttribute('aria-hidden', 'true');
+        this.isOpen = false;
+        this.button.dispatchEvent(new Event('toggle:close'));
     }
 
     handleKeydown(event) {

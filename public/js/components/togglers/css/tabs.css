@@ -1,0 +1,36 @@
+button:active {
+	color: red;
+}
+
+.tabs [data-role=tablist] {
+	border-bottom: 1px solid;
+	display: flex;
+	position: relative;
+	width: 100%;
+}
+
+.tabs button {
+	appearance: none;
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	font: inherit;
+	font-weight: bold;
+	padding: 5px 10px;
+}
+
+.tabs [aria-selected=true] {
+	border-color: black;
+}
+
+.tabs__panel {
+	padding: 10px;
+}
+
+.tabs__panel[aria-hidden=true] {
+	display: none;
+}
+
+.tabs__panel[aria-hidden=false] {
+	display: block;
+}

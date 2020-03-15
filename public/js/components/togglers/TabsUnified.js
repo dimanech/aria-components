@@ -1,4 +1,4 @@
-import Tabs from './Tabs';
+import Tabs from './Tabs.js';
 
 export default class TabsUnified extends Tabs {
     /**

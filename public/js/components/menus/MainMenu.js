@@ -3,7 +3,7 @@ import Hamburger from './HamburgerMenu.js';
 import ComponentsComposer from '../ComponentsComposer.js';
 
 export default class MainMenu {
-	constructor(domNode, pageComponents) {
+	constructor(domNode) {
 		this.menuList = document.querySelector('[data-elem-nav]');
 		this.menuBar = document.querySelector('[data-elem-menu-bar]');
 	}
