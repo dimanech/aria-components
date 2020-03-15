@@ -1,4 +1,4 @@
-export default class SnapScrollCarouselVertical extends SnapScrollCarousel {
+export default class ScrollCarouselVertical extends ScrollCarousel {
 	constructor(domNode) {
 		super(domNode);
 	}

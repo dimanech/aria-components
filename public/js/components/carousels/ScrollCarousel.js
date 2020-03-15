@@ -1,14 +1,11 @@
-// exposeState
-// restoreState
-
-export default class SnapScrollCarousel {
+export default class ScrollCarousel {
 	constructor(domNode) {
 		this.carousel = domNode;
-		this.carouselTrack = this.carousel.querySelector('[data-carousel-track]');
-		this.prevButton = this.carousel.querySelector('[data-prev-button]');
-		this.nextButton = this.carousel.querySelector('[data-next-button]');
+		this.carouselTrack = this.carousel.querySelector('[data-elem-carousel-track]');
+		this.prevButton = this.carousel.querySelector('[data-elem-prev-button]');
+		this.nextButton = this.carousel.querySelector('[data-elem-next-button]');
 
-		this.carouselDirection = this.carousel.getAttribute('data-carousel') || 'horizontal';
+		this.carouselDirection = this.carousel.getAttribute('data-direction') || 'horizontal';
 		this.currentPage = 0;
 
 		this.scrollEndSensitivity = 40; // Workaround IE rounding for clientWidth and scrollWidth

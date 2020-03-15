@@ -1,11 +1,11 @@
-import SnapScrollCarousel from './SnapScrollCarousel.js';
+import ScrollCarousel from './SnapScrollCarousel.js';
 
-export default class ScrollCarouselAutoplay extends SnapScrollCarousel {
+export default class ScrollCarouselAutoplay extends ScrollCarousel {
 	constructor(domNode) {
 		super(domNode);
 
-		this.autoPlayEnabled = this.carousel.hasAttribute('data-carousel-autoplay') || false;
-		this.autoPlayDelay = this.carousel.getAttribute('data-carousel-autoplay') || 5000;
+		this.autoPlayEnabled = this.carousel.hasAttribute('data-autoplay') || false;
+		this.autoPlayDelay = this.carousel.getAttribute('data-autoplay') || 5000;
 	}
 
 	afterInit() {

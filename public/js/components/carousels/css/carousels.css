@@ -1,0 +1,312 @@
+body {
+	margin: 50px 100px;
+}
+
+@media screen and (max-width: 1024px) {
+	body {
+		margin: 20px;
+	}
+}
+
+:focus {
+	outline: 3px solid red;
+}
+
+.carousel {
+	position: relative;
+}
+
+.carousel._inited {}
+
+/*
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+	scroll-behavior: smooth;
+	scrollbar-width: none;
+	overscroll-behavior-x: none;
+	-webkit-scroll-snap-type: x mandatory;
+	-ms-scroll-snap-type: x mandatory;
+	scroll-snap-type: x mandatory;
+*/
+.carousel__track {
+	display: flex;
+	overflow-behavior: contain;
+	overflow-scrolling: touch;
+	overscroll-behavior-x: contain; /* none */
+	overflow: hidden;
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	scroll-snap-type: x proximity;
+	scrollbar-width: none; /* FF */
+	-ms-overflow-style: none; /* IE */
+	-ms-scroll-chaining: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+.carousel__track::-webkit-scrollbar {
+	display: none;
+}
+
+.carousel__track._grabbing {
+	scroll-behavior: auto;
+	scroll-snap-type: none;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+}
+
+.carousel__track._grabbing::before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.carousel._mandatory .carousel__track {
+	scroll-snap-type: x mandatory;
+}
+
+/* Buttons */
+
+.carousel::before,
+.carousel::after {
+	background: #fff;
+	bottom: 0;
+	content: "";
+	display: block;
+	height: auto;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	transition-property: visibility, opacity;
+	transition: ease 0.2s;
+	visibility: hidden;
+	width: 20px;
+	z-index: 1;
+}
+
+.carousel::before {
+	background: radial-gradient(ellipse at -30% 50%, rgba(0, 0, 0, 0.3), rgba(97, 97, 97, 0) 72%);
+	left: 0;
+}
+
+.carousel::after {
+	background: radial-gradient(ellipse at 70% 50%, rgba(0, 0, 0, 0.3), rgba(97, 97, 97, 0) 72%);
+	right: 0;
+}
+
+.carousel._inited._next-visible::after,
+.carousel._inited._prev-visible::before {
+	opacity: 1;
+	visibility: visible;
+}
+
+.carousel__ctrl {
+	background-color: #fff;
+	border-radius: 100%;
+	border: none;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	height: 40px;
+	margin-top: -20px;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	user-select: none;
+	width: 40px;
+	z-index: 2;
+}
+
+.carousel__ctrl[disabled] {
+	color: grey;
+}
+
+.carousel__ctrl._prev {
+	left: -20px;
+}
+
+.carousel__ctrl._next {
+	right: -20px;
+}
+
+/* pagination */
+
+.pagination {
+	margin: 5px;
+	text-align: center;
+}
+
+.page {
+	background-color: lightgrey;
+	border-radius: 10px;
+	border: none;
+	cursor: pointer;
+	height: 6px;
+	margin: 3px;
+	padding: 0;
+	transition: background-color ease 0.4s;
+	width: 6px;
+}
+
+.page._current {
+	background-color: black;
+}
+
+/* content and variations */
+
+.box {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	min-height: 400px;
+	scroll-snap-align: center;
+}
+
+.box._no-snap {
+	scroll-snap-align: none;
+}
+
+.box._single {
+	max-width: 100%;
+	min-width: 100%;
+}
+
+.box._third {
+	max-width: 33.333333%;
+	min-width: 33.333333%;
+}
+
+.box._fours {
+	max-width: 25%;
+	min-width: 25%;
+}
+
+.box._half {
+	max-width: 50%;
+	min-width: 50%;
+}
+
+.box._half-next { /* classical visual hint about upon scroll */
+	max-width: 28.57%;
+	min-width: 28.57%;
+}
+
+.box:nth-child(1) {
+	background: #eee;
+}
+
+.box:nth-child(2) {
+	background: #a13647;
+}
+
+.box:nth-child(3) {
+	background: #256e5e;
+}
+
+.box:nth-child(4) {
+	background: #aa6639;
+}
+
+.box:nth-child(5) {
+	background: #4b9131;
+}
+
+.box:nth-child(6) {
+	background: #a13647;
+}
+
+/* Vertical carousel */
+
+.scroll {
+	padding: 1px 10px;
+	position: relative;
+}
+
+.scroll::before,
+.scroll::after {
+	background-color: #666;
+	content: "";
+	left: 50%;
+	height: 1px;
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	transition: ease 0.3s;
+	transition-property: width, left, opacity;
+	z-index: 1;
+}
+
+.scroll._inited._prev-visible::before,
+.scroll._inited._next-visible::after {
+	width: 100%;
+	opacity: 1;
+	left: 0;
+}
+
+.scroll__track {
+	display: flex;
+	flex-direction: column;
+	height: 400px;
+	overflow-behavior: contain;
+	overflow-scrolling: touch;
+	overscroll-behavior-y: contain;
+	overflow: hidden;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+	scroll-snap-type: y proximity;
+	scrollbar-width: none; /* FF */
+	-ms-overflow-style: none; /* IE */
+	-ms-scroll-chaining: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+.scroll__track::-webkit-scrollbar {
+	display: none;
+}
+
+.thumb {
+	background: #eee;
+	cursor: pointer;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 5px;
+	position: relative;
+	scroll-snap-align: center;
+	text-align: center;
+	width: 40px;
+}
+
+.thumb::after {
+	box-shadow: inset 0 0 0 0 lightblue;
+	bottom: 0;
+	content: "";
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: box-shadow ease 0.3s;
+}
+
+.thumb._current::after {
+	box-shadow: inset 0 0 0 3px lightblue;
+}
+
+/* Gallery */
+
+.gallery {
+	display: flex;
+}
+
+.gallery .scroll {
+	flex-basis: 40px;
+	margin-right: 20px;
+}
+
+.gallery .carousel {
+	width: 100%;
+	max-width: 400px;
+}

@@ -1,4 +1,6 @@
-@import "../js/components/notifications/notification.css";
+@import "../js/components/notifications/css/notification.css";
+@import "../js/components/menus/css/menus.css";
+@import "../js/components/togglers/css/accordion.css";
 
 [aria-hidden="true"] {
 	display: none;
