@@ -18,6 +18,15 @@ export default class DialogManager {
         this.dialogsStack = [];
     }
 
+    init() {
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        this._handleOpenFromEvent = this._handleOpenFromEvent.bind(this);
+        document.addEventListener('dialogManager:open', this._handleOpenFromEvent);
+    }
+
     /**
      * openDialog
      *
@@ -28,13 +37,13 @@ export default class DialogManager {
      *
      * @public
      * @param {String} dialogType - type of dialog. Could be panel or modal. Currently used to much Bootstrap modals.
-     * @param {String} dialogId - ID of dialog node in format of CSS selector. Eg: `#myDialog`. Currently used to much Bootstrap modals.
+     * @param {String} dialogId - ID of dialog node. Eg: `myDialog`.
      * @param {HTMLElement} [focusAfterClose] - domNode of element that focused when dialog is closed and focus brings back to the page
      * @param {HTMLElement} [focusAfterOpen] - domNode of element that should be focused when dialog is opened. If no first focusable element will used.
      * @returns {Boolean} - is dialog replaced
      */
     openDialog(dialogType, dialogId, focusAfterClose, focusAfterOpen) {
-        const dialogNode = document.querySelector(dialogId);
+        const dialogNode = document.getElementById(dialogId);
         if (this.isDialogInStack(dialogNode) || !dialogNode) {
             return;
         }
@@ -42,7 +51,7 @@ export default class DialogManager {
         if (this.dialogsStack.length > 0) { // If we open dialog over the last one
             this._bringCurrentDialogDown();
         } else { // If this is first opened dialog add close listeners
-            this._addEventListeners();
+            this._addDialogEventListeners();
         }
 
         const createDialog = this._createDialog(dialogType, dialogNode, focusAfterClose, focusAfterOpen);
@@ -77,7 +86,7 @@ export default class DialogManager {
             this._bringCurrentDialogToTop(); // after destroy previous one is currentDialog
         } else { // if this the last opened dialog
             document.body.classList.remove('has-dialog');
-            this._removeEventListeners();
+            this._removeDialogEventListeners();
         }
 
         return true;
@@ -158,7 +167,16 @@ export default class DialogManager {
         return this.dialogsStack.some(dialog => (dialog.dialogNode === domNode));
     }
 
-    _addEventListeners() {
+    _handleOpenFromEvent(event) {
+        const config = event.detail;
+        if (!config) {
+            return;
+        }
+
+        this.openDialog(config.type, config.controlledDialogId, config.focusAfterClose, config.focusAfterOpen);
+    }
+
+    _addDialogEventListeners() {
         this.handleEscape = this._handleEscape.bind(this);
         this.handleClose = this._handleCloseButton.bind(this);
 
@@ -166,7 +184,7 @@ export default class DialogManager {
         document.addEventListener('click', this.handleClose);
     }
 
-    _removeEventListeners() {
+    _removeDialogEventListeners() {
         document.removeEventListener('keyup', this.handleEscape);
         document.removeEventListener('click', this.handleClose);
     }
@@ -191,10 +209,10 @@ export default class DialogManager {
 
         if (dialogType === 'panel') {
             dialog = new Panel(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
-            isDialogOpen = dialog.create();
+            isDialogOpen = dialog.init();
         } else {
             dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
-            isDialogOpen = dialog.create();
+            isDialogOpen = dialog.init();
         }
 
         this.dialogsStack.push(dialog);

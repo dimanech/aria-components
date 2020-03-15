@@ -1,7 +1,6 @@
 import {
     focusFirstDescendant,
-    focusLastDescendant,
-    searchingFocusedElement
+    focusLastDescendant
 } from '../../utils/focus.js';
 
 export default class Dialog {
@@ -25,13 +24,12 @@ export default class Dialog {
         // Additional methods
         this.focusFirstDescendant = focusFirstDescendant;
         this.focusLastDescendant = focusLastDescendant;
-        this.searchingFocusedElement = searchingFocusedElement;
 
         this.handleFocus = this.handleFocus.bind(this);
         this.handleBackdropClick = this.handleBackdropClick.bind(this);
     }
 
-    create() {
+    init() {
         this.initBackdrop();
         this.createFocusTrap();
         this.initEventListeners();
@@ -63,7 +61,7 @@ export default class Dialog {
 
         this.removeEventListeners();
         this.removeFocusTrap();
-        this.removeBackdrop();
+        this.clearBackdropState();
 
         this.dialogNode.classList.remove('is-open');
         this.dialogNode.setAttribute('aria-hidden', 'true');
@@ -100,10 +98,6 @@ export default class Dialog {
     }
 
     handleFocus(event) {
-        if (this.searchingFocusedElement) {
-            return;
-        }
-
         switch (true) {
             case (event.target === this.boundFocusNodeStart):
                 this.focusLastDescendant(this.dialogNode);
@@ -141,14 +135,20 @@ export default class Dialog {
         this.backdropNode.removeChild(this.boundFocusNodeEnd);
     }
 
+    clearBackdropState() {
+        this.backdropNode.removeEventListener('click', this.handleBackdropClick);
+        this.backdropNode.classList.remove('is-active');
+        this.backdropNode.classList.remove('is-top-dialog');
+    }
+
     initBackdrop() {
-        const backdropClass = 'js-dialog-backdrop';
+        const backdropSelector = 'data-elem-dialog-backdrop';
 
         let parent = this.dialogNode.parentNode;
-        if (parent.classList.contains(backdropClass)) {
+        if (parent.hasAttribute(backdropSelector)) {
             this.backdropNode = parent;
         } else {
-            this.encloseModalWithBackdrop(backdropClass);
+            this.encloseModalWithBackdrop(backdropSelector);
         }
 
         this.backdropNode.addEventListener('click', this.handleBackdropClick);
@@ -156,15 +156,9 @@ export default class Dialog {
         this.backdropNode.classList.add('is-top-dialog');
     }
 
-    removeBackdrop() {
-        this.backdropNode.removeEventListener('click', this.handleBackdropClick);
-        this.backdropNode.classList.remove('is-active');
-        this.backdropNode.classList.remove('is-top-dialog');
-    }
-
-    encloseModalWithBackdrop(backdropClass) {
+    encloseModalWithBackdrop(backdropSelector) {
         this.backdropNode = document.createElement('div');
-        this.backdropNode.className = backdropClass;
+        this.backdropNode.setAttribute(backdropSelector);
         this.dialogNode.parentNode.insertBefore(this.backdropNode, this.dialogNode);
         this.backdropNode.appendChild(this.dialogNode);
     }

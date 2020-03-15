@@ -1,8 +1,9 @@
 export default class DialogButton {
 	constructor(domNode, pageComponents) {
 		this.button = domNode;
-		this.dialogManager = pageComponents.dialogManager;
-		this.controlledModalId = this.button.getAttribute('aria-controls');
+		this.dialogManager = pageComponents.DialogManager;
+		this.type = this.button.getAttribute('data-dialog-type');
+		this.controlledDialogId = this.button.getAttribute('aria-controls');
 		this.focusAfterOpen = this.button.getAttribute('data-focus-in-modal');
 	}
 
@@ -11,7 +12,7 @@ export default class DialogButton {
 	}
 
 	addEventListeners() {
-		if (this.controlledModalId === null) {
+		if (this.controlledDialogId === null) {
 			return;
 		}
 
@@ -22,12 +23,13 @@ export default class DialogButton {
 	openDialog(event) {
 		event.preventDefault();
 
-		this.dialogManager.openDialog(
-				'modal',
-				this.controlledModalId,
-				this.button,
-				this.focusAfterOpen
-		);
+		const config = {
+			type: this.type || 'dialog',
+			controlledDialogId: this.controlledDialogId,
+			focusAfterClose: this.button,
+			focusAfterOpen: this.focusAfterOpen
+		};
+		this.button.dispatchEvent(new CustomEvent('dialogManager:open', { bubbles: true, detail: config}));
 	}
 
 	destroy() {

@@ -1,0 +1,348 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Dialog example</title>
+	<link rel="stylesheet" href="dialogs.css"/>
+	<script async type="module" src="../../initiator.js"></script>
+</head>
+<body data-component="DialogManager">
+	<div class="wrapper">
+		<h1>This example cover Dialog and Alert Dialog patterns that designed to interrupt user flow</h1>
+		<a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">Alert dialog Page focusable element 1 (Should not be focused if modal open)</a>
+		<br>
+		<br>
+		
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eros massa, ultricies ac purus vel, condimentum ultrices mauris. Nullam sagittis magna quam, vitae aliquet urna finibus quis. Sed rutrum vestibulum purus. Phasellus dictum varius ligula nec ultrices. Integer posuere faucibus orci, eget aliquam libero luctus non. Sed placerat mi eget euismod finibus. Donec fringilla, massa vehicula posuere gravida, lorem odio rutrum tortor, ut sagittis massa felis vel massa. Proin porttitor sagittis nulla ac volutpat. Nullam pharetra ante id malesuada tempus. Aliquam purus purus, facilisis id neque in, facilisis dapibus metus. Quisque eu metus varius, hendrerit lectus id, porta nisl.
+		</p>
+		
+		<button data-component="DialogButton" aria-controls="alert-1">Open alert dialog (Important dialogs)</button>
+		<br>
+		<button data-component="DialogButton" aria-controls="modal-1">Open regular dialog with (force user to choice)</button>
+		
+		<p>
+			Nullam nunc justo, dignissim vel lacinia quis, semper a leo. Suspendisse ut tellus ac est tincidunt mollis laoreet a ligula. Cras vestibulum mauris eu malesuada fermentum. Mauris varius est enim, et rhoncus quam fringilla eu. Sed interdum feugiat velit, at ultrices elit scelerisque ut. Cras quis tincidunt erat. Proin feugiat sem at ipsum iaculis dignissim. Mauris nibh ipsum, sagittis ut purus blandit, tincidunt mollis lacus. Pellentesque ut commodo sem. Sed facilisis sit amet ante eget sagittis. Duis malesuada felis nec eros finibus, ac posuere ipsum venenatis.
+		</p>
+		
+		<br>
+		<button data-component="DialogButton" aria-controls="dialog-1">Open dialog</button>
+		<br>
+		<button data-component="DialogButton" aria-controls="panel-1" data-dialog-type="panel">Open panel (another styled dialog)</button>
+		<br>
+		
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div id="alert-1"
+			     role="alertdialog"
+			     aria-modal="true"
+			     aria-label="Cookies"
+			     aria-describedby="alert-1-descr"
+			     class="modal"
+			>
+				<p id="alert-1-descr">This is super important message about some critical error!</p>
+				<button data-dismiss="dialog">No</button>
+				<button data-dismiss="dialog">Yes</button>
+				<button class="close" data-dismiss="dialog" aria-label="Close dialog" title="Press Esc to close">&times;</button>
+			</div>
+		</div>
+		
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div id="modal-1"
+			     role="dialog"
+			     aria-modal="true"
+			     aria-label="Reset form"
+			     aria-describedby="modal-1-descr"
+			     data-isForcedToChoice="true"
+			     class="modal"
+			>
+				<p id="modal-1-descr">Are you sure that you want to reset form? (You could not escape this dialog until you do not make a choice)</p>
+				<button data-dismiss="dialog">Yes (todo: programmaticaly controlled)</button>
+				<button data-dismiss="dialog">No</button>
+			</div>
+		</div>
+		
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div id="dialog-1"
+			     role="dialog"
+			     aria-label="Address verification"
+			     aria-describedby="dialog-1-descr"
+			     aria-modal="true"
+			     class="modal"
+			>
+				<p id="dialog-1-descr">You could escape from this dialog. More over it will guide you through all form steps.</p>
+				<form class="form">
+					<div class="dialog_form">
+						<div class="dialog_form_item">
+							<label>
+								Street:
+								<input type="text" class="wide_input"/>
+							</label>
+						</div>
+						<div class="dialog_form_item">
+							<label>
+								City:
+								<input type="text" class="city_input"/>
+							</label>
+						</div>
+					</div>
+					<div class="dialog_form_actions">
+						<button data-component="DialogButton" aria-controls="dialog-2" data-focus-in-modal="dialog2_para1">
+							Verify Address (open dialog 2)
+						</button>
+						<button data-component="DialogButton" aria-controls="dialog-3" data-focus-in-modal="dialog3_close_btn">
+							Add (replace this dialog with dialog 3)
+						</button>
+						<button data-dismiss="dialog">
+							Cancel (close dialog)
+						</button>
+					</div>
+				</form>
+				<button class="close" data-dismiss="dialog" aria-label="Close dialog" title="Press Esc to close">&times;</button>
+			</div>
+		</div>
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div
+					id="dialog-2"
+					role="dialog"
+					aria-labelledby="dialog-2-label"
+					aria-describedby="dialog-2-desc"
+					aria-modal="true"
+					class="modal"
+			>
+				<h2 id="dialog-2-label">
+					Verification Result
+				</h2>
+				<div>
+					<p tabindex="0" id="dialog-2-desc">
+						This is just a demonstration. If it were a real application, it would
+						provide a message telling whether the entered address is valid.
+					</p>
+					<p>
+						For demonstration purposes, this dialog has a lot of text. It demonstrates a
+						scenario where:
+					</p>
+					<ul>
+						<li>
+							The first interactive element, the help link, is at the bottom of the dialog.
+						</li>
+						<li>
+							If focus is placed on the first interactive element when the dialog opens, the
+							validation message may not be visible.
+						</li>
+						<li>
+							If the validation message is visible and the focus is on the help link, then
+							the focus may not be visible.
+						</li>
+						<li>
+							When the dialog opens, it is important that both:
+							<ul>
+								<li>
+									The beginning of the text is visible so users do not have to scroll back to
+									start reading.
+								</li>
+								<li>
+									The keyboard focus always remains visible.
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<p>
+						There are several ways to resolve this issue:
+					</p>
+					<ul>
+						<li>
+							Place an interactive element at the top of the dialog, e.g., a button or link.
+						</li>
+						<li>
+							Make a static element focusable, e.g., the dialog title or the first block of
+							text.
+						</li>
+					</ul>
+					<p>
+						Please
+						<em>
+							DO NOT
+						</em>
+						make the element with role dialog focusable!
+					</p>
+					<ul>
+						<li>
+							The larger a focusable element is, the more difficult it is to visually
+							identify the location of focus, especially for users with a narrow field of view.
+						</li>
+						<li>
+							The dialog has a visual border, so creating a clear visual indicator of focus
+							when the entire dialog has focus is not very feasible.
+						</li>
+						<li>
+							Screen readers read the label and content of focusable elements. The dialog
+							contains its label and a lot of content! If a dialog like this one has focus, the
+							actual focus is difficult to comprehend.
+						</li>
+					</ul>
+					<p>
+						In this dialog, the first paragraph has
+						<code>
+							tabindex=
+							<q>
+								-1
+							</q>
+						</code>
+						. The first
+						paragraph is also contained inside the element that provides the dialog description, i.e., the element that is referenced
+						by
+						<code>
+							aria-describedby
+						</code>
+						. With some screen readers, this may have one negative
+						but relatively insignificant side effect when the dialog opens -- the first paragraph
+						may be announced twice. Nonetheless, making the first paragraph focusable and setting
+						the initial focus on it is the most broadly accessible option.
+					</p>
+				</div>
+				<div class="dialog_form_actions">
+					<a href="#" data-component="DialogButton" aria-controls="dialog-4">
+						link to help (open dialog 4)
+					</a>
+					<button data-component="DialogButton" aria-controls="dialog-4">
+						accepting an alternative form (open dialog 4)
+					</button>
+					<button data-dismiss="dialog">
+						Close (close Dialog)
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div id="dialog-3"
+			     role="dialog"
+			     aria-labelledby="dialog-3-label"
+			     aria-describedby="dialog-3-desc"
+			     aria-modal="true"
+			     class="modal"
+			>
+				<h2 id="dialog-3-label">
+					Address Added
+				</h2>
+				<p id="dialog-3-desc">
+					The address you provided has been added to your list of delivery addresses. It is ready
+					for immediate use. If you wish to remove it, you can do so from
+					<a href="#" data-component="DialogButton" aria-controls="dialog-4">
+						your profile. (open Dialog 4)
+					</a>
+				</p>
+				<div class="dialog_form_actions">
+					<button id="dialog3_close_btn" data-dismiss="dialog">
+						OK (close Dialog)
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div id="dialog-4"
+			     role="dialog"
+			     aria-labelledby="dialog-4-label"
+			     aria-describedby="dialog-4-desc"
+			     class="modal"
+			     aria-modal="true"
+			>
+				<h2 id="dialog-4-label">
+					End of the Road!
+				</h2>
+				<p id="dialog-4-desc">
+					You activated a fake link or button that goes nowhere!
+					The link or button is present for demonstration purposes only.
+				</p>
+				<div class="dialog_form_actions">
+					<button id="dialog4_close_btn" data-dismiss="dialog">
+						Close
+					</button>
+				</div>
+			</div>
+		</div>
+		
+		<div class="dialog-backdrop" data-elem-dialog-backdrop>
+			<div id="panel-1"
+			     role="dialog"
+			     aria-modal="true"
+			     class="panel"
+			     aria-label="Hamburger menu"
+			     data-panel-position="right"
+			>
+				<br>
+				<a href="index.html">link 1</a>
+				<br>
+				<a href="index.html">link 2</a>
+				<br>
+				<button class="close" data-dismiss="dialog" aria-label="Close dialog" title="Press Esc to close">&times;</button>
+			</div>
+		</div>
+		
+		<br>
+		<button>Page focusable element 2 (Should not be focused if modal open)</button>
+		<br>
+		<input id="page-focusable-input" type="text" value=""/>
+		<label for="page-focusable-input">Page focusable element 3 (Should not be focused if modal open)</label>
+		
+		<div id="lipsum">
+			<p>
+				Suspendisse lectus arcu, tincidunt eget scelerisque at, imperdiet blandit sem. Maecenas vulputate faucibus nisl fermentum ornare. Aliquam erat volutpat. Aenean aliquet vehicula ligula, eget tempus leo sagittis ac. Nullam est urna, aliquet at magna ut, vestibulum eleifend augue. Vivamus accumsan convallis euismod. Mauris pellentesque elementum consectetur. Integer ac diam quis magna ultrices elementum eget quis tellus. Sed et neque sed diam ornare sodales in ut purus.
+			</p>
+			<p>
+				Cras eget ligula et risus dictum porttitor at nec massa. Suspendisse pretium, ante in lobortis vulputate, elit dui lacinia ante, non blandit massa velit id enim. Vivamus varius eros massa, ullamcorper maximus diam consequat a. Nullam vitae felis orci. Pellentesque venenatis magna et ornare finibus. Maecenas imperdiet pharetra augue in aliquet. Ut gravida ex imperdiet, euismod dui ac, finibus ex. Nullam ultrices dapibus nunc, et ultrices libero hendrerit sit amet. Sed a eros quam. Donec sit amet leo rutrum, gravida nisl sit amet, convallis lectus. In ut ultricies turpis. Nam malesuada semper erat vitae consectetur. Cras rutrum, odio nec molestie tristique, est risus tincidunt nulla, et dictum turpis risus vel ex. Vestibulum massa enim, facilisis facilisis efficitur id, varius vel sem. Cras sit amet risus aliquam elit eleifend suscipit non at libero.
+			</p>
+			<p>
+				Vivamus nec justo ullamcorper velit sollicitudin tempor at non purus. Integer posuere enim id velit fermentum, sed dapibus mauris malesuada. Nulla sagittis tortor eget massa scelerisque, a sodales sapien semper. Proin elementum libero nisi, non egestas purus dignissim vitae. Cras porta iaculis venenatis. Aenean pulvinar, mauris non sagittis viverra, nisl magna iaculis odio, vel dapibus risus arcu quis est. Maecenas cursus leo a nisl condimentum, in mollis erat finibus. Proin orci nulla, lobortis id interdum a, tempus nec ligula.
+			</p>
+			<p>
+				Aliquam quam turpis, auctor in ante eget, volutpat semper augue. Etiam finibus, dolor ut condimentum finibus, velit tellus vehicula enim, vitae maximus sem purus a mi. Integer ac euismod erat, vel aliquet dui. Sed egestas dolor ex, id sodales lacus tincidunt in. Curabitur sed dictum augue, quis convallis ex. Phasellus tincidunt sapien quis varius placerat. Maecenas lorem diam, fringilla non quam consectetur, sagittis consequat elit. Donec venenatis vehicula aliquam. Maecenas at mollis tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras ac venenatis risus, ut sagittis dui. Vestibulum vehicula vestibulum augue, et tempor orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur tristique consectetur convallis. Vivamus venenatis sem sed congue facilisis.
+			</p>
+			<p>
+				Suspendisse eget massa mi. Vivamus mollis lacinia nibh sed volutpat. Quisque gravida metus non metus feugiat, in maximus nunc pellentesque. Proin nec tellus dui. Integer ac nisl eu tellus commodo aliquet. Proin venenatis augue neque, vel mollis sapien scelerisque eu. Maecenas non turpis sit amet dui malesuada aliquet. Sed sit amet tristique arcu. Proin sed tristique arcu. Integer rutrum efficitur lectus quis fermentum. Vivamus et congue ligula, eget eleifend arcu. Sed mattis tellus ligula, in posuere arcu ultricies vel. Quisque eget rutrum nisi. Quisque viverra facilisis enim. Etiam iaculis quam a turpis suscipit, ut commodo odio rutrum. Sed auctor sodales diam sit amet pretium.
+			</p>
+			<p>
+				Proin sodales cursus metus eget blandit. Fusce id leo mi. Nunc convallis odio ut libero finibus aliquam. Nunc ultrices dictum bibendum. Curabitur id mauris quis orci fermentum fringilla iaculis ut diam. Etiam vel vestibulum urna, in cursus lacus. Donec rutrum neque velit, sed mollis leo lacinia quis. Duis malesuada urna in aliquet pharetra. Ut commodo feugiat metus et tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla pulvinar massa non mauris consectetur, eget lobortis turpis tempus. Nulla facilisi. In hac habitasse platea dictumst. Morbi pretium felis sit amet magna rutrum dapibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vel arcu tempor, ornare nisi eu, molestie mi.
+			</p>
+			<p>
+				Mauris in nunc in eros bibendum eleifend ut quis sem. Sed quis augue varius, efficitur mauris vel, porta massa. Quisque finibus nisl a massa ultricies rhoncus. Vivamus feugiat nisi et metus tempor maximus. Aliquam ante magna, maximus sed congue sit amet, fringilla at erat. Mauris sit amet est in purus viverra volutpat malesuada non orci. Aliquam malesuada et dolor sit amet porttitor. Vivamus a erat luctus, accumsan risus a, dapibus ante. Curabitur lobortis quam ut volutpat laoreet.
+			</p>
+			<p>
+				Nunc pretium, diam id feugiat ullamcorper, nunc massa bibendum dui, tristique rhoncus erat tellus eget arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque vulputate mattis ligula. Donec fringilla volutpat nulla. Quisque ut mi in libero molestie dapibus. Fusce congue ullamcorper mauris in ultricies. In pharetra egestas odio, vel egestas nulla sodales et. Etiam in velit massa. Proin auctor rutrum felis eget sodales.
+			</p>
+			<p>
+				Ut at dui odio. Maecenas at risus ac eros congue condimentum. In ac leo urna. Maecenas quis nibh fermentum tellus efficitur porttitor nec quis magna. Donec finibus pretium leo vitae tristique. Morbi vel mollis est. Morbi bibendum tellus ac sapien porttitor, non congue tortor ultricies. Integer justo metus, facilisis eu dapibus quis, ultricies eu massa. Fusce consequat aliquet nunc quis vestibulum. Duis semper gravida justo, vitae vestibulum massa. Cras dictum quam blandit urna mattis, quis tristique leo vestibulum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris sem nulla, placerat ut mi faucibus, hendrerit sollicitudin nulla. Integer id ullamcorper mi, semper laoreet tellus.
+			</p>
+			<p>
+				Phasellus metus dolor, vestibulum sed lectus et, fringilla venenatis ligula. In libero neque, mattis nec lacinia non, euismod sit amet velit. Mauris pharetra non orci id auctor. Donec vitae dolor facilisis, porttitor orci sit amet, aliquam est. In iaculis quis risus ut finibus. Nam suscipit ex vel risus tristique vulputate. Nunc gravida ante ut mollis convallis. Mauris laoreet lorem sit amet est tincidunt maximus. Quisque ultricies elementum euismod. Morbi non lacinia arcu. Suspendisse vitae justo at leo lobortis elementum. Nunc consequat sodales dui, vel porta neque aliquet sed. Phasellus sed ipsum vel risus volutpat vehicula nec vel libero. Integer at nulla eget odio aliquet faucibus.
+			</p>
+			<p>
+				Cras aliquet nisi ac tempus tristique. Vestibulum bibendum turpis et aliquet accumsan. Maecenas sagittis ornare ex a feugiat. Suspendisse luctus massa enim, non euismod nisl aliquam in. Phasellus dictum, libero sit amet interdum sollicitudin, dui justo iaculis dolor, non aliquet ex diam et ligula. Vivamus dignissim porttitor massa, ornare laoreet mauris finibus ac. Etiam tristique a justo quis tempus. Curabitur cursus fringilla facilisis. Praesent egestas facilisis lectus eget feugiat.
+			</p>
+			<p>
+				Quisque ullamcorper posuere leo nec varius. Nam lacinia tempus tempus. Pellentesque justo ex, viverra cursus pellentesque id, gravida nec sapien. Donec dignissim rhoncus lectus a venenatis. Vestibulum in bibendum quam. Nam feugiat nec ante non hendrerit. Vestibulum sit amet mattis leo, quis hendrerit tellus. Donec vel risus laoreet, sagittis velit id, viverra neque. Quisque ac erat eget nisl aliquet varius. Aenean et viverra sapien. Maecenas vel elit convallis, porttitor arcu ac, luctus erat. Pellentesque arcu lectus, tincidunt faucibus massa eget, vehicula vestibulum mi. Donec dapibus dolor iaculis lacinia iaculis.
+			</p>
+			<p>
+				Vivamus lectus velit, venenatis sodales purus sed, sagittis tempor lacus. Maecenas vulputate est non semper blandit. Maecenas eu ex vitae ipsum consectetur consequat in ac lectus. Ut et rutrum orci. Aenean blandit viverra odio, quis fermentum mauris sodales nec. Maecenas placerat risus vitae lobortis tincidunt. Nulla eget purus arcu.
+			</p>
+			<p>
+				Aenean rhoncus sapien vel dui gravida, laoreet cursus metus tempus. Nulla facilisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras et purus porta, dictum tortor ac, pellentesque orci. In eget erat posuere, rhoncus ipsum sed, porta magna. Curabitur pretium suscipit tortor, id tempus ligula dictum vel. Donec sit amet metus vehicula, accumsan magna nec, varius urna. Aenean bibendum scelerisque urna vel pharetra. Ut ut augue scelerisque, pretium felis in, scelerisque eros.
+			</p>
+			<p>
+				Vestibulum porta egestas orci, in dapibus urna blandit ac. Vivamus nec justo ultricies, tempor nunc sit amet, porttitor lacus. Morbi ornare purus justo, a lacinia dolor imperdiet quis. Donec viverra varius libero et interdum. Proin odio sapien, laoreet in efficitur vitae, condimentum tincidunt libero. Proin malesuada blandit nisl. Suspendisse potenti. Nulla aliquet porttitor nisi, nec semper sapien porttitor a. Quisque nec odio facilisis, mollis magna vulputate, dapibus augue. Proin nec tempus lacus. Mauris et tincidunt quam, at bibendum turpis. Suspendisse tincidunt nisi a neque scelerisque bibendum. Integer facilisis ligula vel enim tempus, et ullamcorper lorem semper. Nam dignissim enim eget posuere mattis.
+			</p>
+			<p>
+				Nullam ac arcu sodales, tempor lectus vitae, pharetra erat. Maecenas eu neque in ex ullamcorper tincidunt vitae accumsan orci. Etiam ut fermentum justo, vel molestie libero. Nam ex erat, rutrum ut velit a, venenatis pharetra eros. Aliquam erat volutpat. Pellentesque sollicitudin nisl sit amet velit tempus tempor. Suspendisse auctor metus velit, quis pellentesque leo facilisis eget. Pellentesque blandit vehicula nisi, id placerat eros fermentum ac. Nulla facilisi.
+			</p>
+			<p>
+				Sed eleifend est purus, et euismod lectus consectetur sit amet. Phasellus mattis maximus enim vel ultricies. Etiam sollicitudin, lacus bibendum feugiat sodales, neque neque lacinia dolor, ut ornare leo dui vitae magna. Phasellus dignissim congue massa, et sagittis purus suscipit vitae. Donec rhoncus varius magna, in consequat lacus dictum a. Donec sed facilisis lectus. Proin consequat nec ante molestie condimentum. Nulla a tincidunt est, ac tempor nunc. Morbi suscipit faucibus ultricies.
+			</p>
+			<p>
+				Aliquam ac porttitor tellus. Vivamus dapibus rutrum felis ac ullamcorper. Aliquam a eros in neque varius porttitor. Morbi rhoncus quis purus aliquet vestibulum. Praesent erat ante, porttitor a mi ut, auctor auctor libero. Ut congue arcu eget dignissim dapibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean rutrum in urna sed tristique. Vestibulum in nibh at turpis suscipit luctus. Nam non lacus nec enim vehicula fermentum quis id est. Vestibulum gravida, nibh in aliquam commodo, lacus arcu molestie mauris, et feugiat tortor dui sit amet eros. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean at volutpat ante. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti.
+			</p>
+		</div>
+	
+	</div>
+
+</body>
+</html>

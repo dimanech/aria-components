@@ -2,18 +2,15 @@
 import Dialog from './Dialog.js';
 
 export default class Panel extends Dialog {
-	constructor(dialogManager, dialogNode, focusAfterClose, focusAfterOpen, position) {
+	constructor(dialogManager, dialogNode, focusAfterClose, focusAfterOpen) {
 		super(dialogManager, dialogNode, focusAfterClose, focusAfterOpen);
-		this.position = position;
+		this.position = dialogNode.getAttribute('data-panel-position');
 	}
 
 	init() {
 		super.init();
-	}
-
-	addEventListeners() {
 		this.addDragEventListeners();
-		super.addEventListeners();
+		return true;
 	}
 
 	addDragEventListeners() {
@@ -21,19 +18,19 @@ export default class Panel extends Dialog {
 		this.onTouchStart = this.onTouchStart.bind(this);
 		this.onTouchEnd = this.onTouchEnd.bind(this);
 
-		this.dialogNode.addEventListener('mousedown', this.onTouchStart);
-		this.dialogNode.addEventListener('touchstart', this.onTouchStart, { passive: true });
-		this.dialogNode.addEventListener('mouseup', this.onTouchEnd);
-		this.dialogNode.addEventListener('touchend', this.onTouchEnd, { passive: true });
-		this.dialogNode.addEventListener('dragstart', this.onDragStart);
+		this.backdropNode.addEventListener('mousedown', this.onTouchStart);
+		this.backdropNode.addEventListener('touchstart', this.onTouchStart, { passive: true });
+		this.backdropNode.addEventListener('mouseup', this.onTouchEnd);
+		this.backdropNode.addEventListener('touchend', this.onTouchEnd, { passive: true });
+		this.backdropNode.addEventListener('dragstart', this.onDragStart);
 	}
 
 	removeDragEventListeners() {
-		this.dialogNode.removeEventListener('mousedown', this.onTouchStart);
-		this.dialogNode.removeEventListener('touchstart', this.onTouchStart, { passive: true });
-		this.dialogNode.removeEventListener('mouseup', this.onTouchEnd);
-		this.dialogNode.removeEventListener('touchend', this.onTouchEnd, { passive: true });
-		this.dialogNode.removeEventListener('dragstart', this.onDragStart);
+		this.backdropNode.removeEventListener('mousedown', this.onTouchStart);
+		this.backdropNode.removeEventListener('touchstart', this.onTouchStart);
+		this.backdropNode.removeEventListener('mouseup', this.onTouchEnd);
+		this.backdropNode.removeEventListener('touchend', this.onTouchEnd);
+		this.backdropNode.removeEventListener('dragstart', this.onDragStart);
 	}
 
 	onDragStart(event) {
@@ -42,44 +39,49 @@ export default class Panel extends Dialog {
 
 	onTouchMove(event) {
 		const x = event.touches !== undefined ? event.touches[0].pageX : event.clientX;
-		this.deltaX = (this.initialX - x) / this.windowWidth * 70;
+		this.deltaX = ((this.initialX - x) / this.panelWidth) * 80;
 
-		if (this.position === 'left' && this.deltaX < 0) {
-			this.dialogNode.style.transform = 'translate3d(' + (-this.deltaX) + '%, 0, 0)';
-		} else if (this.position === 'right' && this.deltaX > 0) {
-			this.dialogNode.style.transform = 'translate3d(' + (this.deltaX) + '%, 0, 0)';
+		if (this.position === 'right' && this.deltaX < 0) {
+			this.dialogNode.style.transform = 'translateX(' + (-this.deltaX) + '%)';
+			document.documentElement.style.setProperty('--backdrop-opacity',  1 + (this.deltaX / 100));
+		} else if (this.position === 'left' && this.deltaX > 0) {
+			this.dialogNode.style.transform = 'translateX(' + (this.deltaX) + '%)';
+			document.documentElement.style.setProperty('--backdrop-opacity',  1 - (this.deltaX / 100));
 		}
 	}
 
 	onTouchStart(event) {
 		this.initialX = event.pageX || event.touches[0].pageX;
-		this.windowWidth = window.innerWidth;
+		this.panelWidth = this.dialogNode.clientWidth;
 		this.deltaX = 0;
 
-		this.dialogNode.addEventListener('mousemove', this.onTouchMove);
-		this.dialogNode.addEventListener('touchmove', this.onTouchMove);
-		this.dialogNode.addEventListener('mouseleave', this.onTouchEnd);
-		this.dialogNode.classList.add('m-grabbing');
+		this.backdropNode.addEventListener('mousemove', this.onTouchMove);
+		this.backdropNode.addEventListener('touchmove', this.onTouchMove);
+		this.backdropNode.addEventListener('mouseleave', this.onTouchEnd);
+		this.backdropNode.classList.add('m-grabbing');
 	}
 
 	onTouchEnd() {
-		this.dialogNode.removeEventListener('mousemove', this.onTouchMove);
-		this.dialogNode.removeEventListener('touchmove', this.onTouchMove);
-		this.dialogNode.removeEventListener('mouseleave', this.onTouchEnd);
-		this.dialogNode.classList.remove('m-grabbing');
+		this.backdropNode.removeEventListener('mousemove', this.onTouchMove);
+		this.backdropNode.removeEventListener('touchmove', this.onTouchMove);
+		this.backdropNode.removeEventListener('mouseleave', this.onTouchEnd);
+		this.backdropNode.classList.remove('m-grabbing');
 
-		if ((this.deltaX <= -10) && this.position === 'left') {
-			this.dialogManager.closeDialog();
-		} else if ((this.deltaX >= 10) && this.position === 'right') {
-			this.dialogManager.closeDialog();
+		if ((this.deltaX <= -40) && this.position === 'right') {
+			this.dialogManager.closeDialogFromOutside();
+		} else if ((this.deltaX >= 40) && this.position === 'left') {
+			this.dialogManager.closeDialogFromOutside();
 		}
 
-		this.dialogNode.style.transform = 'translate3d(0, 0, 0)';
+		setTimeout(() => document.documentElement.style.setProperty('--backdrop-opacity', 1), 400);
+		this.dialogNode.style = null;
 		this.deltaX = 0;
 	}
 
+	handleBackdropClick(event) {}
+
 	destroy() {
 		this.removeDragEventListeners();
-		super.destroy();
+		return super.destroy();
 	}
 }

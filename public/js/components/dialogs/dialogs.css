@@ -1,0 +1,129 @@
+:root {
+	--transition: ease 0.4s;
+	--depth-1: 0 10px 10px rgba(0, 0, 0, 0.5);
+	--depth-2: 0 10px 40px rgba(0, 0, 0, 0.5);
+	--backdrop-opacity: 1;
+}
+
+:focus {
+	outline: solid 4px red;
+}
+
+body {
+	margin: 0;
+}
+
+.wrapper {
+	padding: 1px 20px; /* prevent of margin collapse */
+}
+
+.has-dialog {
+	overflow: hidden;
+}
+
+.has-dialog .wrapper { /* we need a wrapper to handle scroll / no scroll content width bumping */
+	overflow-y: scroll;
+}
+
+.dialog-backdrop {
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	transition: visibility var(--transition);
+	visibility: hidden;
+	z-index: 1;
+}
+
+.dialog-backdrop.is-active {
+	overflow-y: scroll;
+	visibility: visible;
+}
+
+/* the purpose to make it separate is to handle different animation */
+.dialog-backdrop::after {
+	background-color: transparent;
+	bottom: 0;
+	content: "";
+	left: 0;
+	opacity: 0;
+	opacity: var(--backdrop-opacity);
+	position: fixed;
+	right: 0;
+	top: 0;
+	transition: var(--transition);
+	transition-property: opacity, background-color;
+	z-index: 1;
+}
+
+.dialog-backdrop.is-active::after {
+}
+
+.dialog-backdrop.is-active.is-top-dialog::after {
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 1;
+	opacity: var(--backdrop-opacity);
+}
+
+.dialog-backdrop.m-grabbing {
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+	user-select: none;
+}
+
+.modal {
+	background: white;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: var(--depth-1); /* previous added dialog will have less depth that one on top */
+	margin: 50px auto;
+	opacity: 0;
+	padding: 40px;
+	position: relative;
+	transform: scale(0.9);
+	transition: var(--transition);
+	transition-property: opacity, visibility, transform;
+	visibility: hidden;
+	width: 300px;
+	z-index: 3;
+}
+
+.modal.is-open {
+	opacity: 1;
+	transform: scale(1);
+	visibility: visible;
+}
+
+.dialog-backdrop.is-top-dialog .modal {
+	box-shadow: var(--depth-2); /* move stack dialog or singe dialog to top of stack */
+}
+
+.panel {
+	box-sizing: border-box;
+	background: white;
+	bottom: 0;
+	padding: 40px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	transform: translateX(100%);
+	transition: var(--transition);
+	transition-property: transform, visibility;
+	visibility: hidden;
+	width: 320px;
+	z-index: 3;
+}
+
+.panel.is-open {
+	box-shadow: var(--depth-1);
+	transform: translateX(0%);
+	visibility: visible;
+}
+
+.close {
+	position: absolute;
+	right: 20px;
+	top: 10px;
+}

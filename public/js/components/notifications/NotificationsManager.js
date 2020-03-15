@@ -34,6 +34,7 @@ export default class NotificationsManager {
 			type: event.detail.type,
 			id: id,
 			isPersistent: event.detail.isPersistent || false
+			// dismiss - duration, showTimer, showIcon, pauseOnHover
 		};
 		const notification = new Notification(this.notificationsContainer, options);
 		notification.init();

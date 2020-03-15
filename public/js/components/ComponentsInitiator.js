@@ -48,7 +48,7 @@ export default class ComponentsInitiator {
 			return;
 		}
 
-		const component = new this.loadedComponents[componentIndex][1](domNode, this.componentsList);
+		const component = new this.loadedComponents[componentIndex][1](domNode, this.pageComponents);
 		component.init();
 
 		return component;
