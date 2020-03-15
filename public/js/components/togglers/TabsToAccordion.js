@@ -1,5 +1,5 @@
-import Tabs from './TabsUnified.js';
-import Accordion from './AccordionUnified.js';
+import Tabs from './TabsNoRoles.js';
+import Accordion from './AccordionNoRoles.js';
 import ComponentsComposer from '../ComponentsComposer.js';
 
 export default class TabsToAccordion {

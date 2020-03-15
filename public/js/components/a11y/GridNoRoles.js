@@ -1,6 +1,6 @@
 import Grid from './Grid.js';
 
-export default class GridUnified extends Grid {
+export default class GridNoRoles extends Grid {
     constructor(domNode) {
         super(domNode);
     }

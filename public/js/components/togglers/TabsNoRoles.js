@@ -1,6 +1,6 @@
 import Tabs from './Tabs.js';
 
-export default class TabsUnified extends Tabs {
+export default class TabsNoRoles extends Tabs {
     /**
      * This class specially designed to be initiated on clear, unified base to cover case when
      * several components could be initiated on same base. Ex: Tabs on desktop become Accordion on mobile.
