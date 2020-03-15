@@ -1,7 +1,7 @@
 export default class HamburgerMenu {
     constructor(domNode) {
         this.domeNode = domNode;
-        this.backBtn = this.domeNode.querySelector('[data-js-nav-back]');
+        this.backBtn = this.domeNode.querySelector('[data-elem-nav-back]');
 
         this.trackCurrentLevel = 0;
         this.activePanels = [];
@@ -28,15 +28,15 @@ export default class HamburgerMenu {
         if (clickedLink.parentElement.tagName === 'A') {
             clickedLink = clickedLink.parentElement;
         }
-        if (!clickedLink.hasAttribute('data-js-nav-to') ||
+        if (!clickedLink.hasAttribute('data-elem-nav-to') ||
             !clickedLink.nextElementSibling ||
-            !clickedLink.nextElementSibling.hasAttribute('data-js-nav-flyout')) {
+            !clickedLink.nextElementSibling.hasAttribute('data-elem-nav-flyout')) {
             return;
         }
 
         e.preventDefault();
 
-        this.moveTrackTo(parseInt(clickedLink.getAttribute('data-js-nav-to'), 10));
+        this.moveTrackTo(parseInt(clickedLink.getAttribute('data-elem-nav-to'), 10));
         this.activatePanel(clickedLink);
     }
 

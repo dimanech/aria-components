@@ -9,7 +9,7 @@ export default class SearchCombo extends Combobox {
 	 */
 	constructor(comboboxNode, pageComponents) {
 		super(comboboxNode, pageComponents);
-		this.suggestionsOvelay = document.querySelector('[data-js-suggestions-overlay]');
+		this.suggestionsOvelay = document.querySelector('[data-elem-suggestions-overlay]');
 		this.endpoint = this.listbox.getAttribute('data-url');
 		this.setupXHR();
 	}
@@ -150,7 +150,7 @@ export default class SearchCombo extends Combobox {
 	}
 
 	afterItemActivated(item) {
-		const suggestions = this.listbox.querySelector('[data-js-combo-listbox-content]');
+		const suggestions = this.listbox.querySelector('[data-elem-combo-listbox-content]');
 		if (typeof suggestions.scrollTo === 'function') {
 			suggestions.scrollTo({
 				top: item.offsetTop,

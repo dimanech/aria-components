@@ -4,8 +4,8 @@ import ComponentsComposer from '../ComponentsComposer.js';
 
 export default class MainMenu {
 	constructor(domNode, pageComponents) {
-		this.menuList = document.querySelector('[data-js-nav]');
-		this.menuBar = document.querySelector('[data-js-menu-bar]');
+		this.menuList = document.querySelector('[data-elem-nav]');
+		this.menuBar = document.querySelector('[data-elem-menu-bar]');
 	}
 
 	init() {

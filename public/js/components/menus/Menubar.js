@@ -22,7 +22,7 @@ export default class Menubar {
 
 		this.activationDelay = 500;
 
-		this.flyout = this.domNode.querySelector('[data-js-menu-flyout-pane]');
+		this.flyout = this.domNode.querySelector('[data-elem-menu-flyout-pane]');
 
 		this.cssClassNames = {
 			hover: '_hover'

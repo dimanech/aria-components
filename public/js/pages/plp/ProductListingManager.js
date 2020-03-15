@@ -2,14 +2,24 @@ import { getContentByUrl } from '../../utils/ajax.js';
 import { appendParamToURL } from '../../utils/url.js';
 import { render } from '../../utils/render.js';
 
+// actions :
+// update filters
+// update list
+// append to list
+// components:
+// refinement
+// sorting
+// load more
+// accordion
+
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
 		this.pageComponents = pageComponents;
-		this.content = domNode.querySelector('[data-js-plp-content]');
-		this.grid = domNode.querySelector('[data-js-plp-grid]');
-		this.filterButton = 'data-js-plp-filter';
-		this.sortingSelect = 'data-js-plp-sort';
-		this.loadMoreButton = 'data-js-load-more';
+		this.content = domNode.querySelector('[data-elem-plp-content]');
+		this.grid = domNode.querySelector('[data-elem-plp-grid]');
+		this.filterButton = 'data-elem-plp-filter';
+		this.sortingSelect = 'data-elem-plp-sort';
+		this.loadMoreButton = 'data-elem-load-more';
 	}
 
 	init() {
