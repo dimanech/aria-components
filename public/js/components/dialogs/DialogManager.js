@@ -1,5 +1,4 @@
 import Dialog from './Dialog.js';
-import Panel from './Panel.js';
 
 const keyCode = Object.freeze({
     ESC: 27
@@ -196,6 +195,7 @@ export default class DialogManager {
     }
 
     _handleCloseButton(event) {
+        event.preventDefault();
         const isCloseButton = event.target.getAttribute('data-dismiss') !== null || event.target.parentNode.getAttribute('data-dismiss') !== null;
         if (isCloseButton && this.closeDialogFromOutside()) {
             event.stopPropagation();
@@ -208,7 +208,7 @@ export default class DialogManager {
         const focusAfterCloseElement = focusAfterClose || document.activeElement;
 
         if (dialogType === 'panel') {
-            dialog = new Panel(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
+            dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
             isDialogOpen = dialog.init();
         } else {
             dialog = new Dialog(this, dialogNode, focusAfterCloseElement, focusAfterOpen);
