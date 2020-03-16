@@ -19,7 +19,7 @@ export default class Panel extends Dialog {
 		this.onTouchEnd = this.onTouchEnd.bind(this);
 		this.onDragStart = this.onDragStart.bind(this);
 
-		this.onTouching = this.onTouching.bind(this);
+		this.onDrugOverPanel = this.onDrugOverPanel.bind(this);
 		this.onMouseOut = this.onMouseOut.bind(this);
 
 		this.backdropNode.addEventListener('mousedown', this.onTouchStart);
@@ -51,11 +51,11 @@ export default class Panel extends Dialog {
 	}
 
 	onTouchStart() {
-		this.backdropNode.addEventListener('mouseover', this.onTouching);
+		this.backdropNode.addEventListener('mouseover', this.onDrugOverPanel);
 		this.backdropNode.addEventListener('mouseout', this.onMouseOut);
 	}
 
-	onTouching(event) {
+	onDrugOverPanel(event) {
 		this.mouseOverPanel = true;
 		this.initialX = event.pageX || event.touches[0].pageX;
 		this.panelWidth = this.dialogNode.clientWidth;
@@ -68,7 +68,7 @@ export default class Panel extends Dialog {
 	}
 
 	onTouchEnd() {
-		this.backdropNode.removeEventListener('mouseover', this.onTouching);
+		this.backdropNode.removeEventListener('mouseover', this.onDrugOverPanel);
 		this.backdropNode.removeEventListener('mouseout', this.onMouseOut);
 
 		this.backdropNode.removeEventListener('mousemove', this.onTouchMove);
@@ -99,6 +99,7 @@ export default class Panel extends Dialog {
 		if(!this.mouseOverPanel) {
 			super.handleBackdropClick(event);
 		}
+		this.mouseOverPanel = false;
 	}
 
 	destroy() {
