@@ -76,7 +76,7 @@ function handleResponse500(response) {
 
 /**
  * @param {string} url url of resource
- * @param {{[x: string]: string}} [data] form content
+ * @param {{[x: string]: string}} [data] forms content
  * @param {'POST'|'GET'} [method] typeof request
  * @param {boolean} [skipToken] skip token for request
  */
@@ -93,7 +93,7 @@ export const submitFormJson = (url, data = {}, method = 'POST', skipToken = fals
 			cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
 			credentials: SAME_ORIGIN, // include, *same-origin, omit
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Type': 'application/x-www-forms-urlencoded',
 				Accept: 'application/json'
 			},
 			redirect: 'follow', // manual, *follow, error
@@ -137,7 +137,7 @@ export function getContentByUrl(url, params = {}) {
 		headers: {
 			Accept: 'text/html'
 			//     //   'Content-Type': 'application/json'
-			//     'Content-Type': 'application/x-www-form-urlencoded'
+			//     'Content-Type': 'application/x-www-forms-urlencoded'
 		},
 		redirect: 'follow', // manual, *follow, error
 		referrer: 'no-referrer' // no-referrer, *client

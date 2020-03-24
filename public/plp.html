@@ -14,7 +14,7 @@
 	</script>
 	<script async type="module" src="js/initiator.js"></script>
 <!--	<script async type="module" src="dist/js/initiator.bundle.js"></script>-->
-	<script async src="https://maps.googleapis.com/maps/api/js?key=API&libraries=places&callback=googleApiCallback"></script>
+	<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhSK7xaF31APCJ5VkowI5mkWa7hP8WbfM&libraries=places&callback=googleApiCallback"></script>
 </head>
 <body>
 	<div data-component="ProductListingManager">
@@ -53,12 +53,17 @@
 		</div>
 	</div>
 	<div data-component="/js/components/togglers/Accordion"></div>
-	<div class="b-notifier" data-component="NotificationsManager">
-		<div class="b-notification">SOme</div>
-		<div class="b-notification">SOme</div>
-		<div class="b-notification">SOme</div>
-		<div class="b-notification">SOme</div>
-		<div class="b-notification">SOme</div>
-	</div>
+	
+	<form action="">
+		<input type="text" id="address" />
+		<input type="text" class="postal-code-info" />
+		<input
+				data-component="/js/components/forms/GoogleAddresses"
+				data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info"}}'
+				type="text"
+		/>
+	</form>
+	
+	<div class="b-notifier" data-component="NotificationsManager"></div>
 </body>
 </html>

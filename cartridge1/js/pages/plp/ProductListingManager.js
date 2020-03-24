@@ -14,7 +14,6 @@ import { render } from '../../utils/render.js';
 
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
-		this.pageComponents = pageComponents;
 		this.content = domNode.querySelector('[data-elem-plp-content]');
 		this.grid = domNode.querySelector('[data-elem-plp-grid]');
 		this.filterButton = 'data-elem-plp-filter';

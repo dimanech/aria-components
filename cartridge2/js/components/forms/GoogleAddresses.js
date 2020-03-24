@@ -1,11 +1,12 @@
 // NB! just an example of implementation
 // https://developers.google.com/maps/documentation/javascript/places-autocomplete
 export default class GoogleAddresses {
-	constructor(domNode, pageComponents, options) {
+	constructor(domNode, options) {
 		this.inputField = domNode;
 		this.autocomplete = null;
-		this.formInfo = options.formInfo || null;
-		this.options = options.options || {
+		this.config = options || this.getConfig();
+		this.formInfo = this.config.formInfo || null;
+		this.options = this.config.options || {
 			types: ['geocode'],
 			componentRestrictions: {
 				country: 'ca'
@@ -35,7 +36,7 @@ export default class GoogleAddresses {
 
 	/**
 	 * Get each component of the address from the place details,
-	 * and then fill-in the corresponding field on the form (if formInfo is provided).
+	 * and then fill-in the corresponding field on the forms (if formInfo is provided).
 	 */
 	fillInAddress() {
 		const placeResult = this.autocomplete.getPlace();
@@ -44,22 +45,31 @@ export default class GoogleAddresses {
 			return;
 		}
 
-		const streetNumber = this.getPropertyFromResult(placeResult, 'street_number');
-		const address = this.getPropertyFromResult(placeResult, 'route');
-		if (streetNumber) {
-			this.setElementValue(this.formInfo.address, `${streetNumber}, ${address}`);
-		} else {
-			this.setElementValue(this.formInfo.address, address);
+		if (this.formInfo.address) {
+			const streetNumber = this.getPropertyFromResult(placeResult, 'street_number');
+			const address = this.getPropertyFromResult(placeResult, 'route');
+			if (streetNumber) {
+				this.setElementValue(this.formInfo.address, `${streetNumber}, ${address}`);
+			} else {
+				this.setElementValue(this.formInfo.address, address);
+			}
 		}
 
-		this.setElementValue(this.formInfo.postal_code, this.getPropertyFromResult(placeResult, 'postal_code'));
-		this.setElementValue(this.formInfo.city, this.getPropertyFromResult(placeResult, 'locality'));
+		if (this.formInfo.postal_code) {
+			this.setElementValue(this.formInfo.postal_code, this.getPropertyFromResult(placeResult, 'postal_code'));
+		}
 
-		if (this.formInfo.country !== '') {
+		if (this.formInfo.city) {
+			this.setElementValue(this.formInfo.city, this.getPropertyFromResult(placeResult, 'locality'));
+		}
+
+		if (this.formInfo.country) {
 			this.setElementValue(this.formInfo.country, this.getPropertyFromResult(placeResult, 'country'));
 		}
 
-		this.setElementValue(this.formInfo.state, this.getPropertyFromResult(placeResult, 'administrative_area_level_1'));
+		if (this.formInfo.state) {
+			this.setElementValue(this.formInfo.state, this.getPropertyFromResult(placeResult, 'administrative_area_level_1'));
+		}
 	}
 
 	setElementValue(domNode, value) {
@@ -102,5 +112,27 @@ export default class GoogleAddresses {
 	destroy() {
 		document.removeEventListener('googleApi:ready', this.handleApiReady);
 		this.autocomplete = null;
+	}
+
+	getConfig() {
+		const config = this.inputField.getAttribute('data-config');
+		if (!config) {
+			return null;
+		}
+
+		try {
+			let parsedConfig = JSON.parse(config);
+			if (parsedConfig.formInfo) {
+				for (const prop in parsedConfig.formInfo) {
+					if (parsedConfig.formInfo.hasOwnProperty(prop)) {
+						parsedConfig.formInfo[prop] = document.querySelector(parsedConfig.formInfo[prop]);
+					}
+				}
+			}
+
+			return parsedConfig;
+		} catch (e) {
+			console.log('GoogleAddresses config has JSON syntax errors', e);
+		}
 	}
 }
