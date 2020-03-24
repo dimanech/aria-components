@@ -21,6 +21,18 @@ function applyDiff(el, diffNode) {
 				// eslint-disable-next-line no-param-reassign
 				t1.innerDone = true;
 			}
+		},
+		postDiffApply(info) {
+			const { action, name } = info.diff;
+			if (
+					['removeAttribute', 'addAttribute', 'modifyAttribute'].includes(action)
+					&& typeof name === 'string'
+					&& name.startsWith('data-') // handle only component changes
+					&& info.node instanceof HTMLElement
+			) {
+				// init new added component
+				const node = getFromRoute(el, info.diff.route);
+			}
 		}
 	});
 	const diff = dd.diff(el, diffNode.firstElementChild);
