@@ -31,7 +31,7 @@ function applyDiff(el, diffNode) {
 					&& info.node instanceof HTMLElement
 			) {
 				// init new added component
-				const node = getFromRoute(el, info.diff.route);
+				//console.log(info.diff)
 			}
 		}
 	});
