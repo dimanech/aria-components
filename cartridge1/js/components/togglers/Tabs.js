@@ -32,7 +32,6 @@ export default class Tabs {
 
     init() {
         this.addEventListeners();
-        this.addComponentReference();
         if (this.preSelectTab && document.getElementById(this.preSelectTab)) {
             this.selectTab(this.getButtonIndex(document.getElementById(this.preSelectTab)));
         } else {
@@ -42,7 +41,6 @@ export default class Tabs {
 
     destroy() {
         this.removeEventListeners();
-        this.removeComponentReference();
     }
 
     addEventListeners() {
@@ -60,14 +58,6 @@ export default class Tabs {
             tab.removeEventListener('click', this.handleClick);
             tab.removeEventListener('keydown', this.handleKeydown);
         });
-    }
-
-    addComponentReference() {
-        this.tablist.widget = this;
-    }
-
-    removeComponentReference() {
-        delete this.tablist.widget;
     }
 
     handleClick(event) {
