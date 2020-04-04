@@ -1,0 +1,35 @@
+<div data-elem-plp-content class="plp">
+	<aside data-elem-refinments class="plp__aside">
+		<div data-component="./togglers/Accordion" data-allow-multiple class="accordion">
+			<button aria-controls="section-1" aria-expanded="true" class="accordion__control">
+				Filters 1
+			</button>
+			<div id="section-1" role="region" aria-hidden="false" class="accordion__content">
+				<button data-href="?filter=a" data-elem-plp-filter>Filter a</button>
+			</div>
+			<button aria-controls="section-2" aria-expanded="true" class="accordion__control">
+				Filters 2
+			</button>
+			<div id="section-2" role="region" aria-hidden="false" class="accordion__content">
+				<button data-href="?filter=b" data-elem-plp-filter>Filter b applied</button>
+			</div>
+		</div>
+	</aside>
+	<main class="plp__main">
+		<select name="sort" data-elem-plp-sort>
+			<option value="?sorting=a">Top rated</option>
+			<option value="?sorting=b">Alphabetical</option>
+		</select>
+		<ul data-elem-plp-grid class="plp__grid">
+			<li class="product-tile">
+				<a href="./productA.html">Product A</a>
+			</li>
+			<li class="product-tile">
+				<a href="./productB.html">Product C</a>
+			</li>
+			<li class="product-tile">
+				<a href="./productB.html">Product D</a>
+			</li>
+		</ul>
+	</main>
+</div>

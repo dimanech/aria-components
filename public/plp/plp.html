@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>PLP</title>
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/plp.css">
+	<script>
+		window.appScope = 'plp';
+		function googleApiCallback() {
+			document.dispatchEvent(new Event('googleApi:ready'));
+		}
+	</script>
+	<script async type="module" src="js/initiator.js"></script>
+<!--	<script async type="module" src="dist/js/initiator.bundle.js"></script>-->
+	<script async src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"></script>
+</head>
+<body>
+	<div data-component="ProductListingManager">
+		<div data-elem-plp-content class="plp">
+			<aside data-elem-refinments class="plp__aside">
+				<div data-component="./togglers/Accordion" data-allow-multiple class="accordion">
+					<button aria-controls="section-1" aria-expanded="true" class="accordion__control">
+						Filters 1
+					</button>
+					<div id="section-1" role="region" aria-hidden="false" class="accordion__content">
+						<button data-href="?filter=a" data-elem-plp-filter>Filter a</button>
+					</div>
+					<button aria-controls="section-2" aria-expanded="false" class="accordion__control">
+						Filters 2
+					</button>
+					<div id="section-2" role="region" aria-hidden="true" class="accordion__content">
+						<button data-href="?filter=b" data-elem-plp-filter>Filter b</button>
+					</div>
+				</div>
+			</aside>
+			<main class="plp__main">
+				<select data-elem-plp-sort name="sort">
+					<option value="?sorting=a">Top rated</option>
+					<option value="?sorting=b" selected>Alphabetical</option>
+				</select>
+				<ul data-elem-plp-grid class="plp__grid">
+					<li class="product-tile">
+						<a href="productA.html">Product A</a>
+					</li>
+					<li class="product-tile">
+						<a href="productB.html">Product B</a>
+					</li>
+					<li class="product-tile">
+						<a href="productB.html">Product C</a>
+					</li>
+					<li class="product-tile">
+						<a href="productB.html">Product D</a>
+					</li>
+					<li class="plp__grid-footer">
+						<button data-elem-load-more data-url="?page=1" class="load-more">Load more</button>
+					</li>
+				</ul>
+			</main>
+		</div>
+	</div>
+	
+	
+	<form action="">
+		<input type="text" id="address" />
+		<input type="text" class="postal-code-info" />
+		<input
+				data-component="/js/components/forms/GoogleAddresses"
+				data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info"}}'
+				type="text"
+		/>
+	</form>
+	
+	<div class="b-notifier" data-component="NotificationsManager"></div>
+</body>
+</html>

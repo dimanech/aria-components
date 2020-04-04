@@ -1,9 +1,8 @@
 import { getContentByUrl } from '../../utils/ajax.js';
-import { appendParamToURL } from '../../utils/url.js';
 import { render } from '../../utils/render.js';
 
 // actions :
-// update filters
+// update page
 // update list
 // append to list
 // components:
@@ -11,11 +10,13 @@ import { render } from '../../utils/render.js';
 // sorting
 // load more
 // accordion
+// tile alternative image
+// aria feed
 
 export default class ProductListingMgr {
 	constructor(domNode, pageComponents) {
-		this.content = domNode.querySelector('[data-elem-plp-content]');
-		this.grid = domNode.querySelector('[data-elem-plp-grid]');
+		this.plp = domNode.querySelector('[data-elem-plp-content]');
+		this.list = domNode.querySelector('[data-elem-plp-grid]');
 		this.filterButton = 'data-elem-plp-filter';
 		this.sortingSelect = 'data-elem-plp-sort';
 		this.loadMoreButton = 'data-elem-load-more';
@@ -26,23 +27,13 @@ export default class ProductListingMgr {
 	}
 
 	addEventListeners() {
-		this.loadMore = this.loadMore.bind(this);
+		this.loadMoreItems = this.loadMoreItems.bind(this);
 		this.applySorting = this.applySorting.bind(this);
 		this.applyFiltering = this.applyFiltering.bind(this);
 
-		this.content.addEventListener('click', this.loadMore);
-		this.content.addEventListener('click', this.applyFiltering);
-		this.content.addEventListener('change', this.applySorting);
-	}
-
-	updateByUrl(url, message) {
-		this.toggleBusy(true);
-		getContentByUrl(url).then(response => {
-			render(undefined, undefined, this.content, response);
-			this.content.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message } }));
-		}).finally(() => {
-			this.toggleBusy(false);
-		});
+		this.plp.addEventListener('click', this.loadMoreItems);
+		this.plp.addEventListener('click', this.applyFiltering);
+		this.plp.addEventListener('change', this.applySorting);
 	}
 
 	applyFiltering(event) {
@@ -50,7 +41,7 @@ export default class ProductListingMgr {
 			return;
 		}
 		const button = event.target;
-		this.updateByUrl(button.getAttribute('data-href'), button.textContent + ' filter applied');
+		this.updatePLP(button.getAttribute('data-href'), button.textContent + ' filter applied');
 	}
 
 	applySorting(event) {
@@ -58,41 +49,71 @@ export default class ProductListingMgr {
 			return;
 		}
 		const select = event.target;
-		this.updateByUrl(select.value, select.options[select.selectedIndex].text + ' sorting applied');
+		this.updatePLP(select.value, select.options[select.selectedIndex].text + ' sorting applied', true);
 	}
 
-	loadMore(event) {
+	loadMoreItems(event) {
 		if (!this.isEventDelegatedFrom(this.loadMoreButton, event)) {
 			return;
 		}
 		const button = event.target;
 		const url = button.getAttribute('data-url');
+
+		this.appendToProductsList(url, 'Loaded more products', button)
+	}
+
+	updatePLP(url, message, onlyProductsList) {
+		this.toggleBusy(true);
+		getContentByUrl(url).then(response => {
+			const renderTo = onlyProductsList ? this.list : this.plp;
+			const content = onlyProductsList ? this.getDocumentFragment(response, '[data-elem-plp-grid]') : response;
+
+			render(undefined, undefined, renderTo, content);
+
+			this.plp.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message } }));
+		}).finally(() => {
+			this.toggleBusy(false);
+		});
+	}
+
+	appendToProductsList(url, message, button) {
 		button.classList.add('m-loading');
 
 		this.toggleBusy(true);
-		getContentByUrl(appendParamToURL(url, 'selectedUrl', url))
-				.then(response => {
-					button.remove();
-					const tmpEl = document.createElement('div');
-					tmpEl.innerHTML = response;
-					this.grid.appendChild(tmpEl);
-					this.grid.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'Loaded more products'} }));
-				}).finally(() => {
-					this.toggleBusy(false);
-				});
+		getContentByUrl(url)
+			.then(response => {
+				button.parentElement.remove();
+
+				const template = document.createElement('template');
+				template.innerHTML = response;
+				this.list.appendChild(template.content);
+
+				this.list.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
+			}).finally(() => {
+				this.toggleBusy(false);
+				button.classList.remove('m-loading');
+			});
 	}
 
 	toggleBusy(isBusy) {
-		this.content.setAttribute('aria-busy', isBusy);
+		this.plp.setAttribute('aria-busy', isBusy);
 	}
 
 	isEventDelegatedFrom(attributeName, event) {
 		return event.target.getAttribute(attributeName) !== null;
 	}
 
+	getDocumentFragment(html, selector) {
+		const fragment = new DocumentFragment();
+		const node = document.createElement('div');
+		node.innerHTML = html;
+		fragment.appendChild(node);
+		return fragment.querySelector(selector).outerHTML;
+	}
+
 	destroy() {
-		this.content.removeEventListener('click', this.loadMore);
-		this.content.removeEventListener('click', this.applyFiltering);
-		this.content.removeEventListener('change', this.applySorting);
+		this.plp.removeEventListener('click', this.loadMoreItems);
+		this.plp.removeEventListener('click', this.applyFiltering);
+		this.plp.removeEventListener('change', this.applySorting);
 	}
 };

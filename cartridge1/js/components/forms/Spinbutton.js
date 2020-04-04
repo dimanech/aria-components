@@ -1,3 +1,5 @@
+// todo: implement step funct-ty 2,3,4 etc
+
 const keyCode = Object.freeze({
     PAGEUP: 33,
     PAGEDOWN: 34,

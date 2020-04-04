@@ -1,7 +1,8 @@
 // If we need a blocking until find focusable element - make this as class with inner state.
-
+// Please see full list https://allyjs.io/data-tables/focusable.html
+// implementd only most common cases
 export function isFocusable(element) {
-    if (element.tabIndex > 0 || (element.tabIndex === 0 && element.getAttribute('tabIndex') !== null)) {
+    if (element.tabIndex > 0 || (element.tabIndex === 0 && element.hasAttribute('tabIndex')) || element.hasAttribute('contenteditable')) {
         return true;
     }
 

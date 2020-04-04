@@ -1,0 +1,36 @@
+.plp {
+	display: flex;
+	width: 600px;
+}
+
+.plp__main {
+	width: 100%;
+}
+
+.plp__aside {
+	width: 200px;
+}
+
+.plp__grid {
+	align-items: stretch;
+	display: grid;
+	grid-gap: 2px;
+	grid-template-columns: 1fr 1fr 1fr;
+	justify-items: stretch;
+}
+
+.plp__grid-footer {
+	grid-column: 1 / 4;
+}
+
+.load-more {
+	display: block;
+	margin: auto;
+	width: 100px;
+}
+
+.product-tile {
+	width: 100%;
+	padding-bottom: 100%;
+	background-color: lightgrey;
+}
