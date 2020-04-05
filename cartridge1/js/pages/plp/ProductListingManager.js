@@ -24,6 +24,8 @@ export default class ProductListingMgr {
 
 	init() {
 		this.addEventListeners();
+
+		window.onpopstate = event => this.updatePLP(event.state.url, event.state.message); // just returns fully rendered variant of page
 	}
 
 	addEventListeners() {
@@ -70,6 +72,7 @@ export default class ProductListingMgr {
 
 			render(undefined, undefined, renderTo, content);
 
+			this.pushHistoryState('updatePLP', url, message);
 			this.plp.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message } }));
 		}).finally(() => {
 			this.toggleBusy(false);
@@ -88,11 +91,20 @@ export default class ProductListingMgr {
 				template.innerHTML = response;
 				this.list.appendChild(template.content);
 
+				this.pushHistoryState('appendToProductsList', url, message);
 				this.list.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
 			}).finally(() => {
 				this.toggleBusy(false);
 				button.classList.remove('m-loading');
 			});
+	}
+
+	pushHistoryState(action, url, message) {
+		return history.pushState({
+			'action': action,
+			'url': url,
+			'message': message
+		}, '', url);
 	}
 
 	toggleBusy(isBusy) {
@@ -115,5 +127,6 @@ export default class ProductListingMgr {
 		this.plp.removeEventListener('click', this.loadMoreItems);
 		this.plp.removeEventListener('click', this.applyFiltering);
 		this.plp.removeEventListener('change', this.applySorting);
+		window.onpopstate = null;
 	}
 };
