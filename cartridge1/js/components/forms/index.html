@@ -1,3 +1,41 @@
-<a href="https://github.com/dimanech/aria-feed">Feed</a>
-<a href="https://github.com/dimanech/aria-grid">Greed</a>
-<a href="https://github.com/dimanech/aria-focus-highlighter">Focus highlighter</a>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/search-combobox.css" />
+	<link rel="stylesheet" href="css/form.css" />
+	<script>
+		function googleApiCallback() {
+			document.dispatchEvent(new Event('googleApi:ready'));
+		}
+	</script>
+	<script async type="module" src="../../initiator.js"></script>
+	<script async src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"></script>
+</head>
+<body>
+
+<form action="" data-component="/js/components/forms/Form">
+	<div class="form-section">
+		<input type="text" id="address" aria-describedby="address-error" required />
+		<div class="form-section__error" data-elem-form-error role="alert" id="address-error" hidden></div>
+	</div>
+	<div class="form-section">
+		<input type="text" class="postal-code-info" aria-describedby="postal-code-error" required />
+		<div class="form-section__error" data-elem-form-error role="alert" id="postal-code-error" hidden></div>
+	</div>
+	<div class="form-section">
+		<input
+			data-component="/js/components/forms/GoogleAddresses"
+			data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info"}}'
+			type="text"
+		/>
+	</div>
+	<button type="submit">Submit</button>
+</form>
+
+
+</body>
+</html>

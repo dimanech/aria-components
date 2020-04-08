@@ -71,7 +71,7 @@
 }
 
 :focus {
-	outline: 4px solid red;
+	outline: 4px solid lightblue;
 }
 
 .m-focused {
