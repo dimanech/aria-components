@@ -27,7 +27,7 @@ export default class SpinButton {
      *      <button tabindex="-1">+</button>
      *  </div>
      */
-    constructor(domNode) {
+    constructor(domNode, components) {
         this.input = domNode;
         this.incrementButton = this.input.nextElementSibling;
         this.decrementButton = this.input.previousElementSibling;
@@ -69,18 +69,20 @@ export default class SpinButton {
     }
 
     destroy() {
-        window.clearTimeout(this.eventTimeout);
+        window.clearTimeout(this.changeDispatchTimeout);
         this.removeEventListeners();
     }
 
     addEventListeners() {
         this.handleKeydown = this.handleKeydown.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleIncrement = this.increment.bind(this);
         this.handleDecrement = this.decrement.bind(this);
 
         this.input.addEventListener('keydown', this.handleKeydown);
         this.input.addEventListener('input', this.handleInput);
+        this.input.addEventListener('change', this.handleChange)
 
         this.incrementButton.addEventListener('click', this.handleIncrement);
         this.decrementButton.addEventListener('click', this.handleDecrement);
@@ -134,6 +136,10 @@ export default class SpinButton {
 
     handleInput() {
         this.setInputValue(this.filterInput(this.input.value));
+    }
+
+    handleChange() {
+        //this.input.checkValidity();
     }
 
     increment() {
@@ -190,9 +196,9 @@ export default class SpinButton {
     }
 
     dispatchChange() {
-        window.clearTimeout(this.eventTimeout);
-        const updateEvent = new CustomEvent('spinbutton:change', { bubbles: true, cancelable: true });
-        this.eventTimeout = window.setTimeout(() => this.input.dispatchEvent(updateEvent), 1000);
+        window.clearTimeout(this.changeDispatchTimeout);
+        const updateEvent = new Event('spinbutton:change', { bubbles: true, cancelable: true });
+        this.changeDispatchTimeout = window.setTimeout(() => this.input.dispatchEvent(updateEvent), 1000);
     }
 
     dispatchWarn() {
@@ -201,7 +207,7 @@ export default class SpinButton {
             minValue: this.minValue,
             maxValue: this.maxValue
         };
-        const warnEvent = new CustomEvent('spinbutton:warn', { bubbles: true, cancelable: true, detail: detail });
+        const warnEvent = new CustomEvent('spinbutton:invalid', { bubbles: true, cancelable: true, detail: detail });
         this.input.dispatchEvent(warnEvent);
     }
 
@@ -217,12 +223,12 @@ export default class SpinButton {
         this.toggleButtonsState(this.incrementButton, (this.currentValue >= this.maxValue && isFinite(this.maxValue)));
     }
 
-    toggleButtonsState(button, isDisabled) {
-        if (isDisabled) {
-            button.setAttribute('disabled', '');
+    toggleButtonsState(button, isInvalid) {
+        if (isInvalid) {
             this.dispatchWarn();
+            this.input.setCustomValidity(this.input.getAttribute('data-range-error'));
         } else {
-            button.removeAttribute('disabled');
+            this.input.setCustomValidity('');
         }
     }
 

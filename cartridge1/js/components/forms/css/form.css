@@ -1,17 +1,27 @@
-input[type=text] {
+/*:invalid {*/
+/*	box-shadow: none;*/
+/*	outline: 0;*/
+/*}*/
+
+input[type=text],
+input[type=password]{
 	appearance: none;
 	height: 40px;
 	line-height: 40px;
 }
 
-.form-section {
+.form-item {
 	margin: 16px 0;
 }
 
-.form-section__error {
+.form-item__error {
 	max-width: 200px;
 	margin-top: 4px;
 	padding: 4px 8px;
 	background-color: red;
 	color: white;
+}
+
+.form-group {
+	display: flex;
 }

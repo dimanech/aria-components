@@ -28,7 +28,8 @@ export default class ComponentsInitiator {
 						const component = new module.default(domNode, this.pageComponents);
 						component.init();
 						callback();
-					} catch (err) {
+					} catch (error) {
+						console.log(error);
 						// if default export not constructor
 						module.default(domNode);
 						callback();

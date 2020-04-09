@@ -5,34 +5,136 @@
 	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
-	<link rel="stylesheet" href="css/search-combobox.css" />
-	<link rel="stylesheet" href="css/form.css" />
+	<link rel="stylesheet" href="css/search-combobox.css"/>
+	<link rel="stylesheet" href="css/spin-button.css"/>
+	<link rel="stylesheet" href="css/form.css"/>
 	<script>
 		function googleApiCallback() {
 			document.dispatchEvent(new Event('googleApi:ready'));
 		}
 	</script>
 	<script async type="module" src="../../initiator.js"></script>
-	<script async src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"></script>
+	<script async
+	        src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"></script>
 </head>
 <body>
 
 <form action="" data-component="/js/components/forms/Form">
-	<div class="form-section">
-		<input type="text" id="address" aria-describedby="address-error" required />
-		<div class="form-section__error" data-elem-form-error role="alert" id="address-error" hidden></div>
-	</div>
-	<div class="form-section">
-		<input type="text" class="postal-code-info" aria-describedby="postal-code-error" required />
-		<div class="form-section__error" data-elem-form-error role="alert" id="postal-code-error" hidden></div>
-	</div>
-	<div class="form-section">
+	<div class="form-item">
 		<input
-			data-component="/js/components/forms/GoogleAddresses"
-			data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info"}}'
-			type="text"
+				type="text"
+				id="address"
+				aria-describedby="address-error"
+				placeholder="Address"
+				required
+		/>
+		<div class="form-item__error"
+		     data-elem-form-error
+		     role="alert"
+		     id="address-error"
+		     hidden></div>
+	</div>
+	
+	<div class="form-item">
+		<input
+				type="text"
+				class="postal-code-info"
+				aria-describedby="postal-code-error"
+				placeholder="Postal code"
+				required
+				data-missing-error="My custom message for error"
+		/>
+		<div class="form-item__error"
+		     data-elem-form-error
+		     role="alert"
+		     id="postal-code-error"
+		     hidden></div>
+	</div>
+	
+	<div class="form-item">
+		<input
+				type="text"
+				id="city"
+				aria-describedby="city-error"
+				required
+				pattern="[Bb]eer|[Ff]riday"
+				data-error-mismatch-pattern="Only Beer and friday is accepted"
+				placeholder="City [Custom pattern]"
+		/>
+		<div class="form-item__error"
+		     data-elem-form-error
+		     role="alert"
+		     id="city-error"
+		     hidden></div>
+	</div>
+	
+	<div class="form-item">
+		<input
+				data-component="/js/components/forms/GoogleAddresses"
+				data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info", "city": "#city"}}'
+				type="text"
 		/>
 	</div>
+	
+	<div class="form-group">
+		<div class="form-item">
+			<input
+					type="password"
+					id="password"
+					aria-describedby="password-error"
+					required
+					data-pattern-mismatch="Fields should be equal"
+					placeholder="Password"
+			/>
+			<div class="form-item__error"
+			     data-elem-form-error
+			     role="alert"
+			     id="password-error"
+			     hidden></div>
+		</div>
+		<div class="form-item">
+			<input
+					type="password"
+					id="password-confirm"
+					aria-describedby="password-confirm-error"
+					required
+					data-component="/js/components/forms/CompareInputs"
+					data-compare-with="password"
+					data-error-custom="Fields should be equal"
+					placeholder="Confirm password"
+			/>
+			<div class="form-item__error"
+			     data-elem-form-error
+			     role="alert"
+			     id="password-confirm-error"
+			     hidden></div>
+		</div>
+	</div>
+	
+	<div class="form-item">
+		<div class="spinbutton">
+			<button tabindex="-1">-</button>
+			<input
+					type="text"
+					value="1"
+					role="spinbutton"
+					aria-valuenow="1"
+					aria-valuemin="2"
+					aria-valuemax="50"
+					aria-describedby="spinbutton-error"
+					data-range-error="Please select 2 to 50"
+					data-component="/js/components/forms/SpinButton"
+					required
+			/>
+			<button tabindex="-1">+</button>
+		</div>
+		<div class="form-item__error"
+		     data-elem-form-error
+		     role="alert"
+		     id="spinbutton-error"
+		     hidden></div>
+	</div>
+	
 	<button type="submit">Submit</button>
 </form>
 
