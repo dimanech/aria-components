@@ -1,5 +1,3 @@
-// todo: implement step funct-ty 2,3,4 etc
-
 const keyCode = Object.freeze({
     PAGEUP: 33,
     PAGEDOWN: 34,
@@ -23,6 +21,7 @@ export default class SpinButton {
      *          aria-valuenow="0"
      *          aria-valuemin="0"
      *          aria-valuemax="50"
+     *          data-increment-step="2"
      *      />
      *      <button tabindex="-1">+</button>
      *  </div>
@@ -38,6 +37,7 @@ export default class SpinButton {
         this.maxValue = this.getMaxValue();
         this.middleValue = this.getMiddleValue();
         this.currentValue = parseInt(this.input.value, 10);
+        this.incrementStep = parseInt(this.input.getAttribute('data-increment-step'), 10) || 1;
         this.isBusy = false;
     }
 
@@ -146,12 +146,12 @@ export default class SpinButton {
 
     increment() {
         const value = parseInt(this.input.value, 10);
-        this.setInputValue(this.filterInput(value + 1));
+        this.setInputValue(this.filterInput(value + this.incrementStep));
     }
 
     decrement() {
         const value = parseInt(this.input.value, 10);
-        this.setInputValue(this.filterInput(value - 1));
+        this.setInputValue(this.filterInput(value - this.incrementStep));
     }
 
     filterInput(value) {
