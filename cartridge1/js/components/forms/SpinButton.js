@@ -46,6 +46,7 @@ export default class SpinButton {
         this.addEventListeners();
         this.setInputValue(this.currentValue);
         this.updateState();
+        this.checkValidity();
     }
 
     update() {
@@ -166,8 +167,10 @@ export default class SpinButton {
         let result = input;
 
         if (input < this.minValue) {
+            this.dispatchState('attemptUnderflow');
             result = this.minValue;
         } else if (input > this.maxValue) {
+            this.dispatchState('attemptOverflow');
             result = this.maxValue;
         }
 
@@ -194,8 +197,19 @@ export default class SpinButton {
         }
         this.currentValue = value;
         this.updateState();
+        this.checkValidity();
         this.handleChange();
         this.dispatchChange();
+    }
+
+    checkValidity() {
+        const value = this.currentValue;
+        if (value < this.minValue || value > this.maxValue) {
+            this.dispatchState('invalid');
+            this.input.setCustomValidity(this.input.getAttribute('data-range-error'));
+        } else {
+            this.input.setCustomValidity('');
+        }
     }
 
     dispatchChange() {
@@ -204,15 +218,13 @@ export default class SpinButton {
         this.changeDispatchTimeout = window.setTimeout(() => this.input.dispatchEvent(updateEvent), 1000);
     }
 
-    dispatchWarn() {
+    dispatchState(type) {
         const detail = {
             currentValue: this.currentValue,
             minValue: this.minValue,
             maxValue: this.maxValue
         };
-        this.input.dispatchEvent(new CustomEvent('spinbutton:invalid', { bubbles: true, cancelable: true, detail: detail }));
-        // attemptdecreaseminval
-        // attemptIncreaseMaxVal
+        this.input.dispatchEvent(new CustomEvent('spinbutton:' + type, { bubbles: true, cancelable: true, detail: detail }));
     }
 
     updateState() {
@@ -223,16 +235,15 @@ export default class SpinButton {
             return;
         }
 
-        this.toggleButtonsState(this.buttonDecrement, (this.currentValue < this.minValue && isFinite(this.minValue)));
-        this.toggleButtonsState(this.buttonIncrement, (this.currentValue > this.maxValue && isFinite(this.maxValue)));
+        this.toggleButtonsState(this.buttonDecrement, (this.currentValue <= this.minValue && isFinite(this.minValue)));
+        this.toggleButtonsState(this.buttonIncrement, (this.currentValue >= this.maxValue && isFinite(this.maxValue)));
     }
 
-    toggleButtonsState(button, isInvalid) {
-        if (isInvalid) {
-            this.dispatchWarn();
-            this.input.setCustomValidity(this.input.getAttribute('data-range-error'));
+    toggleButtonsState(button, isDisabled) {
+        if (isDisabled) {
+            button.setAttribute('disabled', '');
         } else {
-            this.input.setCustomValidity('');
+            button.removeAttribute('disabled');
         }
     }
 

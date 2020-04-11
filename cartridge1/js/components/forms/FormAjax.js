@@ -11,9 +11,6 @@ export default class FormAjax extends Form {
 	onSubmit(event) {
 		event.preventDefault();
 
-		console.log(this.methodType, this.formURL, this.serializeForm())
-		return;
-
 		if (this.isBusy) {
 			return false;
 		}
