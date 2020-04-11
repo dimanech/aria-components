@@ -29,8 +29,8 @@ export default class SpinButton {
      */
     constructor(domNode, components) {
         this.input = domNode;
-        this.incrementButton = this.input.nextElementSibling;
-        this.decrementButton = this.input.previousElementSibling;
+        this.buttonIncrement = this.input.nextElementSibling;
+        this.buttonDecrement = this.input.previousElementSibling;
     }
 
     initOptions() {
@@ -68,11 +68,6 @@ export default class SpinButton {
         this.input.setAttribute('aria-busy', isBusy);
     }
 
-    destroy() {
-        window.clearTimeout(this.changeDispatchTimeout);
-        this.removeEventListeners();
-    }
-
     addEventListeners() {
         this.handleKeydown = this.handleKeydown.bind(this);
         this.handleInput = this.handleInput.bind(this);
@@ -82,18 +77,24 @@ export default class SpinButton {
 
         this.input.addEventListener('keydown', this.handleKeydown);
         this.input.addEventListener('input', this.handleInput);
-        this.input.addEventListener('change', this.handleChange)
+        this.input.addEventListener('change', this.handleChange);
 
-        this.incrementButton.addEventListener('click', this.handleIncrement);
-        this.decrementButton.addEventListener('click', this.handleDecrement);
+        this.buttonIncrement.addEventListener('click', this.handleIncrement);
+        this.buttonDecrement.addEventListener('click', this.handleDecrement);
     }
 
     removeEventListeners() {
         this.input.removeEventListener('keydown', this.handleKeydown);
         this.input.removeEventListener('input', this.handleInput);
+        this.input.removeEventListener('change', this.handleChange);
 
-        this.incrementButton.removeEventListener('click', this.handleIncrement);
-        this.decrementButton.removeEventListener('click', this.handleDecrement);
+        this.buttonIncrement.removeEventListener('click', this.handleIncrement);
+        this.buttonDecrement.removeEventListener('click', this.handleDecrement);
+    }
+
+    destroy() {
+        window.clearTimeout(this.changeDispatchTimeout);
+        this.removeEventListeners();
     }
 
     handleKeydown(event) {
@@ -139,7 +140,7 @@ export default class SpinButton {
     }
 
     handleChange() {
-        //this.input.checkValidity();
+        this.input.dispatchEvent(new Event('input:checkValidity', { bubbles: true }));
     }
 
     increment() {
@@ -157,23 +158,23 @@ export default class SpinButton {
             return this.middleValue;
         }
 
-        const parsedInput = parseInt(value, 10);
-        if (typeof parsedInput !== 'number' || Number.isNaN(parsedInput)) {
+        const input = parseInt(value, 10);
+        if (typeof input !== 'number' || Number.isNaN(input)) {
             return;
         }
 
-        let result = parsedInput;
+        let result = input;
 
-        if (parsedInput < this.minValue) {
+        if (input < this.minValue) {
             result = this.minValue;
-        } else if (parsedInput > this.maxValue) {
+        } else if (input > this.maxValue) {
             result = this.maxValue;
         }
 
         if (!isFinite(this.minValue)) {
-            result = parsedInput;
+            result = input;
         } else if (!isFinite(this.maxValue)) {
-            result = parsedInput;
+            result = input;
         }
 
         return result;
@@ -185,14 +186,16 @@ export default class SpinButton {
         }
         // We should always set values since it work like filter and override any incorrect input
         this.input.value = value;
-        this.input.setAttribute('aria-valuenow', value);
         this.input.setAttribute('value', value);
+        this.input.setAttribute('aria-valuenow', value);
 
-        if (this.currentValue !== value) {
-            this.currentValue = value;
-            this.updateState();
-            this.dispatchChange();
+        if (this.currentValue === value) {
+            return;
         }
+        this.currentValue = value;
+        this.updateState();
+        this.handleChange();
+        this.dispatchChange();
     }
 
     dispatchChange() {
@@ -207,20 +210,21 @@ export default class SpinButton {
             minValue: this.minValue,
             maxValue: this.maxValue
         };
-        const warnEvent = new CustomEvent('spinbutton:invalid', { bubbles: true, cancelable: true, detail: detail });
-        this.input.dispatchEvent(warnEvent);
+        this.input.dispatchEvent(new CustomEvent('spinbutton:invalid', { bubbles: true, cancelable: true, detail: detail }));
+        // attemptdecreaseminval
+        // attemptIncreaseMaxVal
     }
 
     updateState() {
         if (this.input.getAttribute('disabled') !== null) {
-            this.incrementButton.setAttribute('disabled', '');
-            this.decrementButton.setAttribute('disabled', '');
+            this.buttonIncrement.setAttribute('disabled', '');
+            this.buttonDecrement.setAttribute('disabled', '');
 
             return;
         }
 
-        this.toggleButtonsState(this.decrementButton, (this.currentValue <= this.minValue && isFinite(this.minValue)));
-        this.toggleButtonsState(this.incrementButton, (this.currentValue >= this.maxValue && isFinite(this.maxValue)));
+        this.toggleButtonsState(this.buttonDecrement, (this.currentValue < this.minValue && isFinite(this.minValue)));
+        this.toggleButtonsState(this.buttonIncrement, (this.currentValue > this.maxValue && isFinite(this.maxValue)));
     }
 
     toggleButtonsState(button, isInvalid) {

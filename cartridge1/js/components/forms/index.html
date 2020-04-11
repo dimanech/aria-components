@@ -18,12 +18,36 @@
 	        src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"></script>
 </head>
 <body>
+	
+	<form action="" data-component="/js/components/forms/FormAjax">
+		<div data-element-form-error role="alert" hidden></div>
+		<div class="form-item">
+			<input
+					type="text"
+					id="address1"
+					name="address1"
+					aria-describedby="address1-error"
+					placeholder="Address"
+					required
+			/>
+			<div class="form-item__error"
+			     data-elem-form-error
+			     role="alert"
+			     id="address1-error"
+			     hidden></div>
+		</div>
+		
+		<button type="submit">Submit</button>
+	</form>
 
 <form action="" data-component="/js/components/forms/Form">
+	<div data-element-form-error role="alert" hidden></div>
+	
 	<div class="form-item">
 		<input
 				type="text"
 				id="address"
+				name="address"
 				aria-describedby="address-error"
 				placeholder="Address"
 				required
@@ -39,6 +63,7 @@
 		<input
 				type="text"
 				class="postal-code-info"
+				name="postalCode"
 				aria-describedby="postal-code-error"
 				placeholder="Postal code"
 				required
@@ -55,6 +80,7 @@
 		<input
 				type="text"
 				id="city"
+				name="city"
 				aria-describedby="city-error"
 				required
 				pattern="[Bb]eer|[Ff]riday"
@@ -81,10 +107,14 @@
 			<input
 					type="password"
 					id="password"
+					name="password"
 					aria-describedby="password-error"
 					required
 					data-pattern-mismatch="Fields should be equal"
 					placeholder="Password"
+					autocorrect="off"
+					autocapitalize="off"
+					autocomplete="new-password"
 			/>
 			<div class="form-item__error"
 			     data-elem-form-error
@@ -98,10 +128,13 @@
 					id="password-confirm"
 					aria-describedby="password-confirm-error"
 					required
-					data-component="/js/components/forms/CompareInputs"
+					data-component="/js/components/forms/InputsMatch"
 					data-compare-with="password"
 					data-error-custom="Fields should be equal"
 					placeholder="Confirm password"
+					autocorrect="off"
+					autocapitalize="off"
+					autocomplete="new-password"
 			/>
 			<div class="form-item__error"
 			     data-elem-form-error
@@ -109,14 +142,33 @@
 			     id="password-confirm-error"
 			     hidden></div>
 		</div>
+		<div class="form-item">
+			<button
+					data-component="/js/components/forms/InputUnmask"
+					data-inputs="password,password-confirm"
+					data-title-pressed="Hide password"
+					title="Show password"
+					type="button"
+					class="button-unmask"
+					aria-pressed="false"
+					aria-hidden="true"
+			>
+				<svg aria-hidden="true" fill="currentColor" focusable="false" width="24" height="24" viewBox="0 0 24 24">
+					<path d="M12,7c-2.48,0-4.5,2.02-4.5,4.5S9.52,16,12,16s4.5-2.02,4.5-4.5S14.48,7,12,7z M12,14.2c-1.49,0-2.7-1.21-2.7-2.7 c0-1.49,1.21-2.7,2.7-2.7s2.7,1.21,2.7,2.7C14.7,12.99,13.49,14.2,12,14.2z"></path>
+					<path d="M12,4C7,4,2.73,7.11,1,11.5C2.73,15.89,7,19,12,19s9.27-3.11,11-7.5C21.27,7.11,17,4,12,4z M12,17 c-3.79,0-7.17-2.13-8.82-5.5C4.83,8.13,8.21,6,12,6s7.17,2.13,8.82,5.5C19.17,14.87,15.79,17,12,17z"></path>
+					<path class="button-unmask__line" d="m21.966 20.034-20.136-16.678v0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+				</svg>
+			</button>
+		</div>
 	</div>
 	
 	<div class="form-item">
 		<div class="spinbutton">
-			<button tabindex="-1">-</button>
+			<div role="button" tabindex="-1" class="spinbutton__button">-</div>
 			<input
 					type="text"
 					value="1"
+					name="qty"
 					role="spinbutton"
 					aria-valuenow="1"
 					aria-valuemin="2"
@@ -126,7 +178,7 @@
 					data-component="/js/components/forms/SpinButton"
 					required
 			/>
-			<button tabindex="-1">+</button>
+			<div role="button" tabindex="-1" class="spinbutton__button">+</div>
 		</div>
 		<div class="form-item__error"
 		     data-elem-form-error

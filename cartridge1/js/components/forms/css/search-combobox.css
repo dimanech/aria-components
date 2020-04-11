@@ -70,10 +70,6 @@
 	z-index: 1;
 }
 
-:focus {
-	outline: 4px solid lightblue;
-}
-
 .m-focused {
 	outline: 4px solid blueviolet;
 }

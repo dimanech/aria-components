@@ -1,4 +1,3 @@
-import { showErrorLayout } from './error.js';
 import { appendParamsToUrl } from './url.js';
 
 const SAME_ORIGIN = 'same-origin';
@@ -59,16 +58,16 @@ function handleResponse500(response) {
 				if (error.csrfError && error.redirectUrl) {
 					window.location.assign(error.redirectUrl);
 				} else {
-					showErrorLayout(error);
+					document.body.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: error} }));
 				}
 			}
 		} else if (textResponse.includes('"errorMessage":')) {
 			return Promise.reject(new Error(JSON.parse(textResponse).errorMessage));
 		} else {
-			var div = document.createElement('div');
+			const div = document.createElement('div');
 			div.innerHTML = textResponse;
 			const err = Array.from(div.querySelectorAll('code')).map(code => code.innerHTML).join('<br/>');
-			showErrorLayout(err);
+			document.body.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: err} }));
 		}
 		return Promise.reject(new Error());
 	});
@@ -76,13 +75,13 @@ function handleResponse500(response) {
 
 /**
  * @param {string} url url of resource
- * @param {{[x: string]: string}} [data] forms content
+ * @param {object} data forms content
  * @param {'POST'|'GET'} [method] typeof request
  * @param {boolean} [skipToken] skip token for request
  */
 export const submitFormJson = (url, data = {}, method = 'POST', skipToken = false) => {
 	return getFetch().then(() => {
-		var { valuedUrl, formData } = handleUrlOrFormData(method, data, skipToken, url);
+		const { valuedUrl, formData } = handleUrlOrFormData(method, data, skipToken, url);
 
 		/**
 		 * This magic is mandatory for MS Edge because fetch polyfill is returning not polyfilled Promise object
@@ -100,14 +99,15 @@ export const submitFormJson = (url, data = {}, method = 'POST', skipToken = fals
 			referrer: 'no-referrer', // no-referrer, *client
 			body: formData // body data type must match "Content-Type" header
 		})).then((response) => {
-			var contentType = response.headers.get('content-type');
+			const contentType = response.headers.get('content-type');
 
 			if (response.ok) {
 				if (contentType && contentType.includes('application/json')) {
 					return response.json();
 				}
-				showErrorLayout('Oops, we haven\'t got JSON!');
-				throw new TypeError('Oops, we haven\'t got JSON!');
+				const message = 'Oops, we haven\'t got JSON!';
+				document.body.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
+				throw new TypeError(message);
 			} else if (response.status === 500) {
 				return handleResponse500(response);
 			}
@@ -118,7 +118,6 @@ export const submitFormJson = (url, data = {}, method = 'POST', skipToken = fals
 		});
 	});
 };
-
 
 /**
  *
@@ -149,8 +148,9 @@ export function getContentByUrl(url, params = {}) {
 			if (contentType && contentType.includes('text/html')) {
 				return response.text();
 			}
-			showErrorLayout('Oops, we haven\'t got text/html!');
-			throw new TypeError('Oops, we haven\'t got text/html!');
+			const message = 'Oops, we haven\'t got text/html!';
+			document.body.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
+			throw new TypeError(message);
 		} else if (response.status === 500) {
 			return handleResponse500(response);
 		}

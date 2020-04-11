@@ -1,6 +1,6 @@
-export default class DependantInput {
+export default class InputConditional {
     /**
-     * DependantInput
+     * InputConditional
      *
      * Set enabled|disabled state for element depends of state of several inputs in forms.
      * Accept dependant elements array of IDs in JSON format. Ex:
@@ -22,7 +22,7 @@ export default class DependantInput {
      */
     constructor(domNode) {
         this.input = domNode;
-        this.form = DependantInput.findParentForm(domNode);
+        this.form = InputConditional.findParentForm(domNode);
         this.parentDiv = this.input.parentNode;
         this.dependsFrom = [];
 
@@ -31,7 +31,7 @@ export default class DependantInput {
         if (this.prepareDependants(this.input)) {
             this.addEventListeners();
         } else {
-            console.error('DependantInput component has wrong JSON configuration. Component not inited!'); // eslint-disable-line
+            console.error('InputConditional component has wrong JSON configuration. Component not inited!'); // eslint-disable-line
         }
     }
 
@@ -53,11 +53,11 @@ export default class DependantInput {
                     if (hasValidInGroup) {
                         return;
                     }
-                    hasValidInGroup = DependantInput.isDependencyResolved(item);
+                    hasValidInGroup = InputConditional.isDependencyResolved(item);
                 });
                 dependantsState.push(hasValidInGroup);
             } else {
-                dependantsState.push(DependantInput.isDependencyResolved(item));
+                dependantsState.push(InputConditional.isDependencyResolved(item));
             }
         });
 
@@ -91,7 +91,7 @@ export default class DependantInput {
 
     static findParentForm(domNode) {
         const parent = domNode.parentNode;
-        return parent.tagName === 'FORM' ? parent : DependantInput.findParentForm(parent);
+        return parent.tagName === 'FORM' ? parent : InputConditional.findParentForm(parent);
     }
 
     prepareDependants(domNode) {

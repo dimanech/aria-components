@@ -1,8 +1,8 @@
 import { closest } from '../../utils/dom.js';
 
 export default class Form {
-	constructor(form) {
-		this.form = form;
+	constructor(domNode) {
+		this.form = domNode;
 	}
 
 	init() {
@@ -22,6 +22,7 @@ export default class Form {
 			}
 		});
 		this.form.addEventListener('input:checkValidity', this.checkValidity);
+		this.form.addEventListener('submit', this.onSubmit);
 	}
 
 	checkValidity(event) {
@@ -93,6 +94,9 @@ export default class Form {
 		if (element.getAttribute('data-error-custom')) {
 			validationMessage = element.getAttribute('data-error-custom');
 		}
+		if (element.validity.customError) {
+			validationMessage = element.validationMessage;
+		}
 
 		return validationMessage;
 	}
@@ -106,5 +110,6 @@ export default class Form {
 			}
 		});
 		this.form.removeEventListener('input:checkValidity', this.checkValidity);
+		this.form.removeEventListener('submit', this.onSubmit);
 	}
 };
