@@ -64,6 +64,7 @@ export default class InputConditional {
 
     toggleInput(isDisabled) {
         this.input.toggleAttribute('disabled', isDisabled);
+        this.input.focus();
         if (isDisabled) {
             this.input.removeAttribute('required');
         } else {

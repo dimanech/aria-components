@@ -25,7 +25,7 @@
 	
 	<form
 		action="/endpoint"
-		data-component="/js/components/forms/Form"
+		data-component="/js/components/forms/FormAjax"
 		method="POST"
 	>
 		<div data-element-form-error hidden role="alert"></div>
@@ -48,6 +48,8 @@
 		data-component="/js/components/forms/FormAjax"
 		method="POST"
 	>
+		<h2>Subscribe to our news</h2>
+		
 		<div
 			class="form__error"
 			data-element-form-error
@@ -85,74 +87,99 @@
 			<legend>Choose your interests</legend>
 			
 			<div class="field" data-elem-field>
-				<input
-					id="ch1"
-					name="interests"
-					type="checkbox"
-					value="coding"
-				/>
-				<label for="ch1">coding</label>
+				<label class="checkbox">
+					<input
+						name="interests"
+						type="checkbox"
+						value="clothing"
+					/>
+					<span class="checkbox__label">clothing</span>
+				</label>
 			</div>
 			<div class="field" data-elem-field>
-				<input
-					id="ch2"
-					name="interests"
-					type="checkbox"
-					value="music"
-				>
-				<label for="ch2">music</label>
+				<label class="checkbox">
+					<input
+						name="interests"
+						type="checkbox"
+						value="shoes"
+					/>
+					<span class="checkbox__label">shoes</span>
+				</label>
 			</div>
 			<div class="field" data-elem-field>
-				<input
-					id="ch3"
-					name="interests"
-					type="checkbox"
-					value="other"
-				>
-				<label for="ch3">other</label>
+				<label class="checkbox">
+					<input
+						name="interests"
+						type="checkbox"
+						value="accessories"
+					/>
+					<span class="checkbox__label">accessories</span>
+				</label>
+			</div>
+			<div class="field" data-elem-field>
+				<label class="checkbox">
+					<input
+						id="interests-other"
+						name="interests"
+						type="checkbox"
+						value="other"
+					/>
+					<span class="checkbox__label">other</span>
+				</label>
 				<textarea
-					aria-describedby="other-interests-details-error"
-					id="other-interests-details"
+					aria-describedby="interests-other-details-error"
+					id="interests-other-details"
 					name="other"
 					minlength="3"
 					data-component="/js/components/forms/InputConditional"
-					data-input-depends-from='["ch3"]'
+					data-input-depends-from='["interests-other"]'
 				></textarea>
 				<div
 					class="field__error"
 					data-elem-field-error
 					hidden
-					id="other-interests-details-error"
+					id="interests-other-details-error"
 					role="alert"
 				></div>
 			</div>
 		</fieldset>
 		
 		<fieldset>
-			<legend>Please select your preferred contact method:</legend>
+			<legend>Preferred contact method:</legend>
 			
 			<div class="field" data-elem-field>
 				<label class="radio">
 					<input
 						aria-describedby="radio-set-error"
-						id="r1"
+						id="contact-phone"
 						name="radio-group"
 						required
 						type="radio"
 						value="phone"
-					>
+					/>
 					<span class="radio__label">phone</span>
 				</label>
 				<label class="radio">
 					<input
 						aria-describedby="radio-set-error"
-						id="r2"
+						id="contact-mail"
 						name="radio-group"
 						required
 						type="radio"
 						value="mail"
-					>
+					/>
 					<span class="radio__label">mail</span>
+				</label>
+				<label class="radio">
+					<input
+						aria-describedby="radio-set-error"
+						id="contact-email"
+						name="radio-group"
+						required
+						type="radio"
+						value="email"
+					/>
+					<span class="radio__label">email</span>
 				</label>
 				<div
 					class="field__error"
@@ -165,22 +192,32 @@
 		</fieldset>
 		
 		<fieldset>
-			<legend>Your address</legend>
+			<legend>Payment address</legend>
 			
 			<div class="field" data-elem-field>
+				<label class="field__label" for="address">
+					Address:
+					<abbr title="required" aria-label="required">*</abbr>
+				</label>
 				<input
+					id="address"
 					data-component="/js/components/forms/GoogleAddresses"
-					data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info", "city": "#city"}}'
+					data-config='{"formElements": {"address": "#street", "country": ".postal-code-info", "city": "#city", "postal_code": "#postalcode"}}'
+					autocomplete="street-address"
 					type="text"
 				/>
 			</div>
-			
 			<div class="field" data-elem-field>
+				<label class="field__label" for="street">
+					Street:
+					<abbr title="required" aria-label="required">*</abbr>
+				</label>
 				<input
-					aria-describedby="address-error"
-					id="address"
-					name="address"
-					placeholder="Address"
+					aria-describedby="street-error"
+					id="street"
+					name="street"
+					placeholder="Street"
+					autocomplete="street-address"
 					required
 					type="text"
 				/>
@@ -188,18 +225,44 @@
 					class="field__error"
 					data-elem-field-error
 					hidden
-					id="address-error"
+					id="street-error"
 					role="alert"
 				></div>
 			</div>
-			
 			<div class="field" data-elem-field>
+				<label class="field__label" for="address">
+					City:
+					<abbr title="required" aria-label="required">*</abbr>
+				</label>
+				<input
+					aria-describedby="city-error"
+					id="city"
+					name="city"
+					placeholder="City"
+					required
+					autocomplete="address-level2"
+					type="text"
+				/>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="city-error"
+					role="alert"
+				></div>
+			</div>
+			<div class="field" data-elem-field>
+				<label class="field__label" for="address">
+					Country:
+					<abbr title="required" aria-label="required">*</abbr>
+				</label>
 				<input
 					aria-describedby="postal-code-error"
 					class="postal-code-info"
 					data-missing-error="My custom message for error"
 					name="postalCode"
 					placeholder="Postal code"
+					autocomplete="address-level1"
 					required
 					type="text"
 				/>
@@ -211,33 +274,69 @@
 					role="alert"
 				></div>
 			</div>
-			
 			<div class="field" data-elem-field>
+				<label class="field__label" for="address">
+					Postal code:
+					<abbr title="required" aria-label="required">*</abbr>
+				</label>
 				<input
-					aria-describedby="city-error"
-					data-error-mismatch-pattern="Only Beer and friday is accepted"
-					id="city"
-					name="city"
-					pattern="[Bb]eer|[Ff]riday"
-					placeholder="City [Custom pattern]"
+					aria-describedby="postalcode-error"
+					data-error-mismatch-pattern="Switzerland ZIPs must have exactly 4 digits: e.g. CH-1950 or 1950."
+					id="postalcode"
+					name="postalcode"
+					pattern="^(CH-)?\d{4}$"
+					placeholder="Postal code"
 					required
+					autocomplete="postal-code"
 					type="text"
 				/>
 				<div
 					class="field__error"
 					data-elem-field-error
 					hidden
-					id="city-error"
+					id="postalcode-error"
 					role="alert"
 				></div>
+				<div class="field__caption" id="postalcode-caption">
+					CH-1950 or 1950.
+				</div>
 			</div>
 		</fieldset>
 		
 		<fieldset>
-			<legend>Password</legend>
+			<legend>Signup</legend>
+			
+			<div class="field" data-elem-field>
+				<label class="field__label" for="email">
+					Email:
+					<abbr title="required" aria-label="required">*</abbr>
+				</label>
+				<input
+					aria-describedby="email-error"
+					autocapitalize="off"
+					autocomplete="email"
+					autocorrect="off"
+					id="email"
+					name="password"
+					placeholder="Email"
+					required
+					type="email"
+				/>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="email-error"
+					role="alert"
+				></div>
+			</div>
 			
 			<div class="field-list">
 				<div class="field" data-elem-field>
+					<label class="field__label" for="password">
+						Password:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
 					<input
 						aria-describedby="password-error"
 						autocapitalize="off"
@@ -355,17 +454,19 @@
 		
 		
 		<div class="field" data-elem-field>
-			<input
-				id="terms"
-				name="termsSigned"
-				required
-				aria-describedby="terms-error"
-				type="checkbox"
-				value="true"
-			>
-			<div class="field__label">
-				<label for="terms">By submitting I agreed with</label>
-				<a href="#">Terms and conditions</a>
+			<div class="checkbox">
+				<input
+					id="terms"
+					name="termsSigned"
+					required
+					aria-describedby="terms-error"
+					type="checkbox"
+					value="true"
+				/>
+				<div class="checkbox__label">
+					<label for="terms">By submitting I agreed with</label>
+					<a href="#">Terms and conditions</a>
+				</div>
 			</div>
 			<div
 				class="field__error"
@@ -377,6 +478,9 @@
 		</div>
 		<button type="submit">Submit</button>
 	</form>
-
+	
+	
+	
+	<div class="b-notifier" data-component="NotificationsManager"></div>
 </body>
 </html>

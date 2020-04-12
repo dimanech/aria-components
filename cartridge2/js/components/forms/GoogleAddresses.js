@@ -1,20 +1,25 @@
 // NB! just an example of implementation
 // https://developers.google.com/maps/documentation/javascript/places-autocomplete
 export default class GoogleAddresses {
-	constructor(domNode, options) {
-		this.inputField = domNode;
+	constructor(domNode) {
+		this.input = domNode;
 		this.autocomplete = null;
-		this.config = options || this.getConfig();
-		this.formInfo = this.config.formInfo || null;
+		this.config = this.getConfig();
+		this.formElements = this.config.formElements || null;
 		this.options = this.config.options || {
 			types: ['geocode'],
 			componentRestrictions: {
-				country: 'ca'
+				country: 'ch'
 			}
 		};
 	}
 
 	init() {
+		if (!this.config) {
+			console.error('Could not init GoogleAddresses. No config provided')
+			return;
+		}
+
 		if (typeof google === 'object' && typeof google.maps === 'object') {
 			this.handleApiReady();
 		} else {
@@ -24,7 +29,7 @@ export default class GoogleAddresses {
 	}
 
 	handleApiReady() {
-		this.autocomplete = new google.maps.places.Autocomplete(this.inputField, this.options);
+		this.autocomplete = new google.maps.places.Autocomplete(this.input, this.options);
 		this.autocomplete.setFields(['address_component']);
 		this.addEventListeners();
 	}
@@ -41,34 +46,34 @@ export default class GoogleAddresses {
 	fillInAddress() {
 		const placeResult = this.autocomplete.getPlace();
 
-		if (!placeResult || !this.formInfo) {
+		if (!placeResult || !this.formElements) {
 			return;
 		}
 
-		if (this.formInfo.address) {
+		if (this.formElements.address) {
 			const streetNumber = this.getPropertyFromResult(placeResult, 'street_number');
 			const address = this.getPropertyFromResult(placeResult, 'route');
 			if (streetNumber) {
-				this.setElementValue(this.formInfo.address, `${streetNumber}, ${address}`);
+				this.setElementValue(this.formElements.address, `${streetNumber}, ${address}`);
 			} else {
-				this.setElementValue(this.formInfo.address, address);
+				this.setElementValue(this.formElements.address, address);
 			}
 		}
 
-		if (this.formInfo.postal_code) {
-			this.setElementValue(this.formInfo.postal_code, this.getPropertyFromResult(placeResult, 'postal_code'));
+		if (this.formElements.postal_code) {
+			this.setElementValue(this.formElements.postal_code, this.getPropertyFromResult(placeResult, 'postal_code'));
 		}
 
-		if (this.formInfo.city) {
-			this.setElementValue(this.formInfo.city, this.getPropertyFromResult(placeResult, 'locality'));
+		if (this.formElements.city) {
+			this.setElementValue(this.formElements.city, this.getPropertyFromResult(placeResult, 'locality'));
 		}
 
-		if (this.formInfo.country) {
-			this.setElementValue(this.formInfo.country, this.getPropertyFromResult(placeResult, 'country'));
+		if (this.formElements.country) {
+			this.setElementValue(this.formElements.country, this.getPropertyFromResult(placeResult, 'country'));
 		}
 
-		if (this.formInfo.state) {
-			this.setElementValue(this.formInfo.state, this.getPropertyFromResult(placeResult, 'administrative_area_level_1'));
+		if (this.formElements.state) {
+			this.setElementValue(this.formElements.state, this.getPropertyFromResult(placeResult, 'administrative_area_level_1'));
 		}
 	}
 
@@ -115,24 +120,24 @@ export default class GoogleAddresses {
 	}
 
 	getConfig() {
-		const config = this.inputField.getAttribute('data-config');
+		const config = this.input.getAttribute('data-config');
 		if (!config) {
 			return null;
 		}
 
 		try {
 			let parsedConfig = JSON.parse(config);
-			if (parsedConfig.formInfo) {
-				for (const prop in parsedConfig.formInfo) {
-					if (parsedConfig.formInfo.hasOwnProperty(prop)) {
-						parsedConfig.formInfo[prop] = document.querySelector(parsedConfig.formInfo[prop]);
+			if (parsedConfig.formElements) {
+				for (const prop in parsedConfig.formElements) {
+					if (parsedConfig.formElements.hasOwnProperty(prop)) {
+						parsedConfig.formElements[prop] = document.querySelector(parsedConfig.formElements[prop]);
 					}
 				}
 			}
 
 			return parsedConfig;
 		} catch (e) {
-			console.log('GoogleAddresses config has JSON syntax errors', e);
+			console.error('GoogleAddresses config has JSON syntax errors', e);
 		}
 	}
 }

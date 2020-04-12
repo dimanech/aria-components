@@ -8,18 +8,19 @@
 /*}*/
 
 input[type=text],
-input[type=password] {
+input[type=password],
+input[type=email]{
 	appearance: none;
 	height: 40px;
 	line-height: 40px;
 }
 
-.form {
-	position: relative;
+label {
+	display: inline-block;
 }
 
-.form label {
-	display: inline-block;
+.form {
+	position: relative;
 }
 
 .form[aria-busy=true]::after {
@@ -42,12 +43,20 @@ input[type=password] {
 	margin: 16px 0;
 }
 
+.field__label {
+	min-width: 140px;
+}
+
 .field__error {
 	max-width: 200px;
 	margin-top: 4px;
 	padding: 4px 8px;
 	background-color: red;
 	color: white;
+}
+
+.field__caption {
+	color: #666;
 }
 
 .field-list {
@@ -67,10 +76,20 @@ input[type=password] {
 	max-width: 40%;
 }
 
+/* checkbox */
+
+.checkbox {
+	display: inline-flex;
+}
+
+.checkbox__label {
+	display: block;
+}
+
 /* radio */
 
 .radio {
-	display: flex;
+	display: inline-flex;
 }
 
 .radio__label {

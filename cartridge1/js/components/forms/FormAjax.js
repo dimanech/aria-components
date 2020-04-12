@@ -21,9 +21,6 @@ export default class FormAjax extends Form {
 
 		event.preventDefault();
 
-		console.log(this.getFormData())
-		return ;
-
 		if (this.isBusy) {
 			return false;
 		}
