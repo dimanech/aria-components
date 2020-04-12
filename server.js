@@ -36,9 +36,7 @@ app.use('/plp', function(req, res, next) {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/endpoint', function(req, res, next) {
-	if (req.method !== 'POST'){
-		res.next();
-	}
+	if (req.method !== 'POST'){}
 
 	const request = req.body;
 	let response = {success: 'success message'};

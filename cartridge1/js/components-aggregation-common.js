@@ -6,12 +6,12 @@ import Popup from './components/menus/Popup.js';
 import Tabs from './components/togglers/Tabs.js';
 import Accordion from './components/togglers/Accordion.js';
 import Expand from './components/togglers/Expand.js';
-import SearchCombobox from './components/forms/ComboboxSearch.js';
+import ComboboxSearch from './components/forms/ComboboxSearch.js';
 
 export default [
 	['MainMenu', MainMenu],
 	['Popup', Popup],
-	['SearchCombobox', SearchCombobox],
+	['ComboboxSearch', ComboboxSearch],
 	['NotificationsManager', NotificationsManager],
 	['DialogManager', DialogManager],
 	['DialogButton', DialogButton],

@@ -127,6 +127,7 @@
 					<span class="checkbox__label">other</span>
 				</label>
 				<textarea
+					aria-label="Other"
 					aria-describedby="interests-other-details-error"
 					id="interests-other-details"
 					name="other"
@@ -151,17 +152,6 @@
 				<label class="radio">
 					<input
 						aria-describedby="radio-set-error"
-						id="contact-phone"
-						name="radio-group"
-						required
-						type="radio"
-						value="phone"
-					/>
-					<span class="radio__label">phone</span>
-				</label>
-				<label class="radio">
-					<input
-						aria-describedby="radio-set-error"
 						id="contact-mail"
 						name="radio-group"
 						required
@@ -169,6 +159,17 @@
 						value="mail"
 					/>
 					<span class="radio__label">mail</span>
+				</label>
+				<label class="radio">
+					<input
+						aria-describedby="radio-set-error"
+						id="contact-phone"
+						name="radio-group"
+						required
+						type="radio"
+						value="phone"
+					/>
+					<span class="radio__label">phone</span>
 				</label>
 				<label class="radio">
 					<input
@@ -191,145 +192,187 @@
 			</div>
 		</fieldset>
 		
-		<fieldset>
-			<legend>Payment address</legend>
-			
-			<div class="field" data-elem-field>
-				<label class="field__label" for="address">
-					Address:
-					<abbr title="required" aria-label="required">*</abbr>
-				</label>
-				<input
-					id="address"
-					data-component="/js/components/forms/GoogleAddresses"
-					data-config='{"formElements": {"address": "#street", "country": ".postal-code-info", "city": "#city", "postal_code": "#postalcode"}}'
-					autocomplete="street-address"
-					type="text"
-				/>
-			</div>
-			<div class="field" data-elem-field>
-				<label class="field__label" for="street">
-					Street:
-					<abbr title="required" aria-label="required">*</abbr>
-				</label>
-				<input
-					aria-describedby="street-error"
-					id="street"
-					name="street"
-					placeholder="Street"
-					autocomplete="street-address"
-					required
-					type="text"
-				/>
-				<div
-					class="field__error"
-					data-elem-field-error
-					hidden
-					id="street-error"
-					role="alert"
-				></div>
-			</div>
-			<div class="field" data-elem-field>
-				<label class="field__label" for="address">
-					City:
-					<abbr title="required" aria-label="required">*</abbr>
-				</label>
-				<input
-					aria-describedby="city-error"
-					id="city"
-					name="city"
-					placeholder="City"
-					required
-					autocomplete="address-level2"
-					type="text"
-				/>
-				<div
-					class="field__error"
-					data-elem-field-error
-					hidden
-					id="city-error"
-					role="alert"
-				></div>
-			</div>
-			<div class="field" data-elem-field>
-				<label class="field__label" for="address">
-					Country:
-					<abbr title="required" aria-label="required">*</abbr>
-				</label>
-				<input
-					aria-describedby="postal-code-error"
-					class="postal-code-info"
-					data-missing-error="My custom message for error"
-					name="postalCode"
-					placeholder="Postal code"
-					autocomplete="address-level1"
-					required
-					type="text"
-				/>
-				<div
-					class="field__error"
-					data-elem-field-error
-					hidden
-					id="postal-code-error"
-					role="alert"
-				></div>
-			</div>
-			<div class="field" data-elem-field>
-				<label class="field__label" for="address">
-					Postal code:
-					<abbr title="required" aria-label="required">*</abbr>
-				</label>
-				<input
-					aria-describedby="postalcode-error"
-					data-error-mismatch-pattern="Switzerland ZIPs must have exactly 4 digits: e.g. CH-1950 or 1950."
-					id="postalcode"
-					name="postalcode"
-					pattern="^(CH-)?\d{4}$"
-					placeholder="Postal code"
-					required
-					autocomplete="postal-code"
-					type="text"
-				/>
-				<div
-					class="field__error"
-					data-elem-field-error
-					hidden
-					id="postalcode-error"
-					role="alert"
-				></div>
-				<div class="field__caption" id="postalcode-caption">
-					CH-1950 or 1950.
+		<div style="display:flex">
+			<fieldset
+				data-component="/js/components/forms/InputConditional"
+				data-input-depends-from='["contact-mail"]'
+			>
+				<legend>Mail address</legend>
+				
+				<div class="field" data-elem-field>
+					<label class="field__label" for="address">
+						Address:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						id="address"
+						data-component="/js/components/forms/GoogleAddresses"
+						data-config='{"formElements": {"address": "#street", "country": ".postal-code-info", "city": "#city", "postal_code": "#postalcode"}}'
+						autocomplete="street-address"
+						type="text"
+					/>
 				</div>
-			</div>
-		</fieldset>
+				<div class="field" data-elem-field>
+					<label class="field__label" for="street">
+						Street:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						aria-describedby="street-error"
+						id="street"
+						name="street"
+						placeholder="Street"
+						autocomplete="street-address"
+						required
+						type="text"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="street-error"
+						role="alert"
+					></div>
+				</div>
+				<div class="field" data-elem-field>
+					<label class="field__label" for="address">
+						City:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						aria-describedby="city-error"
+						id="city"
+						name="city"
+						placeholder="City"
+						required
+						autocomplete="address-level2"
+						type="text"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="city-error"
+						role="alert"
+					></div>
+				</div>
+				<div class="field" data-elem-field>
+					<label class="field__label" for="address">
+						Country:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						aria-describedby="postal-code-error"
+						class="postal-code-info"
+						data-missing-error="My custom message for error"
+						name="postalCode"
+						placeholder="Postal code"
+						autocomplete="address-level1"
+						required
+						type="text"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="postal-code-error"
+						role="alert"
+					></div>
+				</div>
+				<div class="field" data-elem-field>
+					<label class="field__label" for="address">
+						Postal code:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						aria-describedby="postalcode-error"
+						data-error-mismatch-pattern="Switzerland ZIPs must have exactly 4 digits: e.g. CH-1950 or 1950."
+						id="postalcode"
+						name="postalcode"
+						pattern="^(CH-)?\d{4}$"
+						placeholder="Postal code"
+						required
+						autocomplete="postal-code"
+						type="text"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="postalcode-error"
+						role="alert"
+					></div>
+					<div class="field__caption" id="postalcode-caption">
+						CH-1950 or 1950.
+					</div>
+				</div>
+			</fieldset>
+			
+			<fieldset
+				data-component="/js/components/forms/InputConditional"
+				data-input-depends-from='["contact-phone"]'
+			>
+				<legend>Phone number</legend>
+				
+				<div class="field" data-elem-field>
+					<label class="field__label" for="phone">
+						Phone:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						aria-describedby="phone-error"
+						id="phone"
+						name="phone"
+						placeholder="Telephone"
+						autocomplete="tel"
+						required
+						type="tel"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="phone-error"
+						role="alert"
+					></div>
+				</div>
+			</fieldset>
+			
+			<fieldset
+				data-component="/js/components/forms/InputConditional"
+				data-input-depends-from='["contact-email"]'
+			>
+				<legend>Email address</legend>
+				
+				<div class="field" data-elem-field>
+					<label class="field__label" for="email">
+						Email:
+						<abbr title="required" aria-label="required">*</abbr>
+					</label>
+					<input
+						aria-describedby="email-error"
+						autocapitalize="off"
+						autocomplete="email"
+						autocorrect="off"
+						id="email"
+						name="password"
+						placeholder="Email"
+						required
+						type="email"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="email-error"
+						role="alert"
+					></div>
+				</div>
+			</fieldset>
+		</div>
 		
 		<fieldset>
 			<legend>Signup</legend>
-			
-			<div class="field" data-elem-field>
-				<label class="field__label" for="email">
-					Email:
-					<abbr title="required" aria-label="required">*</abbr>
-				</label>
-				<input
-					aria-describedby="email-error"
-					autocapitalize="off"
-					autocomplete="email"
-					autocorrect="off"
-					id="email"
-					name="password"
-					placeholder="Email"
-					required
-					type="email"
-				/>
-				<div
-					class="field__error"
-					data-elem-field-error
-					hidden
-					id="email-error"
-					role="alert"
-				></div>
-			</div>
 			
 			<div class="field-list">
 				<div class="field" data-elem-field>
