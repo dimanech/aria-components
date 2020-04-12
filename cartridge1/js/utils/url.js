@@ -1,3 +1,5 @@
+// TODO: Just substitude to new URLSearchParams();
+
 /**
  * @param {string} url initial url
  * @param {string} name name of params

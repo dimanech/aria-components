@@ -13,6 +13,42 @@ export function setCurrentToken(name, val) {
 	tokenValue = val;
 }
 
+// TODO: Could be changed to XHR wrapped into promise
+function submitForm(form) {
+	const action = form.action;
+	const data = getFormData(form);
+	const method = form.method;
+	const enctype = form.enctype;
+	const request = new XMLHttpRequest();
+
+	return new Promise(function(resolve, reject) {
+		request.onreadystatechange = function () {
+			if (request.readyState !== 4) return;
+			if (request.status >= 200 && request.status < 300) {
+				resolve(request);
+			} else {
+				reject({
+					status: request.status,
+					statusText: request.statusText
+				});
+			}
+		};
+		request.open(method, action, true);
+		request.setRequestHeader('Content-Type', enctype);
+		request.send(data);
+	});
+}
+
+function getFormData(form) {
+	const formData = new FormData(form);
+	if (this.enctype === 'multipart/form-data') {
+		return formData;
+	} else { // application/x-www-form-urlencoded or text/plain
+		const dataObj = Object.fromEntries(formData);
+		return Object.keys(dataObj).map(key => key + '=' + encodeURIComponent(dataObj[key])).join('&');
+	}
+}
+
 function getFetch() {
 	if (window.fetch) {
 		return Promise.resolve(window.fetch);
@@ -28,14 +64,9 @@ function getFetch() {
  * @param {string} url
  */
 function handleUrlOrFormData(method, data, skipToken, url) {
-	/**
-	 * @type {string|undefined}
-	 */
 	let formData;
-	/**
-	 * @type {string}undefined
-	 */
-	var valuedUrl;
+	let valuedUrl;
+
 	if (method === 'POST') {
 		const token = tokenName && !skipToken ? { [tokenName]: tokenValue } : {};
 		const dataToSend = { ...data, ...token };
@@ -47,6 +78,7 @@ function handleUrlOrFormData(method, data, skipToken, url) {
 	} else {
 		valuedUrl = appendParamsToUrl(url, { ...data, ...{ [tokenName]: tokenValue } });
 	}
+
 	return { valuedUrl, formData };
 }
 
@@ -66,7 +98,7 @@ function handleResponse500(response) {
 		} else {
 			const div = document.createElement('div');
 			div.innerHTML = textResponse;
-			const err = Array.from(div.querySelectorAll('code')).map(code => code.innerHTML).join('<br/>');
+			const err = Array.from(div.querySelectorAll('code')).map(code => code.innerHTML).join('\n');
 			document.body.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: err} }));
 		}
 		return Promise.reject(new Error());
@@ -86,13 +118,16 @@ export const submitFormJson = (url, data = {}, method = 'POST', skipToken = fals
 		/**
 		 * This magic is mandatory for MS Edge because fetch polyfill is returning not polyfilled Promise object
 		 */
+
+		console.log(method, formData)
+
 		return Promise.resolve(fetch(valuedUrl, {
 			method: method, // *GET, POST, PUT, DELETE, etc.
 			mode: SAME_ORIGIN, // no-cors, cors, *same-origin
 			cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
 			credentials: SAME_ORIGIN, // include, *same-origin, omit
 			headers: {
-				'Content-Type': 'application/x-www-forms-urlencoded',
+				'Content-Type': 'application/x-www-form-urlencoded',
 				Accept: 'application/json'
 			},
 			redirect: 'follow', // manual, *follow, error
@@ -135,12 +170,9 @@ export function getContentByUrl(url, params = {}) {
 		credentials: SAME_ORIGIN, // include, *same-origin, omit
 		headers: {
 			Accept: 'text/html'
-			//     //   'Content-Type': 'application/json'
-			//     'Content-Type': 'application/x-www-forms-urlencoded'
 		},
 		redirect: 'follow', // manual, *follow, error
 		referrer: 'no-referrer' // no-referrer, *client
-		// body: formData // body data type must match "Content-Type" header
 	})).then((response) => {
 		const contentType = response.headers.get('content-type');
 

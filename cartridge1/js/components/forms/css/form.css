@@ -1,16 +1,32 @@
+:focus {
+	box-shadow: 0 0 0 4px lightblue;
+}
+
 /*:invalid {*/
 /*	box-shadow: none;*/
 /*	outline: 0;*/
 /*}*/
 
 input[type=text],
-input[type=password]{
+input[type=password] {
 	appearance: none;
 	height: 40px;
 	line-height: 40px;
 }
 
-.form {}
+.form {
+	position: relative;
+}
+
+.form[aria-busy=true]::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.6);
+}
 
 .form__error {
 	padding: 4px 8px;
@@ -34,11 +50,14 @@ input[type=password]{
 	display: flex;
 }
 
-:focus {
-	box-shadow: 0 0 0 4px lightblue;
+.form-group .form-item {
+	margin-right: 10px;
 }
 
+/* Password mask button */
+
 .button-unmask {
+	appearance: none;
 	border: none;
 	display: block;
 	width: 40px;
@@ -46,7 +65,7 @@ input[type=password]{
 	text-align: center;
 	line-height: 40px;
 	cursor: pointer;
-	background-color: transparent;
+	background-color: #eee;
 }
 
 .button-unmask[aria-pressed=true] {

@@ -123,8 +123,7 @@ export function memoize(func, hasher) {
  */
 export function get(target, path, defaults) {
     let parts = (path + '').split('.');
-    let
-            part;
+    let part;
 
     while (parts.length) {
         part = parts.shift();

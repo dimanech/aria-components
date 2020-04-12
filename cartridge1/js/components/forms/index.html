@@ -4,7 +4,7 @@
 	<meta name="viewport"
 	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<title>Forms example</title>
 	<link rel="stylesheet" href="css/search-combobox.css"/>
 	<link rel="stylesheet" href="css/spin-button.css"/>
 	<link rel="stylesheet" href="css/form.css"/>
@@ -19,29 +19,46 @@
 </head>
 <body>
 	
-	<form action="" data-component="/js/components/forms/FormAjax">
+	<form action="/endpoint" data-component="/js/components/forms/Form" method="POST">
 		<div data-element-form-error role="alert" hidden></div>
 		<div class="form-item">
-			<input
-					type="text"
-					id="address1"
-					name="address1"
-					aria-describedby="address1-error"
-					placeholder="Address"
-					required
-			/>
-			<div class="form-item__error"
-			     data-elem-form-error
-			     role="alert"
-			     id="address1-error"
-			     hidden></div>
+			<select name="expectedResponse">
+				<option value="formError">formError</option>
+				<option value="inputErrors">inputErrors</option>
+				<option value="redirectUrl">redirectUrl</option>
+				<option value="notJSON">notJSON</option>
+				<option value="status500">status500</option>
+				<option value="success" selected>success</option>
+			</select>
 		</div>
-		
 		<button type="submit">Submit</button>
 	</form>
 
-<form class="form" action="/address" data-component="/js/components/forms/Form" >
+<form class="form" action="/endpoint" data-component="/js/components/forms/FormAjax" method="POST">
 	<div class="form__error" data-element-form-error role="alert" hidden></div>
+	
+	<div class="form-item">
+		<select name="expectedResponse">
+			<option value="formError">formError</option>
+			<option value="inputErrors">inputErrors</option>
+			<option value="redirectUrl">redirectUrl</option>
+			<option value="notJSON">notJSON</option>
+			<option value="status500">status500</option>
+			<option value="success" selected>success</option>
+		</select>
+	</div>
+	
+	<br>
+	<input type="checkbox" name="check" value="check1" id="ch1">
+	<label for="ch1">check1</label>
+	<input type="checkbox" name="check" value="check2" checked="checked" id="ch2">
+	<label for="ch2">check2</label>
+	
+	<br>
+	<input type="radio" name="radio" value="radio1" checked="checked" id="r1">
+	<label for="r1">radio1</label>
+	<input type="radio" name="radio" value="radio2" id="r2">
+	<label for="r2">radio2</label>
 	
 	<div class="form-item">
 		<input

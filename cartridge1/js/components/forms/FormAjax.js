@@ -4,8 +4,16 @@ import { submitFormJson } from '../../utils/ajax.js';
 export default class FormAjax extends Form {
 	constructor(domNode) {
 		super(domNode);
-		this.methodType = this.form.getAttribute('method') === 'GET' ? 'GET' : 'POST';
-		this.formURL = this.form.getAttribute('action');
+		this.action = this.form.action;
+		this.method = this.form.method.toUpperCase();
+		this.enctype = this.form.enctype || (this.form.enctype = 'application/x-www-form-urlencoded');
+	}
+
+	init() {
+		if (!this.action) {
+			return;
+		}
+		super.init();
 	}
 
 	onSubmit(event) {
@@ -17,16 +25,12 @@ export default class FormAjax extends Form {
 		this.toggleBusy(true);
 		this.setFormError('');
 
-		submitFormJson(this.formURL, this.serializeForm(), this.methodType)
-			.then(this.onSubmitted.bind(this))
-			.finally(() => this.toggleBusy(false));
+		submitFormJson(this.action, this.getFormData(), this.method)
+				.then(this.handleResponse.bind(this))
+				.finally(() => this.toggleBusy(false));
 	}
 
-	destroy() {
-		super.destroy();
-	}
-
-	onSubmitted(data) {
+	handleResponse(data) {
 		if (data.success && data.redirectUrl) {
 			window.location.assign(data.redirectUrl);
 		} else if (data.error) {
@@ -38,13 +42,13 @@ export default class FormAjax extends Form {
 				this.toggleValidityNotification(formElement, false);
 			});
 		} else {
-			this.form.dispatchEvent(new Event('form:submitted', { bubbles: true }));
+			this.onSuccess();
 		}
 	}
 
-	serializeForm() {
+	getFormData() {
 		const formData = new FormData(this.form);
-		return JSON.stringify(Object.fromEntries(formData));
+		return Object.fromEntries(formData);
 	}
 
 	toggleBusy(isBusy) {
@@ -58,9 +62,18 @@ export default class FormAjax extends Form {
 		if (message !== '') {
 			formError.innerText = message;
 			formError.removeAttribute('hidden');
+			formError.scrollIntoView();
 		} else {
 			formError.innerText = '';
 			formError.setAttribute('hidden', 'true');
 		}
+	}
+
+	onSuccess() {
+		this.form.dispatchEvent(new Event('form:submitted', { bubbles: true }));
+	}
+
+	destroy() {
+		super.destroy();
 	}
 }
