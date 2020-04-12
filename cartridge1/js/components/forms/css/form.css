@@ -18,6 +18,10 @@ input[type=password] {
 	position: relative;
 }
 
+.form label {
+	display: inline-block;
+}
+
 .form[aria-busy=true]::after {
 	content: '';
 	position: absolute;
@@ -34,11 +38,11 @@ input[type=password] {
 	color: white;
 }
 
-.form-item {
+.field { /* consider bettre naming - field-group, because it could be groups of radios and checkboxes*/
 	margin: 16px 0;
 }
 
-.form-item__error {
+.field__error {
 	max-width: 200px;
 	margin-top: 4px;
 	padding: 4px 8px;
@@ -46,12 +50,31 @@ input[type=password] {
 	color: white;
 }
 
-.form-group {
+.field-list {
 	display: flex;
 }
 
-.form-group .form-item {
+.field-list .field {
 	margin-right: 10px;
+}
+
+.field-set {
+	display: flex;
+}
+
+.field-set legend {
+	display: block;
+	max-width: 40%;
+}
+
+/* radio */
+
+.radio {
+	display: flex;
+}
+
+.radio__label {
+	display: block;
 }
 
 /* Password mask button */

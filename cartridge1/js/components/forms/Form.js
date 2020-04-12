@@ -23,10 +23,10 @@ export default class Form {
 		});
 		this.form.addEventListener('input:checkValidity', this.checkValidity);
 		this.form.addEventListener('submit', this.onSubmit);
+		// onreset remove all error messages?
 	}
 
 	checkValidity(event) {
-		event.stopPropagation();
 		const element = event.target;
 		if (this.isOnChangeValidation) {
 			this.toggleValidityNotification(element, element.checkValidity());
@@ -40,6 +40,7 @@ export default class Form {
 	}
 
 	onSubmit() {
+		console.log(this.form.reportValidity())
 		// this is click on submit, because submit never fired until all fields would be valid
 		if(!this.form.reportValidity()) {
 			this.focusFirstError();
@@ -56,8 +57,8 @@ export default class Form {
 	}
 
 	toggleMessage(element, message, isValid) {
-		const wrapper = closest(element, 'form-item');
-		const error = wrapper.querySelector('[data-elem-form-error]');
+		const wrapper = closest(element, 'data-elem-field');
+		const error = wrapper.querySelector('[data-elem-field-error]');
 		if (!error) {
 			return;
 		}

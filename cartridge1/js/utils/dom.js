@@ -4,9 +4,9 @@ export function siblings(domNode) {
 
 }
 
-export function closest(element, CSSclass) {
+export function closest(element, attributeString) {
 	while (element && element !== document) {
-		if (element.classList.contains(CSSclass)) {
+		if (element.hasAttribute(attributeString)) {
 			return element;
 		}
 

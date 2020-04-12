@@ -17,7 +17,12 @@ export default class FormAjax extends Form {
 	}
 
 	onSubmit(event) {
+		super.onSubmit();
+
 		event.preventDefault();
+
+		console.log(this.getFormData())
+		return ;
 
 		if (this.isBusy) {
 			return false;

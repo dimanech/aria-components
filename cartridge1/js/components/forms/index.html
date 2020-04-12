@@ -1,212 +1,382 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport"
-	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		name="viewport"
+	>
+	<meta content="ie=edge" http-equiv="X-UA-Compatible">
 	<title>Forms example</title>
-	<link rel="stylesheet" href="css/search-combobox.css"/>
-	<link rel="stylesheet" href="css/spin-button.css"/>
-	<link rel="stylesheet" href="css/form.css"/>
+	<link href="css/search-combobox.css" rel="stylesheet"/>
+	<link href="css/spin-button.css" rel="stylesheet"/>
+	<link href="css/form.css" rel="stylesheet"/>
 	<script>
 		function googleApiCallback() {
 			document.dispatchEvent(new Event('googleApi:ready'));
 		}
 	</script>
-	<script async type="module" src="../../initiator.js"></script>
-	<script async
-	        src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"></script>
+	<script async src="../../initiator.js" type="module"></script>
+	<script
+		async
+		src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"
+	></script>
 </head>
 <body>
 	
-	<form action="/endpoint" data-component="/js/components/forms/Form" method="POST">
-		<div data-element-form-error role="alert" hidden></div>
-		<div class="form-item">
+	<form
+		action="/endpoint"
+		data-component="/js/components/forms/Form"
+		method="POST"
+	>
+		<div data-element-form-error hidden role="alert"></div>
+		<div class="field" data-elem-field>
 			<select name="expectedResponse">
 				<option value="formError">formError</option>
 				<option value="inputErrors">inputErrors</option>
 				<option value="redirectUrl">redirectUrl</option>
 				<option value="notJSON">notJSON</option>
 				<option value="status500">status500</option>
-				<option value="success" selected>success</option>
+				<option selected value="success">success</option>
 			</select>
 		</div>
 		<button type="submit">Submit</button>
 	</form>
-
-<form class="form" action="/endpoint" data-component="/js/components/forms/FormAjax" method="POST">
-	<div class="form__error" data-element-form-error role="alert" hidden></div>
 	
-	<div class="form-item">
-		<select name="expectedResponse">
-			<option value="formError">formError</option>
-			<option value="inputErrors">inputErrors</option>
-			<option value="redirectUrl">redirectUrl</option>
-			<option value="notJSON">notJSON</option>
-			<option value="status500">status500</option>
-			<option value="success" selected>success</option>
-		</select>
-	</div>
-	
-	<br>
-	<input type="checkbox" name="check" value="check1" id="ch1">
-	<label for="ch1">check1</label>
-	<input type="checkbox" name="check" value="check2" checked="checked" id="ch2">
-	<label for="ch2">check2</label>
-	
-	<br>
-	<input type="radio" name="radio" value="radio1" checked="checked" id="r1">
-	<label for="r1">radio1</label>
-	<input type="radio" name="radio" value="radio2" id="r2">
-	<label for="r2">radio2</label>
-	
-	<div class="form-item">
-		<input
-				type="text"
-				id="address"
-				name="address"
-				aria-describedby="address-error"
-				placeholder="Address"
+	<form
+		action="/endpoint"
+		class="form"
+		data-component="/js/components/forms/FormAjax"
+		method="POST"
+	>
+		<div
+			class="form__error"
+			data-element-form-error
+			hidden
+			role="alert"
+		></div>
+		
+		<div class="field" data-elem-field>
+			<label class="field__label" for="expected-response">
+				Expected response
+			</label>
+			<select
+				aria-describedby="expected-response-error"
+				id="expected-response"
+				name="expectedResponse"
 				required
-		/>
-		<div class="form-item__error"
-		     data-elem-form-error
-		     role="alert"
-		     id="address-error"
-		     hidden></div>
-	</div>
-	
-	<div class="form-item">
-		<input
-				type="text"
-				class="postal-code-info"
-				name="postalCode"
-				aria-describedby="postal-code-error"
-				placeholder="Postal code"
-				required
-				data-missing-error="My custom message for error"
-		/>
-		<div class="form-item__error"
-		     data-elem-form-error
-		     role="alert"
-		     id="postal-code-error"
-		     hidden></div>
-	</div>
-	
-	<div class="form-item">
-		<input
-				type="text"
-				id="city"
-				name="city"
-				aria-describedby="city-error"
-				required
-				pattern="[Bb]eer|[Ff]riday"
-				data-error-mismatch-pattern="Only Beer and friday is accepted"
-				placeholder="City [Custom pattern]"
-		/>
-		<div class="form-item__error"
-		     data-elem-form-error
-		     role="alert"
-		     id="city-error"
-		     hidden></div>
-	</div>
-	
-	<div class="form-item">
-		<input
-				data-component="/js/components/forms/GoogleAddresses"
-				data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info", "city": "#city"}}'
-				type="text"
-		/>
-	</div>
-	
-	<div class="form-group">
-		<div class="form-item">
-			<input
-					type="password"
-					id="password"
-					name="password"
-					aria-describedby="password-error"
-					required
-					data-pattern-mismatch="Fields should be equal"
-					placeholder="Password"
-					autocorrect="off"
-					autocapitalize="off"
-					autocomplete="new-password"
-			/>
-			<div class="form-item__error"
-			     data-elem-form-error
-			     role="alert"
-			     id="password-error"
-			     hidden></div>
-		</div>
-		<div class="form-item">
-			<input
-					type="password"
-					id="password-confirm"
-					aria-describedby="password-confirm-error"
-					required
-					data-component="/js/components/forms/InputsMatch"
-					data-compare-with="password"
-					data-error-custom="Fields should be equal"
-					placeholder="Confirm password"
-					autocorrect="off"
-					autocapitalize="off"
-					autocomplete="new-password"
-			/>
-			<div class="form-item__error"
-			     data-elem-form-error
-			     role="alert"
-			     id="password-confirm-error"
-			     hidden></div>
-		</div>
-		<div class="form-item">
-			<button
-					data-component="/js/components/forms/InputUnmask"
-					data-inputs="password,password-confirm"
-					data-title-pressed="Hide password"
-					title="Show password"
-					type="button"
-					class="button-unmask"
-					aria-pressed="false"
-					aria-hidden="true"
 			>
-				<svg aria-hidden="true" fill="currentColor" focusable="false" width="24" height="24" viewBox="0 0 24 24">
-					<path d="M12,7c-2.48,0-4.5,2.02-4.5,4.5S9.52,16,12,16s4.5-2.02,4.5-4.5S14.48,7,12,7z M12,14.2c-1.49,0-2.7-1.21-2.7-2.7 c0-1.49,1.21-2.7,2.7-2.7s2.7,1.21,2.7,2.7C14.7,12.99,13.49,14.2,12,14.2z"></path>
-					<path d="M12,4C7,4,2.73,7.11,1,11.5C2.73,15.89,7,19,12,19s9.27-3.11,11-7.5C21.27,7.11,17,4,12,4z M12,17 c-3.79,0-7.17-2.13-8.82-5.5C4.83,8.13,8.21,6,12,6s7.17,2.13,8.82,5.5C19.17,14.87,15.79,17,12,17z"></path>
-					<path class="button-unmask__line" d="m21.966 20.034-20.136-16.678v0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
-				</svg>
-			</button>
+				<option value="formError">formError</option>
+				<option value="inputErrors">inputErrors</option>
+				<option value="redirectUrl">redirectUrl</option>
+				<option value="notJSON">notJSON</option>
+				<option value="status500">status500</option>
+				<option selected value="success">success</option>
+			</select>
+			<div
+				class="field__error"
+				data-elem-field-error
+				hidden
+				id="expected-response-error"
+				role="alert"
+			></div>
 		</div>
-	</div>
-	
-	<div class="form-item">
-		<div class="spinbutton">
-			<div role="button" tabindex="-1" class="spinbutton__button">-</div>
-			<input
+		
+		<fieldset>
+			<legend>Choose your interests</legend>
+			
+			<div class="field" data-elem-field>
+				<input
+					id="ch1"
+					name="interests"
+					type="checkbox"
+					value="coding"
+				/>
+				<label for="ch1">coding</label>
+			</div>
+			<div class="field" data-elem-field>
+				<input
+					id="ch2"
+					name="interests"
+					type="checkbox"
+					value="music"
+				>
+				<label for="ch2">music</label>
+			</div>
+			<div class="field" data-elem-field>
+				<input
+					id="ch3"
+					name="interests"
+					type="checkbox"
+					value="other"
+				>
+				<label for="ch3">other</label>
+				<textarea
+					aria-describedby="other-interests-details-error"
+					id="other-interests-details"
+					name="other"
+					minlength="3"
+					data-component="/js/components/forms/InputConditional"
+					data-input-depends-from='["ch3"]'
+				></textarea>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="other-interests-details-error"
+					role="alert"
+				></div>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>Please select your preferred contact method:</legend>
+			
+			<div class="field" data-elem-field>
+				<label class="radio">
+					<input
+						aria-describedby="radio-set-error"
+						id="r1"
+						name="radio-group"
+						required
+						type="radio"
+						value="phone"
+					>
+					<span class="radio__label">phone</span>
+				</label>
+				<label class="radio">
+					<input
+						aria-describedby="radio-set-error"
+						id="r2"
+						name="radio-group"
+						required
+						type="radio"
+						value="mail"
+					>
+					<span class="radio__label">mail</span>
+				</label>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="radio-set-error"
+					role="alert"
+				></div>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>Your address</legend>
+			
+			<div class="field" data-elem-field>
+				<input
+					data-component="/js/components/forms/GoogleAddresses"
+					data-config='{"formInfo": {"address": "#address", "country": ".postal-code-info", "city": "#city"}}'
+					type="text"
+				/>
+			</div>
+			
+			<div class="field" data-elem-field>
+				<input
+					aria-describedby="address-error"
+					id="address"
+					name="address"
+					placeholder="Address"
+					required
+					type="text"
+				/>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="address-error"
+					role="alert"
+				></div>
+			</div>
+			
+			<div class="field" data-elem-field>
+				<input
+					aria-describedby="postal-code-error"
+					class="postal-code-info"
+					data-missing-error="My custom message for error"
+					name="postalCode"
+					placeholder="Postal code"
+					required
+					type="text"
+				/>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="postal-code-error"
+					role="alert"
+				></div>
+			</div>
+			
+			<div class="field" data-elem-field>
+				<input
+					aria-describedby="city-error"
+					data-error-mismatch-pattern="Only Beer and friday is accepted"
+					id="city"
+					name="city"
+					pattern="[Bb]eer|[Ff]riday"
+					placeholder="City [Custom pattern]"
+					required
+					type="text"
+				/>
+				<div
+					class="field__error"
+					data-elem-field-error
+					hidden
+					id="city-error"
+					role="alert"
+				></div>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>Password</legend>
+			
+			<div class="field-list">
+				<div class="field" data-elem-field>
+					<input
+						aria-describedby="password-error"
+						autocapitalize="off"
+						autocomplete="new-password"
+						autocorrect="off"
+						data-pattern-mismatch="Fields should be equal"
+						id="password"
+						name="password"
+						placeholder="Password"
+						required
+						type="password"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="password-error"
+						role="alert"
+					></div>
+				</div>
+				<div class="field" data-elem-field>
+					<input
+						aria-describedby="password-confirm-error"
+						autocapitalize="off"
+						autocomplete="new-password"
+						autocorrect="off"
+						data-compare-with="password"
+						data-component="/js/components/forms/InputsMatch"
+						data-error-custom="Fields should be equal"
+						id="password-confirm"
+						placeholder="Confirm password"
+						required
+						type="password"
+					/>
+					<div
+						class="field__error"
+						data-elem-field-error
+						hidden
+						id="password-confirm-error"
+						role="alert"
+					></div>
+				</div>
+				<div class="field" data-elem-field>
+					<button
+						aria-hidden="true"
+						aria-pressed="false"
+						class="button-unmask"
+						data-component="/js/components/forms/InputUnmask"
+						data-inputs="password,password-confirm"
+						data-title-pressed="Hide password"
+						title="Show password"
+						type="button"
+					>
+						<svg
+							aria-hidden="true"
+							fill="currentColor"
+							focusable="false"
+							height="24"
+							viewBox="0 0 24 24"
+							width="24"
+						>
+							<path d="M12,7c-2.48,0-4.5,2.02-4.5,4.5S9.52,16,12,16s4.5-2.02,4.5-4.5S14.48,7,12,7z M12,14.2c-1.49,0-2.7-1.21-2.7-2.7 c0-1.49,1.21-2.7,2.7-2.7s2.7,1.21,2.7,2.7C14.7,12.99,13.49,14.2,12,14.2z"></path>
+							<path d="M12,4C7,4,2.73,7.11,1,11.5C2.73,15.89,7,19,12,19s9.27-3.11,11-7.5C21.27,7.11,17,4,12,4z M12,17 c-3.79,0-7.17-2.13-8.82-5.5C4.83,8.13,8.21,6,12,6s7.17,2.13,8.82,5.5C19.17,14.87,15.79,17,12,17z"></path>
+							<path
+								class="button-unmask__line"
+								d="m21.966 20.034-20.136-16.678v0"
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="2"
+							/>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</fieldset>
+		
+		
+		<div class="field" data-elem-field>
+			<div class="spinbutton">
+				<div
+					class="spinbutton__button"
+					role="button"
+					tabindex="-1"
+				>-
+				</div>
+				<input
+					aria-describedby="spinbutton-error"
+					aria-valuemax="50"
+					aria-valuemin="2"
+					aria-valuenow="1"
+					data-component="/js/components/forms/SpinButton"
+					data-range-error="Please select 2 to 50"
+					name="qty"
+					required
+					role="spinbutton"
 					type="text"
 					value="1"
-					name="qty"
-					role="spinbutton"
-					aria-valuenow="1"
-					aria-valuemin="2"
-					aria-valuemax="50"
-					aria-describedby="spinbutton-error"
-					data-range-error="Please select 2 to 50"
-					data-component="/js/components/forms/SpinButton"
-					required
-			/>
-			<div role="button" tabindex="-1" class="spinbutton__button">+</div>
+				/>
+				<div
+					class="spinbutton__button"
+					role="button"
+					tabindex="-1"
+				>+
+				</div>
+			</div>
+			<div
+				class="field__error"
+				data-elem-field-error
+				hidden
+				id="spinbutton-error"
+				role="alert"
+			></div>
 		</div>
-		<div class="form-item__error"
-		     data-elem-form-error
-		     role="alert"
-		     id="spinbutton-error"
-		     hidden></div>
-	</div>
-	
-	<button type="submit">Submit</button>
-</form>
-
+		
+		
+		<div class="field" data-elem-field>
+			<input
+				id="terms"
+				name="termsSigned"
+				required
+				aria-describedby="terms-error"
+				type="checkbox"
+				value="true"
+			>
+			<div class="field__label">
+				<label for="terms">By submitting I agreed with</label>
+				<a href="#">Terms and conditions</a>
+			</div>
+			<div
+				class="field__error"
+				data-elem-field-error
+				hidden
+				id="terms-error"
+				role="alert"
+			></div>
+		</div>
+		<button type="submit">Submit</button>
+	</form>
 
 </body>
 </html>
