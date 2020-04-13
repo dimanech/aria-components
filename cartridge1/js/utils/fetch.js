@@ -13,42 +13,6 @@ export function setCurrentToken(name, val) {
 	tokenValue = val;
 }
 
-// TODO: Could be changed to XHR wrapped into promise
-function submitForm(form) {
-	const action = form.action;
-	const data = getFormData(form);
-	const method = form.method;
-	const enctype = form.enctype;
-	const request = new XMLHttpRequest();
-
-	return new Promise(function(resolve, reject) {
-		request.onreadystatechange = function () {
-			if (request.readyState !== 4) return;
-			if (request.status >= 200 && request.status < 300) {
-				resolve(request);
-			} else {
-				reject({
-					status: request.status,
-					statusText: request.statusText
-				});
-			}
-		};
-		request.open(method, action, true);
-		request.setRequestHeader('Content-Type', enctype);
-		request.send(data);
-	});
-}
-
-function getFormData(form) {
-	const formData = new FormData(form);
-	if (this.enctype === 'multipart/form-data') {
-		return formData;
-	} else { // application/x-www-form-urlencoded or text/plain
-		const dataObj = Object.fromEntries(formData);
-		return Object.keys(dataObj).map(key => key + '=' + encodeURIComponent(dataObj[key])).join('&');
-	}
-}
-
 function getFetch() {
 	if (window.fetch) {
 		return Promise.resolve(window.fetch);
@@ -118,21 +82,18 @@ export const submitFormJson = (url, data = {}, method = 'POST', skipToken = fals
 		/**
 		 * This magic is mandatory for MS Edge because fetch polyfill is returning not polyfilled Promise object
 		 */
-
-		console.log(method, formData)
-
 		return Promise.resolve(fetch(valuedUrl, {
-			method: method, // *GET, POST, PUT, DELETE, etc.
-			mode: SAME_ORIGIN, // no-cors, cors, *same-origin
-			cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-			credentials: SAME_ORIGIN, // include, *same-origin, omit
+			method: method,
+			mode: SAME_ORIGIN,
+			cache: 'default',
+			credentials: SAME_ORIGIN,
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 				Accept: 'application/json'
 			},
-			redirect: 'follow', // manual, *follow, error
-			referrer: 'no-referrer', // no-referrer, *client
-			body: formData // body data type must match "Content-Type" header
+			redirect: 'follow',
+			referrer: 'no-referrer',
+			body: formData
 		})).then((response) => {
 			const contentType = response.headers.get('content-type');
 
@@ -164,15 +125,15 @@ export function getContentByUrl(url, params = {}) {
 	 * This magic is mandatory for MS Edge because fetch polyfill is returning not polyfilled Promise object
 	 */
 	return Promise.resolve(fetch(appendParamsToUrl(url, params), {
-		method: 'GET', // *GET, POST, PUT, DELETE, etc.
-		mode: SAME_ORIGIN, // no-cors, cors, *same-origin
-		cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-		credentials: SAME_ORIGIN, // include, *same-origin, omit
+		method: 'GET',
+		mode: SAME_ORIGIN,
+		cache: 'default',
+		credentials: SAME_ORIGIN,
 		headers: {
 			Accept: 'text/html'
 		},
-		redirect: 'follow', // manual, *follow, error
-		referrer: 'no-referrer' // no-referrer, *client
+		redirect: 'follow',
+		referrer: 'no-referrer'
 	})).then((response) => {
 		const contentType = response.headers.get('content-type');
 

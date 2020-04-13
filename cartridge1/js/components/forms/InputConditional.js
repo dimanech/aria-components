@@ -71,7 +71,7 @@ export default class InputConditional {
             this.input.setAttribute('required', '');
         }
         this.input.dispatchEvent(new Event('input:checkValidity', { bubbles: true }));
-        // case if input is fields set validate all inner elements
+        // case if input is fields set validate all inner elements fieldset.elements
     }
 
     static isDependencyResolved(id) {

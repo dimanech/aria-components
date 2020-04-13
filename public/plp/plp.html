@@ -63,16 +63,16 @@
 	</div>
 	
 	
-	<form action="" data-component="/js/components/forms/Form">
-		<div class="form-section">
+	<form action="" data-component="/js/components/forms/Forms">
+		<div class="field" data-elem-field>
 			<input type="text" id="address" aria-describedby="address-error" required />
-			<div class="form-section__error" data-elem-form-error role="alert" id="address-error" hidden></div>
+			<div class="field__error" data-elem-form-error role="alert" id="address-error" hidden></div>
 		</div>
-		<div class="form-section">
+		<div class="field" data-elem-field>
 			<input type="text" class="postal-code-info" aria-describedby="postal-code-error" required />
-			<div class="form-section__error" data-elem-form-error role="alert" id="postal-code-error" hidden></div>
+			<div class="field__error" data-elem-form-error role="alert" id="postal-code-error" hidden></div>
 		</div>
-		<div class="form-section">
+		<div class="field" data-elem-field>
 			<input
 				data-component="/js/components/forms/GoogleAddresses"
 				data-config='{"formElements": {"address": "#address", "country": ".postal-code-info"}}'

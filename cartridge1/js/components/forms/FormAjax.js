@@ -1,5 +1,5 @@
 import Form from './Form.js';
-import { submitFormJson } from '../../utils/ajax.js';
+import { submitFormJson } from '../../utils/fetch.js';
 
 export default class FormAjax extends Form {
 	constructor(domNode) {

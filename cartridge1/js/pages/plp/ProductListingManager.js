@@ -1,4 +1,4 @@
-import { getContentByUrl } from '../../utils/ajax.js';
+import { getContentByUrl } from '../../utils/fetch.js';
 import { render } from '../../utils/render.js';
 
 // actions :
@@ -81,7 +81,6 @@ export default class ProductListingMgr {
 
 	appendToProductsList(url, message, button) {
 		button.classList.add('m-loading');
-
 		this.toggleBusy(true);
 		getContentByUrl(url)
 			.then(response => {

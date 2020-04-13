@@ -1,4 +1,4 @@
-// TODO: Just substitude to new URLSearchParams();
+// TODO: Substitude to new URLSearchParams();
 
 /**
  * @param {string} url initial url
