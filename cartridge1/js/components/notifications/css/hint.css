@@ -1,0 +1,22 @@
+.hint {
+	box-sizing: border-box;
+	position: absolute;
+	padding: 6px 8px;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 5px;
+	color: white;
+	display: none;
+	font-size: 0.7rem;
+	font-family: sans-serif;
+	pointer-events: none;
+	transform: translateX(-50%);
+	text-align: center;
+}
+
+.hint._shown {
+	display: inline-block;
+}
+
+.hint._not-centered {
+	transform: none;
+}

@@ -34,16 +34,16 @@ export default class Notification {
 
 		switch (this.type) {
 			case 'error':
-				this.notificationNode.className = 'b-notification m-error';
+				this.notificationNode.className = 'notification m-error';
 				break;
 			case 'warning':
-				this.notificationNode.className = 'b-notification m-warning';
+				this.notificationNode.className = 'notification m-warning';
 				break;
 			case 'success':
-				this.notificationNode.className = 'b-notification m-success';
+				this.notificationNode.className = 'notification m-success';
 				break;
 			default:
-				this.notificationNode.className = 'b-notification m-info';
+				this.notificationNode.className = 'notification m-info';
 		}
 
 		this.container.appendChild(this.notificationNode);

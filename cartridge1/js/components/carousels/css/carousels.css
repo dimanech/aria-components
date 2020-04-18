@@ -18,26 +18,17 @@ body {
 
 .carousel._inited {}
 
-/*
-	overflow-x: auto;
-	overflow-y: hidden;
-	-webkit-overflow-scrolling: touch;
-	scroll-behavior: smooth;
-	scrollbar-width: none;
-	overscroll-behavior-x: none;
-	-webkit-scroll-snap-type: x mandatory;
-	-ms-scroll-snap-type: x mandatory;
-	scroll-snap-type: x mandatory;
-*/
 .carousel__track {
 	display: flex;
 	overflow-behavior: contain;
 	overflow-scrolling: touch;
-	overscroll-behavior-x: contain; /* none */
+	overscroll-behavior-x: none; /* contain */
 	overflow: hidden;
 	overflow-x: auto;
 	scroll-behavior: smooth;
-	scroll-snap-type: x proximity;
+	-webkit-scroll-snap-type: x mandatory;
+	-ms-scroll-snap-type: x mandatory;
+	scroll-snap-type: x mandatory;
 	scrollbar-width: none; /* FF */
 	-ms-overflow-style: none; /* IE */
 	-ms-scroll-chaining: none;

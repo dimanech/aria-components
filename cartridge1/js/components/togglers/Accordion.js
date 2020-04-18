@@ -102,9 +102,6 @@ export default class Accordion {
 
         switch (event.keyCode) {
             case this.keyCode.SPACE:
-                this.handleClick(event);
-                preventEventActions = true;
-                break;
             case this.keyCode.RETURN:
                 this.handleClick(event);
                 preventEventActions = true;

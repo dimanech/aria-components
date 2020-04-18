@@ -20,6 +20,18 @@ label {
 	display: inline-block;
 }
 
+/*input:invalid,*/
+/*select:invalid,*/
+/*textarea:invalid {*/
+/*	outline: none;*/
+/*}*/
+
+input[aria-invalid=true],
+select[aria-invalid=true],
+textarea[aria-invalid=true] {
+	border-color: red;
+}
+
 .form {
 	position: relative;
 }
@@ -54,6 +66,17 @@ label {
 	padding: 4px 8px;
 	background-color: red;
 	color: white;
+	border-radius: 4px;
+}
+
+fieldset[disabled] .field__error,
+input[disabled] + .field__error {
+	display: none;
+}
+
+.field__label abbr {
+	color: red;
+	text-decoration: none;
 }
 
 .field__caption {

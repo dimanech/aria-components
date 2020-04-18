@@ -4,29 +4,69 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Notification example</title>
-	<link rel="stylesheet" href="css/notification.css">
+	<link rel="stylesheet" href="css/notification.css" />
+	<link rel="stylesheet" href="css/hint.css" />
 	<script async type="module" src="../../initiator.js"></script>
 </head>
 <body>
-	<button onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'message example' } }))">
+	<h2>Notification</h2>
+	<p>All changes of the page should be announced to AT with notifications like this</p>
+	
+	<button
+		onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'message example' } }))"
+		data-hint="Show info message"
+	>
 		Info message
 	</button>
-	<button onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { type: 'warning', message: 'warn example' } }))">
+	<button
+		onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { type: 'warning', message: 'warn example' } }))"
+		data-hint="Show warn message"
+	>
 		Warn message
 	</button>
-	<button onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { type: 'error', message: 'error example' } }))">
+	<button
+		data-hint="Show error message"
+		onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { type: 'error', message: 'error example' } }))"
+	>
 		Error message
 	</button>
-	<button onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { type: 'success', message: 'success example' } }))">
+	<button
+		data-hint="Show success message"
+		onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { type: 'success', message: 'success example' } }))"
+	>
 		Success message
 	</button>
-	<button onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'My message', id: 'myId', isPersistent: true } }))">
+	<button
+		data-hint="Show persistent message with id that could be dissmissed"
+		onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'My message', id: 'myId', isPersistent: true } }))"
+	>
 		Message with id
 	</button>
-	<button onclick="this.dispatchEvent(new CustomEvent('notifier:hide', { bubbles: true, detail: { id: 'myId' } }))">
+	<button
+		data-hint="Hide message by id. Should be shown first"
+		onclick="this.dispatchEvent(new CustomEvent('notifier:hide', { bubbles: true, detail: { id: 'myId' } }))"
+	>
 		Remove message with id
 	</button>
 	
-	<div class="b-notifier" data-component="NotificationsManager"></div>
+	<h2>Hints</h2>
+	<p>All icons without title should have this hint</p>
+	
+	<div style="display: flex; justify-content: space-between">
+		<button data-hint="Edge case for the hint - near left side">L</button>
+		<button
+			data-hint="Menu"
+			aria-label="Menu"
+			aria-controls="hamburger-menu"
+		>
+			<svg style="pointer-events: none" width="32" height="32" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" ><path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" ></path></svg>
+		</button>
+		<button data-hint="Normal with long long long description">Normal</button>
+		<button data-hint="Normal target">Normal</button>
+		<button data-hint="Edge case for the hint - near right side">R</button>
+	</div>
+	
+	<div class="notifier" data-component="NotificationsManager"></div>
+	<div class="hint" data-component="/js/components/notifications/Hint"></div>
 </body>
 </html>

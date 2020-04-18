@@ -1,5 +1,7 @@
 import { closest } from '../../utils/dom.js';
 
+// TODO: disabled inputs should not have validation?
+
 export default class Form {
 	constructor(domNode) {
 		this.form = domNode;
@@ -40,7 +42,6 @@ export default class Form {
 	}
 
 	onSubmit() {
-		console.log(this.form.reportValidity())
 		// this is click on submit, because submit never fired until all fields would be valid
 		if(!this.form.reportValidity()) {
 			this.focusFirstError();
@@ -48,7 +49,9 @@ export default class Form {
 	}
 
 	toggleValidityNotification(element, isValid) {
-		element.style.borderColor = isValid ? 'green' : 'red';
+		// we need some custom style or attribute because invalid state and CSS :invalid
+		// triggered on page load, components init - that is not very pretty
+		element.setAttribute('aria-invalid', !isValid);
 		this.toggleMessage(element, this.getCustomErrorMessage(element), isValid);
 	}
 
@@ -73,30 +76,29 @@ export default class Form {
 
 	getCustomErrorMessage(element) {
 		// https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
-		// [badInput, customError, patternMismatch, rangeOverflow, rangeUnderflow, stepMismatch, tooLong, tooShort, typeMismatch, valueMissing]
+		let validationMessage = '';
 
-		let validationMessage = element.validationMessage;
+		// get first true error and check if we have message
 
-		if (element.validity.patternMismatch && element.getAttribute('data-error-mismatch-pattern')) {
-			validationMessage = element.getAttribute('data-error-mismatch-pattern');
-		}
-		if ((element.validity.rangeOverflow || element.validity.rangeUnderflow) && element.getAttribute('data-error-range')) {
-			validationMessage = element.getAttribute('data-error-range');
-		}
-		if ((element.validity.tooLong || element.validity.tooShort) && element.getAttribute('data-error-range')) {
-			validationMessage = element.getAttribute('data-error-range');
-		}
-		if (element.validity.valueMissing && element.getAttribute('data-error-missing')) {
-			validationMessage = element.getAttribute('data-error-missing');
-		}
-		if (element.validity.typeMismatch && element.getAttribute('data-error-mismatch-type')) {
-			validationMessage = element.getAttribute('data-error-mismatch-type');
-		}
-		if (element.getAttribute('data-error-custom')) {
-			validationMessage = element.getAttribute('data-error-custom');
-		}
-		if (element.validity.customError) {
-			validationMessage = element.validationMessage;
+		switch (true) {
+			case (element.validity.customError
+					&& element.getAttribute('data-error-custom')):
+				validationMessage = element.validationMessage;
+				break;
+			case (element.validity.valueMissing
+					&& element.getAttribute('data-error-missing')):
+				validationMessage = element.getAttribute('data-error-missing');
+				break;
+			case (element.validity.patternMismatch || element.validity.typeMismatch)
+					&& element.getAttribute('data-error-mismatch-pattern'):
+				validationMessage = element.getAttribute('data-error-mismatch');
+				break;
+			case (element.validity.tooLong || element.validity.tooShort || element.validity.rangeOverflow || element.validity.rangeUnderflow)
+					&& element.getAttribute('data-error-range'):
+				validationMessage = element.getAttribute('data-error-range');
+				break;
+			default:
+				validationMessage = element.validationMessage;
 		}
 
 		return validationMessage;

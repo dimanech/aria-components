@@ -1,4 +1,4 @@
-.b-notifier {
+.notifier {
 	position: fixed;
 	bottom: 10px;
 	left: 0;
@@ -7,7 +7,7 @@
 	margin: 0 auto;
 }
 
-.b-notification {
+.notification {
 	background-color: blue;
 	color: white;
 	padding: 10px 20px;
@@ -20,22 +20,22 @@
 	text-align: center;
 }
 
-.b-notification.m-error {
+.notification.m-error {
 	background-color: red;
 	color: white;
 }
 
-.b-notification.m-warning {
+.notification.m-warning {
 	background-color: yellow;
 	color: black;
 }
 
-.b-notification.m-success {
+.notification.m-success {
 	background-color: greenyellow;
 	color: black;
 }
 
-.b-notification.m-removing {
+.notification.m-removing {
 	transform: translateY(40px);
 	opacity: 0;
 }

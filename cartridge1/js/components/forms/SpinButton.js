@@ -1,3 +1,5 @@
+// TODO: implement stepMismatch, badInput, rangeOverflow, rangeUnderflow validation messages
+
 const keyCode = Object.freeze({
     PAGEUP: 33,
     PAGEDOWN: 34,
@@ -21,7 +23,7 @@ export default class SpinButton {
      *          aria-valuenow="0"
      *          aria-valuemin="0"
      *          aria-valuemax="50"
-     *          data-increment-step="2"
+     *          data-step="2"
      *      />
      *      <button tabindex="-1">+</button>
      *  </div>
@@ -37,7 +39,7 @@ export default class SpinButton {
         this.maxValue = this.getMaxValue();
         this.middleValue = this.getMiddleValue();
         this.currentValue = parseInt(this.input.value, 10);
-        this.incrementStep = parseInt(this.input.getAttribute('data-increment-step'), 10) || 1;
+        this.incrementStep = parseInt(this.input.getAttribute('data-step'), 10) || 1;
         this.isBusy = false;
     }
 
