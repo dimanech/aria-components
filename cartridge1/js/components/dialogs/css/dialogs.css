@@ -34,6 +34,7 @@ body {
 	transition: visibility var(--transition);
 	visibility: hidden;
 	z-index: 1;
+	touch-action: none;
 }
 
 .dialog-backdrop.is-active {

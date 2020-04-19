@@ -1,4 +1,3 @@
-// Example
 import Dialog from './Dialog.js';
 
 export default class Panel extends Dialog {
@@ -51,6 +50,7 @@ export default class Panel extends Dialog {
 	}
 
 	onTouchStart() {
+		this.backdropNode.addEventListener('touchstart', this.onDrugOverPanel);
 		this.backdropNode.addEventListener('mouseover', this.onDrugOverPanel);
 		this.backdropNode.addEventListener('mouseout', this.onMouseOut);
 	}
@@ -68,6 +68,7 @@ export default class Panel extends Dialog {
 	}
 
 	onTouchEnd() {
+		this.backdropNode.removeEventListener('touchmove', this.onDrugOverPanel);
 		this.backdropNode.removeEventListener('mouseover', this.onDrugOverPanel);
 		this.backdropNode.removeEventListener('mouseout', this.onMouseOut);
 
