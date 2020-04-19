@@ -1,6 +1,6 @@
 export default class FocusHighlighter {
-	constructor(highlighterDomNode) {
-		this.highlighter = highlighterDomNode;
+	constructor(domNode) {
+		this.highlighter = domNode;
 
 		this.keyCode = Object.freeze({
 			TAB: 9,

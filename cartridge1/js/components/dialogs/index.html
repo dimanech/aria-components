@@ -13,25 +13,25 @@
 		<a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">Alert dialog Page focusable element 1 (Should not be focused if modal open)</a>
 		<br>
 		<br>
-		
+
 		<p>
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eros massa, ultricies ac purus vel, condimentum ultrices mauris. Nullam sagittis magna quam, vitae aliquet urna finibus quis. Sed rutrum vestibulum purus. Phasellus dictum varius ligula nec ultrices. Integer posuere faucibus orci, eget aliquam libero luctus non. Sed placerat mi eget euismod finibus. Donec fringilla, massa vehicula posuere gravida, lorem odio rutrum tortor, ut sagittis massa felis vel massa. Proin porttitor sagittis nulla ac volutpat. Nullam pharetra ante id malesuada tempus. Aliquam purus purus, facilisis id neque in, facilisis dapibus metus. Quisque eu metus varius, hendrerit lectus id, porta nisl.
 		</p>
-		
+
 		<button data-component="DialogButton" aria-controls="alert-1">Open alert dialog (Important dialogs)</button>
 		<br>
 		<button data-component="DialogButton" aria-controls="modal-1">Open regular dialog with (force user to choice)</button>
-		
+
 		<p>
 			Nullam nunc justo, dignissim vel lacinia quis, semper a leo. Suspendisse ut tellus ac est tincidunt mollis laoreet a ligula. Cras vestibulum mauris eu malesuada fermentum. Mauris varius est enim, et rhoncus quam fringilla eu. Sed interdum feugiat velit, at ultrices elit scelerisque ut. Cras quis tincidunt erat. Proin feugiat sem at ipsum iaculis dignissim. Mauris nibh ipsum, sagittis ut purus blandit, tincidunt mollis lacus. Pellentesque ut commodo sem. Sed facilisis sit amet ante eget sagittis. Duis malesuada felis nec eros finibus, ac posuere ipsum venenatis.
 		</p>
-		
+
 		<br>
 		<button data-component="DialogButton" aria-controls="dialog-1">Open dialog</button>
 		<br>
 		<button data-component="DialogButton" aria-controls="panel-1" data-dialog-type="panel">Open panel (another styled dialog)</button>
 		<br>
-		
+
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
 			<div id="alert-1"
 			     class="modal"
@@ -46,31 +46,33 @@
 				<button class="close" data-dismiss="dialog" aria-label="Close dialog" title="Press Esc to close">&times;</button>
 			</div>
 		</div>
-		
+
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
-			<div id="modal-1"
-			     class="modal"
-			     role="dialog"
-			     aria-modal="true"
-			     aria-hidden="true"
-			     aria-label="Reset form"
-			     aria-describedby="modal-1-descr"
-			     data-isForcedToChoice="true"
+			<div
+				id="modal-1"
+				class="modal"
+				role="dialog"
+				aria-modal="true"
+				aria-hidden="true"
+				aria-label="Reset form"
+				aria-describedby="modal-1-descr"
+				data-isForcedToChoice="true"
 			>
 				<p id="modal-1-descr">Are you sure that you want to reset form? (You could not escape this dialog until you do not make a choice)</p>
 				<button data-dismiss="dialog">Yes (todo: programmaticaly controlled)</button>
 				<button data-dismiss="dialog">No</button>
 			</div>
 		</div>
-		
+
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
-			<div id="dialog-1"
-			     class="modal"
-			     role="dialog"
-			     aria-modal="true"
-			     aria-hidden="true"
-			     aria-label="Address verification"
-			     aria-describedby="dialog-1-descr"
+			<div
+				id="dialog-1"
+				class="modal"
+				role="dialog"
+				aria-modal="true"
+				aria-hidden="true"
+				aria-label="Address verification"
+				aria-describedby="dialog-1-descr"
 			>
 				<p id="dialog-1-descr">You could escape from this dialog. More over it will guide you through all form steps.</p>
 				<form class="form">
@@ -105,13 +107,13 @@
 		</div>
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
 			<div
-					id="dialog-2"
-					class="modal"
-					role="dialog"
-					aria-modal="true"
-					aria-hidden="true"
-					aria-labelledby="dialog-2-label"
-					aria-describedby="dialog-2-desc"
+				id="dialog-2"
+				class="modal"
+				role="dialog"
+				aria-modal="true"
+				aria-hidden="true"
+				aria-labelledby="dialog-2-label"
+				aria-describedby="dialog-2-desc"
 			>
 				<h2 id="dialog-2-label">
 					Verification Result
@@ -218,13 +220,14 @@
 			</div>
 		</div>
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
-			<div id="dialog-3"
-			     class="modal"
-			     role="dialog"
-			     aria-modal="true"
-			     aria-hidden="true"
-			     aria-labelledby="dialog-3-label"
-			     aria-describedby="dialog-3-desc"
+			<div
+				id="dialog-3"
+				class="modal"
+				role="dialog"
+				aria-modal="true"
+				aria-hidden="true"
+				aria-labelledby="dialog-3-label"
+				aria-describedby="dialog-3-desc"
 			>
 				<h2 id="dialog-3-label">
 					Address Added
@@ -232,7 +235,11 @@
 				<p id="dialog-3-desc">
 					The address you provided has been added to your list of delivery addresses. It is ready
 					for immediate use. If you wish to remove it, you can do so from
-					<a href="#" data-component="DialogButton" aria-controls="dialog-4">
+					<a
+						href="#"
+						data-component="DialogButton"
+						aria-controls="dialog-4"
+					>
 						your profile. (open Dialog 4)
 					</a>
 				</p>
@@ -244,13 +251,14 @@
 			</div>
 		</div>
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
-			<div id="dialog-4"
-			     class="modal"
-			     role="dialog"
-			     aria-modal="true"
-			     aria-hidden="true"
-			     aria-labelledby="dialog-4-label"
-			     aria-describedby="dialog-4-desc"
+			<div
+				id="dialog-4"
+				class="modal"
+				role="dialog"
+				aria-modal="true"
+				aria-hidden="true"
+				aria-labelledby="dialog-4-label"
+				aria-describedby="dialog-4-desc"
 			>
 				<h2 id="dialog-4-label">
 					End of the Road!
@@ -266,15 +274,16 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
-			<div id="panel-1"
-			     class="panel"
-			     role="dialog"
-			     aria-modal="true"
-			     aria-hidden="true"
-			     aria-label="Hamburger menu"
-			     data-panel-position="right"
+			<div
+				id="panel-1"
+				class="panel"
+				role="dialog"
+				aria-modal="true"
+				aria-hidden="true"
+				aria-label="Hamburger menu"
+				data-panel-position="right"
 			>
 				<br>
 				<a href="index.html">link 1</a>
@@ -284,13 +293,13 @@
 				<button class="close" data-dismiss="dialog" aria-label="Close dialog" title="Press Esc to close">&times;</button>
 			</div>
 		</div>
-		
+
 		<br>
 		<button>Page focusable element 2 (Should not be focused if modal open)</button>
 		<br>
 		<input id="page-focusable-input" type="text" value=""/>
 		<label for="page-focusable-input">Page focusable element 3 (Should not be focused if modal open)</label>
-		
+
 		<div id="lipsum">
 			<p>
 				Suspendisse lectus arcu, tincidunt eget scelerisque at, imperdiet blandit sem. Maecenas vulputate faucibus nisl fermentum ornare. Aliquam erat volutpat. Aenean aliquet vehicula ligula, eget tempus leo sagittis ac. Nullam est urna, aliquet at magna ut, vestibulum eleifend augue. Vivamus accumsan convallis euismod. Mauris pellentesque elementum consectetur. Integer ac diam quis magna ultrices elementum eget quis tellus. Sed et neque sed diam ornare sodales in ut purus.
@@ -347,7 +356,7 @@
 				Aliquam ac porttitor tellus. Vivamus dapibus rutrum felis ac ullamcorper. Aliquam a eros in neque varius porttitor. Morbi rhoncus quis purus aliquet vestibulum. Praesent erat ante, porttitor a mi ut, auctor auctor libero. Ut congue arcu eget dignissim dapibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean rutrum in urna sed tristique. Vestibulum in nibh at turpis suscipit luctus. Nam non lacus nec enim vehicula fermentum quis id est. Vestibulum gravida, nibh in aliquam commodo, lacus arcu molestie mauris, et feugiat tortor dui sit amet eros. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean at volutpat ante. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti.
 			</p>
 		</div>
-	
+
 	</div>
 
 </body>

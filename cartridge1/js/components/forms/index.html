@@ -22,10 +22,10 @@
 	></script>
 </head>
 <body>
-	
+
 	<form
 		action="/endpoint"
-		data-component="/js/components/forms/FormAjax"
+		data-component="./forms/FormAjax"
 		method="POST"
 	>
 		<div data-element-form-error hidden role="alert"></div>
@@ -41,22 +41,22 @@
 		</div>
 		<button type="submit">Submit</button>
 	</form>
-	
+
 	<form
 		action="/endpoint"
 		class="form"
-		data-component="/js/components/forms/FormAjax"
+		data-component="./forms/FormAjax"
 		method="POST"
 	>
 		<h2>Subscribe to our news</h2>
-		
+
 		<div
 			class="form__error"
 			data-element-form-error
 			hidden
 			role="alert"
 		></div>
-		
+
 		<div class="field" data-elem-field>
 			<label class="field__label" for="expected-response">
 				Expected response
@@ -82,10 +82,10 @@
 				role="alert"
 			></div>
 		</div>
-		
+
 		<fieldset>
 			<legend>Choose your interests</legend>
-			
+
 			<div class="field" data-elem-field>
 				<label class="checkbox">
 					<input
@@ -132,7 +132,7 @@
 					id="interests-other-details"
 					name="other"
 					minlength="3"
-					data-component="/js/components/forms/InputConditional"
+					data-component="./forms/InputConditional"
 					data-input-depends-from='["interests-other"]'
 				></textarea>
 				<div
@@ -144,10 +144,10 @@
 				></div>
 			</div>
 		</fieldset>
-		
+
 		<fieldset>
 			<legend>Preferred contact method:</legend>
-			
+
 			<div class="field" data-elem-field>
 				<label class="radio">
 					<input
@@ -191,14 +191,14 @@
 				></div>
 			</div>
 		</fieldset>
-		
+
 		<div style="display:flex">
 			<fieldset
-				data-component="/js/components/forms/InputConditional"
+				data-component="./forms/InputConditional"
 				data-input-depends-from='["contact-mail"]'
 			>
 				<legend>Mail address</legend>
-				
+
 				<div class="field" data-elem-field>
 					<label class="field__label" for="address">
 						Address:
@@ -206,7 +206,7 @@
 					</label>
 					<input
 						id="address"
-						data-component="/js/components/forms/GoogleAddresses"
+						data-component="./forms/GoogleAddresses"
 						data-config='{"formElements": {"address": "#street", "country": ".postal-code-info", "city": "#city", "postal_code": "#postalcode"}}'
 						autocomplete="street-address"
 						type="text"
@@ -307,13 +307,13 @@
 					</div>
 				</div>
 			</fieldset>
-			
+
 			<fieldset
-				data-component="/js/components/forms/InputConditional"
+				data-component="./forms/InputConditional"
 				data-input-depends-from='["contact-phone"]'
 			>
 				<legend>Phone number</legend>
-				
+
 				<div class="field" data-elem-field>
 					<label class="field__label" for="phone">
 						Phone:
@@ -337,13 +337,13 @@
 					></div>
 				</div>
 			</fieldset>
-			
+
 			<fieldset
-				data-component="/js/components/forms/InputConditional"
+				data-component="./forms/InputConditional"
 				data-input-depends-from='["contact-email"]'
 			>
 				<legend>Email address</legend>
-				
+
 				<div class="field" data-elem-field>
 					<label class="field__label" for="email">
 						Email:
@@ -370,10 +370,10 @@
 				</div>
 			</fieldset>
 		</div>
-		
+
 		<fieldset>
 			<legend>Signup</legend>
-			
+
 			<div class="field-list">
 				<div class="field" data-elem-field>
 					<label class="field__label" for="password">
@@ -407,7 +407,7 @@
 						autocomplete="new-password"
 						autocorrect="off"
 						data-compare-with="password"
-						data-component="/js/components/forms/InputsMatch"
+						data-component="./forms/InputsMatch"
 						data-error-custom="Fields should be equal"
 						id="password-confirm"
 						placeholder="Confirm password"
@@ -427,7 +427,7 @@
 						aria-hidden="true"
 						aria-pressed="false"
 						class="button-unmask"
-						data-component="/js/components/forms/InputUnmask"
+						data-component="./forms/InputUnmask"
 						data-inputs="password,password-confirm"
 						data-title-pressed="Hide password"
 						title="Show password"
@@ -456,8 +456,7 @@
 				</div>
 			</div>
 		</fieldset>
-		
-		
+
 		<div class="field" data-elem-field>
 			<div class="spinbutton">
 				<div
@@ -471,7 +470,7 @@
 					aria-valuemax="50"
 					aria-valuemin="2"
 					aria-valuenow="1"
-					data-component="/js/components/forms/SpinButton"
+					data-component="./forms/SpinButton"
 					data-range-error="Please select 2 to 50"
 					name="qty"
 					required
@@ -494,8 +493,7 @@
 				role="alert"
 			></div>
 		</div>
-		
-		
+
 		<div class="field" data-elem-field>
 			<div class="checkbox">
 				<input
@@ -521,9 +519,7 @@
 		</div>
 		<button type="submit">Submit</button>
 	</form>
-	
-	
-	
+
 	<div class="notifier" data-component="NotificationsManager"></div>
 </body>
 </html>

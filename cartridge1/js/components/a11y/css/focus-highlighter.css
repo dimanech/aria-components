@@ -1,0 +1,36 @@
+:root {
+	--highlighter-color: blue;
+}
+
+.b-highlighter {
+	border-radius: 1px;
+	box-shadow: 0 0 0 3px var(--highlighter-color);
+	box-sizing: content-box;
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	transform: scale(1.2);
+	transition-duration: 0.2s;
+	transition-property: top, left, width, height, visibility, transform, opacity;
+	transition-timing-function: ease-in-out;
+	visibility: hidden;
+	z-index: 99999;
+}
+
+.b-highlighter.m-visible {
+	opacity: 1;
+	transform: scale(1);
+	visibility: visible;
+}
+
+.b-highlighter.m-hurry {
+	transition-duration: 0s;
+}
+
+*:focus {
+	outline: 3px solid var(--highlighter-color) !important;
+}
+
+.js-highlighter-inited *:focus {
+	outline: none !important;
+}

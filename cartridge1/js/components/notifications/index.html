@@ -11,7 +11,7 @@
 <body>
 	<h2>Notification</h2>
 	<p>All changes of the page should be announced to AT with notifications like this</p>
-	
+
 	<button
 		onclick="this.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: 'message example' } }))"
 		data-hint="Show info message"
@@ -48,10 +48,10 @@
 	>
 		Remove message with id
 	</button>
-	
+
 	<h2>Hints</h2>
 	<p>All icons without title should have this hint</p>
-	
+
 	<div style="display: flex; justify-content: space-between">
 		<button data-hint="Edge case for the hint - near left side">L</button>
 		<button
@@ -65,8 +65,8 @@
 		<button data-hint="Normal target">Normal</button>
 		<button data-hint="Edge case for the hint - near right side">R</button>
 	</div>
-	
+
 	<div class="notifier" data-component="NotificationsManager"></div>
-	<div class="hint" data-component="/js/components/notifications/Hint"></div>
+	<div class="hint" data-component="./notifications/Hint"></div>
 </body>
 </html>
