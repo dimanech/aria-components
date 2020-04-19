@@ -6,16 +6,18 @@
 		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
 	>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Snap scroll</title>
+	<title>Snap scroll carousel</title>
 	<link rel="stylesheet" href="css/carousels.css"/>
-	<script async type="module" src="../../initiator.js"></script>
+	<!-- <script async type="module" src="../../initiator.js"></script>-->
 </head>
 <body>
 	<h1>Snap scroll carousel</h1>
 	<h2>3 items</h2>
-	<div class="carousel"
-	     data-component="./carousels/ScrollCarousel"
-	     data-pagination>
+	<div
+		class="carousel"
+		data-component="./carousels/ScrollCarousel"
+		data-pagination
+	>
 		<button
 			class="carousel__ctrl _prev"
 			data-elem-prev-button
@@ -383,5 +385,13 @@
 	<br>
 	<br>
 	<br>
+
+	<script type="module">
+		import SnapScrollCarousel from './ScrollCarousel.js';
+		import ScrollCarouselAutoplay from './ScrollCarouselAutoplay.js';
+
+		document.querySelectorAll('[data-component="./carousels/ScrollCarousel"]').forEach(carousel => new SnapScrollCarousel(carousel).init());
+		document.querySelectorAll('[data-component="./carousels/ScrollCarouselAutoplay"]').forEach(carousel => new ScrollCarouselAutoplay(carousel).init());
+	</script>
 </body>
 </html>

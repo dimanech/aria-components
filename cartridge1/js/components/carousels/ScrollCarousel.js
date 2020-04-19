@@ -29,7 +29,16 @@ export default class ScrollCarousel {
 		this.prevButton.addEventListener('click', this.prev);
 		this.nextButton.addEventListener('click', this.next);
 
-		this.addDragEventListeners();
+		this.addGrabEventListeners();
+	}
+
+	removeEventListeners() {
+		this.carouselTrack.removeEventListener('scroll', this.onScroll);
+		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
+		this.prevButton.removeEventListener('click', this.prev);
+		this.nextButton.removeEventListener('click', this.next);
+
+		this.removeGrabEventListeners();
 	}
 
 	// Prev next buttons and UI
@@ -151,6 +160,16 @@ export default class ScrollCarousel {
 		this.setActivePagination();
 	}
 
+	destroyPagination() {
+		if (this.pagination) {
+			this.pagination.onclick = null;
+
+			if (this.carousel.getAttribute('data-pagination') === '') { // existed pagination
+				this.carousel.removeChild(this.pagination);
+			}
+		}
+	}
+
 	createPaginationElements() {
 		const hasPagination = !!this.pagination;
 		// We need to use round, not ceil, since it called on scroll, in case of last it would generate falls positive
@@ -220,15 +239,36 @@ export default class ScrollCarousel {
 		}
 	}
 
-	// Drag to scroll functionality only for horizontal direction
+	// Grab to scroll functionality only for horizontal direction
 
-	addDragEventListeners() {
+	addGrabEventListeners() {
+		if (this.carouselDirection !== 'horizontal') {
+			return;
+		}
+
 		this.onTouchMove = this.onTouchMove.bind(this);
 		this.onTouchStart = this.onTouchStart.bind(this);
 		this.onTouchEnd = this.onTouchEnd.bind(this);
 
 		this.carouselTrack.addEventListener('mousedown', this.onTouchStart);
 		this.carouselTrack.addEventListener('mouseup', this.onTouchEnd);
+	}
+
+	removeGrabEventListeners() {
+		this.carouselTrack.removeEventListener('mousedown', this.onTouchStart);
+		this.carouselTrack.removeEventListener('mouseup', this.onTouchEnd);
+	}
+
+	onTouchStart(event) {
+		this.initialX = event.pageX || event.touches[0].pageX;
+		this.carouselWidth = this.carousel.clientWidth;
+		this.deltaX = 0;
+
+		this.carouselTrack.addEventListener('mousemove', this.onTouchMove);
+		this.carouselTrack.addEventListener('mouseleave', this.onTouchEnd);
+		this.carouselTrack.classList.add('_grabbing');
+
+		clearTimeout(this.grabbingRemoveTimeout);
 	}
 
 	onTouchMove(event) {
@@ -241,20 +281,11 @@ export default class ScrollCarousel {
 		});
 	}
 
-	onTouchStart(event) {
-		this.initialX = event.pageX || event.touches[0].pageX;
-		this.carouselWidth = this.carousel.clientWidth;
-		this.deltaX = 0;
-
-		this.carouselTrack.addEventListener('mousemove', this.onTouchMove);
-		this.carouselTrack.addEventListener('mouseleave', this.onTouchEnd);
-		this.carouselTrack.classList.add('_grabbing');
-	}
-
 	onTouchEnd() {
 		this.carouselTrack.removeEventListener('mousemove', this.onTouchMove);
 		this.carouselTrack.removeEventListener('mouseleave', this.onTouchEnd);
-		this.carouselTrack.classList.remove('_grabbing');
+		// we should remove scroll-snap-type with delay, otherwise it cause bouncing
+		this.grabbingRemoveTimeout = setTimeout(() => this.carouselTrack.classList.remove('_grabbing'), 600);
 
 		switch (true) {
 			case (this.deltaX <= -10):
@@ -264,6 +295,8 @@ export default class ScrollCarousel {
 				this.next();
 				break;
 			default:
+				// remove immediate for this case
+				this.carouselTrack.classList.remove('_grabbing');
 		}
 
 		this.deltaX = 0;
@@ -272,20 +305,7 @@ export default class ScrollCarousel {
 	// Destroy
 
 	destroy() {
-		this.carouselTrack.removeEventListener('mousedown', this.onTouchStart);
-		this.carouselTrack.removeEventListener('mouseup', this.onTouchEnd);
-
-		this.carouselTrack.removeEventListener('scroll', this.onScroll);
-		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
-		this.prevButton.removeEventListener('click', this.prev);
-		this.nextButton.removeEventListener('click', this.next);
-
-		if (this.pagination) {
-			if (this.carousel.getAttribute('data-pagination') !== '') { // existed pagination
-				this.pagination.addEventListener('click', this.handlePaginationClick);
-			} else {
-				this.carousel.removeChild(this.pagination);
-			}
-		}
+		this.removeEventListeners();
+		this.destroyPagination();
 	}
 }
