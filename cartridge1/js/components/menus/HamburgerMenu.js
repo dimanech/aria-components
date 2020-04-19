@@ -1,3 +1,5 @@
+// Not accessable example of hamburger
+
 export default class HamburgerMenu {
 	constructor(domNode) {
 		this.domeNode = domNode;

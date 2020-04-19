@@ -13,6 +13,16 @@ It designed as start point, so it contains only needed code and styles.
 
 [See it in action](https://dimanech.github.io/aria-components/)
 
+## Initialization
+
+Components have initializer, but it could be simply substituted with:
+
+```js
+import ScrollCarousel from './ScrollCarousel.js';
+
+document.querySelectorAll('[data-component="./carousels/ScrollCarousel"]').forEach(elem => new ScrollCarousel(elem).init());
+```
+
 ## Targeted browsers
 
 * MS Edge

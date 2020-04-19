@@ -119,6 +119,7 @@ export default class ScrollCarousel {
 	scrollToPoint(top, left, node) {
 		let element = node || this.carouselTrack;
 		// Safari and Edge do not have smooth scrolling please use polyfill or just leave it as is
+		// If you still using jQuery you could call $.animate()
 		if (typeof element.scrollTo === 'function' && 'scrollBehavior' in document.documentElement.style) {
 			element.scrollTo({
 				top: top,
@@ -219,18 +220,15 @@ export default class ScrollCarousel {
 		}
 	}
 
-	// Drag and drop
+	// Drag to scroll functionality only for horizontal direction
 
 	addDragEventListeners() {
-		// Drag functionality
 		this.onTouchMove = this.onTouchMove.bind(this);
 		this.onTouchStart = this.onTouchStart.bind(this);
 		this.onTouchEnd = this.onTouchEnd.bind(this);
 
 		this.carouselTrack.addEventListener('mousedown', this.onTouchStart);
-		this.carouselTrack.addEventListener('touchstart', this.onTouchStart, { passive: true });
 		this.carouselTrack.addEventListener('mouseup', this.onTouchEnd);
-		this.carouselTrack.addEventListener('touchend', this.onTouchEnd, { passive: true });
 	}
 
 	onTouchMove(event) {
@@ -249,14 +247,12 @@ export default class ScrollCarousel {
 		this.deltaX = 0;
 
 		this.carouselTrack.addEventListener('mousemove', this.onTouchMove);
-		this.carouselTrack.addEventListener('touchmove', this.onTouchMove);
 		this.carouselTrack.addEventListener('mouseleave', this.onTouchEnd);
 		this.carouselTrack.classList.add('_grabbing');
 	}
 
 	onTouchEnd() {
 		this.carouselTrack.removeEventListener('mousemove', this.onTouchMove);
-		this.carouselTrack.removeEventListener('touchmove', this.onTouchMove);
 		this.carouselTrack.removeEventListener('mouseleave', this.onTouchEnd);
 		this.carouselTrack.classList.remove('_grabbing');
 
@@ -276,10 +272,14 @@ export default class ScrollCarousel {
 	// Destroy
 
 	destroy() {
+		this.carouselTrack.removeEventListener('mousedown', this.onTouchStart);
+		this.carouselTrack.removeEventListener('mouseup', this.onTouchEnd);
+
 		this.carouselTrack.removeEventListener('scroll', this.onScroll);
 		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
 		this.prevButton.removeEventListener('click', this.prev);
 		this.nextButton.removeEventListener('click', this.next);
+
 		if (this.pagination) {
 			if (this.carousel.getAttribute('data-pagination') !== '') { // existed pagination
 				this.pagination.addEventListener('click', this.handlePaginationClick);
