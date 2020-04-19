@@ -25,10 +25,10 @@ function applyDiff(el, diffNode) {
 		postDiffApply(info) {
 			const { action, name } = info.diff;
 			if (
-					['removeAttribute', 'addAttribute', 'modifyAttribute'].includes(action)
-					&& typeof name === 'string'
-					&& name.startsWith('data-') // handle only component changes
-					&& info.node instanceof HTMLElement
+				['removeAttribute', 'addAttribute', 'modifyAttribute'].includes(action) &&
+					typeof name === 'string' &&
+					name.startsWith('data-') && // handle only component changes
+					info.node instanceof HTMLElement
 			) {
 				// init new added component
 				//console.log(info.diff)
@@ -37,7 +37,6 @@ function applyDiff(el, diffNode) {
 	});
 	const diff = dd.diff(el, diffNode.firstElementChild);
 	if (diff && diff.length) {
-		 //console.log(diff);
 		dd.apply(el, diff);
 	}
 }

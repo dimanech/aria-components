@@ -128,13 +128,13 @@ export function getHash(key) {
 	}
 
 	const hash = document.location.hash
-			.slice(1)
-			.split('&')
-			.reduce((obj, el) => {
-				const [_key, _val] = el.split('=');
-				obj[_key] = _val;
-				return obj;
-			}, {});
+		.slice(1)
+		.split('&')
+		.reduce((obj, el) => {
+			const [_key, _val] = el.split('=');
+			obj[_key] = _val;
+			return obj;
+		}, {});
 
 	return key ? hash[key] : hash;
 }

@@ -16,7 +16,7 @@ export default class TabsToAccordion {
 
 	destroy() {
 		if (this.composer) {
-			this.composer.destroy()
+			this.composer.destroy();
 		}
 	}
-};
+}

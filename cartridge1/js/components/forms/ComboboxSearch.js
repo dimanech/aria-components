@@ -75,7 +75,7 @@ export default class SearchCombo extends Combobox {
 			const clickEvent = new MouseEvent('click', {
 				view: window,
 				bubbles: false,
-				cancelable: true,
+				cancelable: true
 			});
 			item.dispatchEvent(clickEvent);
 		}
@@ -124,6 +124,7 @@ export default class SearchCombo extends Combobox {
 		}
 	}
 
+	//eslint-disable-next-line no-unused-vars
 	toggleGlobalOverlay(isOpen) {
 		//const closeSearch = () => this.closeListbox();
 		//if (isOpen) {
@@ -155,7 +156,7 @@ export default class SearchCombo extends Combobox {
 			suggestions.scrollTo({
 				top: item.offsetTop,
 				left: 0,
-				behavior: 'smooth',
+				behavior: 'smooth'
 			});
 		}
 	}
@@ -164,4 +165,4 @@ export default class SearchCombo extends Combobox {
 		super.destroy();
 		clearTimeout(this.timeout);
 	}
-};
+}

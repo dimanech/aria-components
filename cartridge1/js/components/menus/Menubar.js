@@ -200,4 +200,4 @@ export default class Menubar {
 			menuElement = menuElement.nextElementSibling;
 		}
 	}
-};
+}

@@ -92,15 +92,16 @@ export default class ScrollCarousel {
 	// Prev next functionality
 
 	getCurrentPageIndex() {
-		const currentPosition = this.carouselDirection === 'horizontal' ? this.carouselTrack.scrollLeft : this.carouselTrack.scrollTop;
-		const pageWidth = this.carouselDirection === 'horizontal' ? this.carouselTrack.clientWidth : this.carouselTrack.clientHeight;
+		const currentPosition = this.carouselDirection === 'horizontal'
+			? this.carouselTrack.scrollLeft : this.carouselTrack.scrollTop;
+		const pageWidth = this.carouselDirection === 'horizontal'
+			? this.carouselTrack.clientWidth : this.carouselTrack.clientHeight;
 		return Math.round(currentPosition / pageWidth);
 	}
 
 	next() {
 		if (this.carouselDirection === 'horizontal') {
 			const curPage = this.getCurrentPageIndex() + 1;
-			const caruselWidth = this.carouselTrack.clientWidth;
 			this.scrollToPoint(0, curPage * this.carouselTrack.clientWidth);
 		} else {
 			this.scrollToPoint((this.getCurrentPageIndex() + 1) * this.carouselTrack.clientHeight, 0);
@@ -188,7 +189,8 @@ export default class ScrollCarousel {
 	}
 
 	scrollActivePaginationIntoView() {
-		// In case if pagination has scroll itself we scroll pagination into view. Ex. if pagination is thumbnails
+		// In case if pagination has scroll itself we scroll pagination into view.
+		// Ex. if pagination is thumbnails
 		if (this.pagination.scrollHeight === this.pagination.offsetHeight) {
 			return;
 		}
@@ -237,7 +239,7 @@ export default class ScrollCarousel {
 
 		this.carouselTrack.scrollTo({
 			top: 0,
-			left: this.carouselTrack.scrollLeft + this.deltaX,
+			left: this.carouselTrack.scrollLeft + this.deltaX
 		});
 	}
 

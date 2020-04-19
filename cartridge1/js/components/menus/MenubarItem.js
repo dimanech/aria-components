@@ -187,4 +187,4 @@ export default class MenubarItem {
 			this.popupMenu.destroy();
 		}
 	}
-};
+}

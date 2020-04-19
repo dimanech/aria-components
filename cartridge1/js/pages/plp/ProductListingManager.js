@@ -14,7 +14,7 @@ import { render } from '../../utils/render.js';
 // aria feed
 
 export default class ProductListingMgr {
-	constructor(domNode, pageComponents) {
+	constructor(domNode) {
 		this.plp = domNode.querySelector('[data-elem-plp-content]');
 		this.list = domNode.querySelector('[data-elem-plp-grid]');
 		this.filterButton = 'data-elem-plp-filter';
@@ -25,7 +25,8 @@ export default class ProductListingMgr {
 	init() {
 		this.addEventListeners();
 
-		window.onpopstate = event => this.updatePLP(event.state.url, event.state.message); // just returns fully rendered variant of page
+		window.onpopstate = event => this.updatePLP(event.state.url, event.state.message);
+		// just returns fully rendered variant of page
 	}
 
 	addEventListeners() {
@@ -61,7 +62,7 @@ export default class ProductListingMgr {
 		const button = event.target;
 		const url = button.getAttribute('data-url');
 
-		this.appendToProductsList(url, 'Loaded more products', button)
+		this.appendToProductsList(url, 'Loaded more products', button);
 	}
 
 	updatePLP(url, message, onlyProductsList) {
@@ -91,7 +92,8 @@ export default class ProductListingMgr {
 				this.list.appendChild(template.content);
 
 				this.pushHistoryState('appendToProductsList', url, message);
-				this.list.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
+				this.list.dispatchEvent(
+					new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
 			}).finally(() => {
 				this.toggleBusy(false);
 				button.classList.remove('m-loading');
@@ -128,4 +130,4 @@ export default class ProductListingMgr {
 		this.plp.removeEventListener('change', this.applySorting);
 		window.onpopstate = null;
 	}
-};
+}

@@ -72,7 +72,8 @@ export default class Notification {
 		}
 		this.notificationNode.removeEventListener('mouseup', this.destroy);
 		this.notificationNode.classList.add('m-removing');
-		this.notificationNode.dispatchEvent(new CustomEvent('notifier:notification:removed', { bubbles: true, detail: {id: this.id} }));
+		this.notificationNode.dispatchEvent(
+			new CustomEvent('notifier:notification:removed', { bubbles: true, detail: {id: this.id} }));
 		window.setTimeout(() => this.notificationNode.remove(), 400);
 	}
 }

@@ -43,7 +43,7 @@ export default class Form {
 
 	onSubmit() {
 		// this is click on submit, because submit never fired until all fields would be valid
-		if(!this.form.reportValidity()) {
+		if (!this.form.reportValidity()) {
 			this.focusFirstError();
 		}
 	}
@@ -81,20 +81,21 @@ export default class Form {
 		// get first true error and check if we have message
 
 		switch (true) {
-			case (element.validity.customError
-					&& element.getAttribute('data-error-custom')):
+			case (element.validity.customError &&
+					element.getAttribute('data-error-custom')):
 				validationMessage = element.validationMessage;
 				break;
-			case (element.validity.valueMissing
-					&& element.getAttribute('data-error-missing')):
+			case (element.validity.valueMissing &&
+					element.getAttribute('data-error-missing')):
 				validationMessage = element.getAttribute('data-error-missing');
 				break;
-			case (element.validity.patternMismatch || element.validity.typeMismatch)
-					&& element.getAttribute('data-error-mismatch-pattern'):
+			case (element.validity.patternMismatch || element.validity.typeMismatch) &&
+					element.getAttribute('data-error-mismatch-pattern'):
 				validationMessage = element.getAttribute('data-error-mismatch');
 				break;
-			case (element.validity.tooLong || element.validity.tooShort || element.validity.rangeOverflow || element.validity.rangeUnderflow)
-					&& element.getAttribute('data-error-range'):
+			case (element.validity.tooLong || element.validity.tooShort ||
+					element.validity.rangeOverflow || element.validity.rangeUnderflow) &&
+					element.getAttribute('data-error-range'):
 				validationMessage = element.getAttribute('data-error-range');
 				break;
 			default:
@@ -115,4 +116,4 @@ export default class Form {
 		this.form.removeEventListener('input:checkValidity', this.checkValidity);
 		this.form.removeEventListener('submit', this.onSubmit);
 	}
-};
+}

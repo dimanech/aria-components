@@ -8,8 +8,7 @@ import ComponentsInitiator from './components/ComponentsInitiator.js';
 
 	switch (window.appScope) {
 		case 'plp':
-			const plpComponents = await import(/* webpackChunkName: "plp" */ './components-aggregation-plp.js');
-			loadedComponents = loadedComponents.concat(plpComponents.default);
+			loadedComponents = loadedComponents.concat(await import(/* webpackChunkName: "plp" */ './components-aggregation-plp.js').default);
 			break;
 		default:
 	}

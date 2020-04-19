@@ -39,7 +39,7 @@ export default class Hint {
 			element.addEventListener('mouseenter', this.initHint);
 			element.addEventListener('mouseout', this.hideHint);
 			this.elementsWithHint.push(element);
-		})
+		});
 	}
 
 	initHint(event) {

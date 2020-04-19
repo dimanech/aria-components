@@ -24,8 +24,8 @@ export default class InputUnmask {
 		let result = [];
 
 		const inputs = this.button.getAttribute('data-inputs')
-				.replace(/\s/, '')
-				.split(',');
+			.replace(/\s/, '')
+			.split(',');
 		inputs.forEach(id => result.push(document.getElementById(id)));
 
 		return result;

@@ -1,35 +1,35 @@
 import Grid from './Grid.js';
 
 export default class GridNoRoles extends Grid {
-    constructor(domNode) {
-        super(domNode);
-    }
+	constructor(domNode) {
+		super(domNode);
+	}
 
-    init() {
-        this.setupRoles();
-        super.init();
-    }
+	init() {
+		this.setupRoles();
+		super.init();
+	}
 
-    setupRoles() {
-        if (!this.domNode.hasAttribute('data-role')) {
-            return;
-        }
+	setupRoles() {
+		if (!this.domNode.hasAttribute('data-role')) {
+			return;
+		}
 
-        this.domNode.parentElement.querySelectorAll('[data-role]').forEach(node =>
-            node.setAttribute('role', node.getAttribute('data-role')));
-    }
+		this.domNode.parentElement.querySelectorAll('[data-role]').forEach(node =>
+			node.setAttribute('role', node.getAttribute('data-role')));
+	}
 
-    destroyRoles() {
-        if (!this.domNode.hasAttribute('data-role')) {
-            return;
-        }
+	destroyRoles() {
+		if (!this.domNode.hasAttribute('data-role')) {
+			return;
+		}
 
-        this.domNode.parentElement.querySelectorAll('[data-role]').forEach(node =>
-            node.removeAttribute('role'));
-    }
+		this.domNode.parentElement.querySelectorAll('[data-role]').forEach(node =>
+			node.removeAttribute('role'));
+	}
 
-    destroy() {
-        this.destroyRoles();
-        super.destroy();
-    }
-};
+	destroy() {
+		this.destroyRoles();
+		super.destroy();
+	}
+}

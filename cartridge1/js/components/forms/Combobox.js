@@ -9,7 +9,7 @@ const keyCode = Object.freeze({
 	UP: 38,
 	RIGHT: 39,
 	DOWN: 40,
-	BACKSPACE: 8,
+	BACKSPACE: 8
 });
 
 export default class Combobox {
@@ -28,7 +28,7 @@ export default class Combobox {
 	 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 	 * PARTICULAR PURPOSE.
 	 */
-	constructor(comboboxNode, pageComponents) {
+	constructor(comboboxNode) {
 		this.combobox = comboboxNode;
 		this.input = this.combobox.querySelector('input[aria-autocomplete]');
 		this.listbox = document.getElementById(this.input.getAttribute('aria-controls'));
@@ -195,8 +195,8 @@ export default class Combobox {
 	}
 
 	updateListbox() {
-		if ((this.lastSearchedTerm === this.input.value)
-			|| (this.input.value.length < this.minChars)) {
+		if ((this.lastSearchedTerm === this.input.value) ||
+			(this.input.value.length < this.minChars)) {
 			return;
 		}
 

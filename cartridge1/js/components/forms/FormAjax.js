@@ -28,8 +28,8 @@ export default class FormAjax extends Form {
 		this.setFormError('');
 
 		submitFormJson(this.action, this.getFormData(), this.method)
-				.then(this.handleResponse.bind(this))
-				.finally(() => this.toggleBusy(false));
+			.then(this.handleResponse.bind(this))
+			.finally(() => this.toggleBusy(false));
 	}
 
 	handleResponse(data) {

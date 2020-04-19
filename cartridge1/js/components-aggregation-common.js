@@ -17,5 +17,5 @@ export default [
 	['DialogButton', DialogButton],
 	['Tabs', Tabs],
 	['Accordion', Accordion],
-	['Expand', Expand],
+	['Expand', Expand]
 ];

@@ -1,8 +1,8 @@
-export function append(domNode, str) {}
-
-export function siblings(domNode) {
-
-}
+//export function append(domNode, str) {}
+//
+//export function siblings(domNode) {
+//
+//}
 
 export function closest(element, attributeString) {
 	while (element && element !== document) {

@@ -42,5 +42,4 @@ export default class AccordionNoRoles extends Accordion {
 			controlledSection.classList.remove('m-expanded');
 		});
 	}
-
 }

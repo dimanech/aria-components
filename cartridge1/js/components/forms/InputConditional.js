@@ -1,5 +1,5 @@
 export default class InputConditional {
-    /**
+	/**
      * InputConditional
      *
      * Set enabled|disabled state for element depends of state of several inputs in forms.
@@ -20,78 +20,78 @@ export default class InputConditional {
      *
      * @param {HTMLInputElement} domNode - input input=text|button that dependant on set of other input states
      */
-    constructor(domNode) {
-        this.input = domNode;
-        this.form = InputConditional.findParentForm(domNode);
-        this.dependsFrom = [];
-    }
+	constructor(domNode) {
+		this.input = domNode;
+		this.form = InputConditional.findParentForm(domNode);
+		this.dependsFrom = [];
+	}
 
-    init() {
-        if (!this.prepareDependants(this.input)) {
+	init() {
+		if (!this.prepareDependants(this.input)) {
             console.error('InputConditional component has wrong JSON configuration. Component not inited!'); // eslint-disable-line
-            return;
-        }
+			return;
+		}
 
-        this.addEventListeners();
-        this.handleChange();
-    }
+		this.addEventListeners();
+		this.handleChange();
+	}
 
-    addEventListeners() {
-        this.handleChange = this.handleChange.bind(this);
-        this.form.addEventListener('change', this.handleChange);
-    }
+	addEventListeners() {
+		this.handleChange = this.handleChange.bind(this);
+		this.form.addEventListener('change', this.handleChange);
+	}
 
-    handleChange() {
-        let dependantsState = [];
+	handleChange() {
+		let dependantsState = [];
 
-        this.dependsFrom.forEach(item => {
-            if (typeof item === 'object') {
-                let hasValidInGroup = false;
-                item.forEach(item => {
-                    if (hasValidInGroup) {
-                        return;
-                    }
-                    hasValidInGroup = InputConditional.isDependencyResolved(item);
-                });
-                dependantsState.push(hasValidInGroup);
-            } else {
-                dependantsState.push(InputConditional.isDependencyResolved(item));
-            }
-        });
+		this.dependsFrom.forEach(item => {
+			if (typeof item === 'object') {
+				let hasValidInGroup = false;
+				item.forEach(item => {
+					if (hasValidInGroup) {
+						return;
+					}
+					hasValidInGroup = InputConditional.isDependencyResolved(item);
+				});
+				dependantsState.push(hasValidInGroup);
+			} else {
+				dependantsState.push(InputConditional.isDependencyResolved(item));
+			}
+		});
 
-        this.toggleInput(dependantsState.indexOf(false) > -1);
-    }
+		this.toggleInput(dependantsState.indexOf(false) > -1);
+	}
 
-    toggleInput(isDisabled) {
-        this.input.toggleAttribute('disabled', isDisabled);
-        this.input.focus();
-        if (isDisabled) {
-            this.input.removeAttribute('required');
-        } else {
-            this.input.setAttribute('required', '');
-        }
-        this.input.dispatchEvent(new Event('input:checkValidity', { bubbles: true }));
-        // case if input is fields set validate all inner elements fieldset.elements
-    }
+	toggleInput(isDisabled) {
+		this.input.toggleAttribute('disabled', isDisabled);
+		this.input.focus();
+		if (isDisabled) {
+			this.input.removeAttribute('required');
+		} else {
+			this.input.setAttribute('required', '');
+		}
+		this.input.dispatchEvent(new Event('input:checkValidity', { bubbles: true }));
+		// case if input is fields set validate all inner elements fieldset.elements
+	}
 
-    static isDependencyResolved(id) {
-        const domNode = document.getElementById(id);
-        const nodeType = domNode.getAttribute('type').toUpperCase();
-        const hasCheckedState = nodeType === 'CHECKBOX' || nodeType === 'RADIO';
-        return hasCheckedState ? (domNode.checked && domNode.validity.valid) : domNode.validity.valid;
-    }
+	static isDependencyResolved(id) {
+		const domNode = document.getElementById(id);
+		const nodeType = domNode.getAttribute('type').toUpperCase();
+		const hasCheckedState = nodeType === 'CHECKBOX' || nodeType === 'RADIO';
+		return hasCheckedState ? (domNode.checked && domNode.validity.valid) : domNode.validity.valid;
+	}
 
-    static findParentForm(domNode) {
-        const parent = domNode.parentNode;
-        return parent.tagName === 'FORM' ? parent : InputConditional.findParentForm(parent);
-    }
+	static findParentForm(domNode) {
+		const parent = domNode.parentNode;
+		return parent.tagName === 'FORM' ? parent : InputConditional.findParentForm(parent);
+	}
 
-    prepareDependants(domNode) {
-        try {
-            this.dependsFrom = JSON.parse(domNode.getAttribute('data-input-depends-from'));
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
-};
+	prepareDependants(domNode) {
+		try {
+			this.dependsFrom = JSON.parse(domNode.getAttribute('data-input-depends-from'));
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+}

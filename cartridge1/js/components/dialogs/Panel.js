@@ -43,10 +43,10 @@ export default class Panel extends Dialog {
 
 		if (this.position === 'right' && this.deltaX < 0) {
 			this.dialogNode.style.transform = 'translateX(' + (-this.deltaX) + '%)';
-			document.documentElement.style.setProperty('--backdrop-opacity',  1 + (this.deltaX / 100));
+			document.documentElement.style.setProperty('--backdrop-opacity', 1 + (this.deltaX / 100));
 		} else if (this.position === 'left' && this.deltaX > 0) {
 			this.dialogNode.style.transform = 'translateX(' + (this.deltaX) + '%)';
-			document.documentElement.style.setProperty('--backdrop-opacity',  1 - (this.deltaX / 100));
+			document.documentElement.style.setProperty('--backdrop-opacity', 1 - (this.deltaX / 100));
 		}
 	}
 
@@ -96,7 +96,7 @@ export default class Panel extends Dialog {
 	}
 
 	handleBackdropClick(event) {
-		if(!this.mouseOverPanel) {
+		if (!this.mouseOverPanel) {
 			super.handleBackdropClick(event);
 		}
 		this.mouseOverPanel = false;

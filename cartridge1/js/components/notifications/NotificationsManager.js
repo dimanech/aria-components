@@ -1,7 +1,7 @@
 import Notification from './Notification.js';
 
 export default class NotificationsManager {
-	constructor(domNode, pageComponents) {
+	constructor(domNode) {
 		this.notificationsContainer = domNode;
 		this.notificationsStack = [];
 	}

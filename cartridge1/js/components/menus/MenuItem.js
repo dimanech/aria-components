@@ -168,4 +168,4 @@ export default class MenuItem {
 		this.domNode.removeEventListener('focus', this.handleFocus);
 		this.domNode.removeEventListener('blur', this.handleBlur);
 	}
-};
+}

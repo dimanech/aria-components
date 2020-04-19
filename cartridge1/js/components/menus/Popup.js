@@ -141,4 +141,4 @@ export default class Popup {
 		clearTimeout(this.timeout);
 		this.popupMenu.destroy();
 	}
-};
+}
