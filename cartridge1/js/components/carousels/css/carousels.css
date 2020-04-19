@@ -191,23 +191,27 @@ body {
 }
 
 .box:nth-child(2) {
-	background: #a13647;
+	background: #8bc34a;
 }
 
 .box:nth-child(3) {
-	background: #256e5e;
+	background: #cddc39;
 }
 
 .box:nth-child(4) {
-	background: #aa6639;
+	background: #ffeb3b;
 }
 
 .box:nth-child(5) {
-	background: #4b9131;
+	background: #ffc107;
 }
 
 .box:nth-child(6) {
-	background: #a13647;
+	background: #ff9800;
+}
+
+.box:nth-child(7) {
+	background: #ff5722;
 }
 
 /* Vertical carousel */
@@ -238,6 +242,7 @@ body {
 	left: 0;
 }
 
+/* This is the heart of the carousel */
 .scroll__track {
 	display: flex;
 	flex-direction: column;

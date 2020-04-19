@@ -21,13 +21,13 @@ export default class ScrollCarousel {
 
 	addEventListeners() {
 		this.onScroll = this.onScroll.bind(this);
-		this.prev = this.prev.bind(this);
-		this.next = this.next.bind(this);
+		this.scrollToPrevPage = this.scrollToPrevPage.bind(this);
+		this.scrollToNextPage = this.scrollToNextPage.bind(this);
 
 		this.carouselTrack.addEventListener('scroll', this.onScroll, { passive: true });
 		this.carouselTrack.addEventListener('touchstart', this.onScroll, { passive: true });
-		this.prevButton.addEventListener('click', this.prev);
-		this.nextButton.addEventListener('click', this.next);
+		this.prevButton.addEventListener('click', this.scrollToPrevPage);
+		this.nextButton.addEventListener('click', this.scrollToNextPage);
 
 		this.addGrabEventListeners();
 	}
@@ -35,14 +35,13 @@ export default class ScrollCarousel {
 	removeEventListeners() {
 		this.carouselTrack.removeEventListener('scroll', this.onScroll);
 		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
-		this.prevButton.removeEventListener('click', this.prev);
-		this.nextButton.removeEventListener('click', this.next);
+		this.prevButton.removeEventListener('click', this.scrollToPrevPage);
+		this.nextButton.removeEventListener('click', this.scrollToNextPage);
 
 		this.removeGrabEventListeners();
 	}
 
 	// Prev next buttons and UI
-
 	onScroll() {
 		this.updateCarouselMetric();
 
@@ -53,7 +52,7 @@ export default class ScrollCarousel {
 	}
 
 	updateCarouselMetric() {
-		// TODO: optimize. Cache metric of slider and add window width change watcher
+		// Possible optimization: Resize Observer that watch carousel width and cache this.carousel.offsetWidth
 		if (this.carouselDirection === 'horizontal') {
 			const totalScrollWidth = this.carouselTrack.scrollLeft + this.carousel.offsetWidth;
 			this.isScrollStart = this.carouselTrack.scrollLeft <= 0;
@@ -108,20 +107,23 @@ export default class ScrollCarousel {
 		return Math.round(currentPosition / pageWidth);
 	}
 
-	next() {
-		if (this.carouselDirection === 'horizontal') {
-			const curPage = this.getCurrentPageIndex() + 1;
-			this.scrollToPoint(0, curPage * this.carouselTrack.clientWidth);
-		} else {
-			this.scrollToPoint((this.getCurrentPageIndex() + 1) * this.carouselTrack.clientHeight, 0);
-		}
+	scrollToNextPage() {
+		this.scrollToPage(this.getCurrentPageIndex() + 1);
 	}
 
-	prev() {
+	scrollToPrevPage() {
+		this.scrollToPage(this.getCurrentPageIndex() - 1);
+	}
+
+	scrollToPage(pageIndex) {
+		if (!pageIndex) {
+			return;
+		}
+
 		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0, (this.getCurrentPageIndex() - 1) * this.carouselTrack.clientWidth);
+			this.scrollToPoint(0, Math.round(this.carousel.clientWidth * pageIndex));
 		} else {
-			this.scrollToPoint((this.getCurrentPageIndex() - 1) * this.carouselTrack.clientHeight, 0);
+			this.scrollToPoint(Math.round(this.carousel.clientHeight * pageIndex), 0);
 		}
 	}
 
@@ -227,16 +229,8 @@ export default class ScrollCarousel {
 
 	handlePaginationClick(event) {
 		event.preventDefault();
-		const eventTarget = event.target;
-		let pageIndex = eventTarget.getAttribute('data-page');
-		if (!pageIndex) {
-			return;
-		}
-		if (this.carouselDirection === 'horizontal') {
-			this.scrollToPoint(0, Math.round(this.carousel.clientWidth * pageIndex));
-		} else {
-			this.scrollToPoint(Math.round(this.carousel.clientHeight * pageIndex), 0);
-		}
+		const pageIndex = event.target.getAttribute('data-page');
+		this.scrollToPage(pageIndex);
 	}
 
 	// Grab to scroll functionality only for horizontal direction
@@ -289,10 +283,10 @@ export default class ScrollCarousel {
 
 		switch (true) {
 			case (this.deltaX <= -10):
-				this.prev();
+				this.scrollToPrevPage();
 				break;
 			case (this.deltaX >= 10):
-				this.next();
+				this.scrollToNextPage();
 				break;
 			default:
 				// remove immediate for this case
