@@ -135,13 +135,16 @@ export default class Hint {
 	}
 
 	destroy() {
-		if (this.showTimer) {
-			window.clearTimeout(this.showTimer);
-		}
+		document.removeEventListener('keyup', this.handleEscape);
+
 		this.elementsWithHint.forEach(element => {
 			element.removeEventListener('mouseenter', this.initHint);
 			element.removeEventListener('mouseout', this.hideHint);
 		});
 		this.elementsWithHint = [];
+
+		if (this.showTimer) {
+			window.clearTimeout(this.showTimer);
+		}
 	}
 }
