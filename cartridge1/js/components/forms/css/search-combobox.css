@@ -10,6 +10,8 @@
 }
 
 .b-suggestions {
+	background-color: white;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	left: 0;
 	max-height: 70vh;
 	max-width: 500px;
@@ -19,8 +21,6 @@
 	right: 0;
 	top: 0;
 	transition: opacity ease 1s;
-	background-color: white;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .b-suggestions[aria-busy=true] {
@@ -36,8 +36,8 @@
 }
 
 .b-suggestions-results.m-products {
-	min-width: 60%;
 	margin-right: 20px;
+	min-width: 60%;
 }
 
 .b-suggestions_product {
@@ -45,28 +45,28 @@
 }
 
 .b-suggestions_product-image {
-	width: 60px;
-	height: 60px;
 	background-color: lightblue;
+	height: 60px;
+	margin-right: 10px;
 	overflow: hidden;
 	position: relative;
-	margin-right: 10px;
+	width: 60px;
 }
 
 .b-suggestions_product-image img {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
 	bottom: 0;
+	left: 0;
 	object-fit: cover;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 .b-header_suggestions_flyout_pane {
-	position: absolute;
-	left: 0;
-	right: 0;
 	background-color: rgba(255, 255, 255, 0.9);
+	left: 0;
+	position: absolute;
+	right: 0;
 	z-index: 1;
 }
 
@@ -75,6 +75,6 @@
 }
 
 .h-vis {
-	position: absolute;
 	clip: rect(0 0 0 0);
+	position: absolute;
 }

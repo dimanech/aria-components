@@ -16,11 +16,11 @@
 	.pdp-details__tablist {
 		display: none;
 	}
-	
+
 	.pdp-details {
 		border-bottom: 1px solid;
 	}
-	
+
 	.pdp-details__section-toggle {
 		appearance: none;
 		background: lightgrey;
@@ -28,17 +28,17 @@
 		border-top: 1px solid;
 		display: flex;
 		font: inherit;
+		font-weight: bold;
+		padding: 10px 0;
 		text-align: left;
 		width: 100%;
-		padding: 10px 0;
-		font-weight: bold;
 	}
-	
+
 	.pdp-details__section-toggle svg {
 		margin-left: auto;
 		margin-right: 10px;
 	}
-	
+
 	.pdp-details__section-toggle[aria-expanded=true] .icon-plus__line-2 {
 		display: none;
 	}
@@ -48,14 +48,14 @@
 	.pdp-details__section-toggle {
 		display: none;
 	}
-	
+
 	.pdp-details__tablist {
 		border-bottom: 1px solid;
 		display: flex;
 		position: relative;
 		width: 100%;
 	}
-	
+
 	.pdp-details__tab {
 		appearance: none;
 		background: none;
@@ -65,7 +65,7 @@
 		font-weight: bold;
 		padding: 5px 10px;
 	}
-	
+
 	.pdp-details__tab[aria-selected=true]  {
 		border-color: black;
 	}

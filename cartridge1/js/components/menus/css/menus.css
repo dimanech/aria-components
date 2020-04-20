@@ -1,11 +1,11 @@
 body {
-	margin: 0;
 	background-color: #e2e2e2;
+	margin: 0;
 }
 
 ul {
-	padding: 0;
 	margin: 0;
+	padding: 0;
 }
 
 li {
@@ -25,11 +25,11 @@ li {
 
 .utility-menu__inner {
 	box-sizing: border-box;
-	max-width: 1200px;
-	margin: 0 auto;
 	display: flex;
-	padding: 10px;
 	justify-content: space-between;
+	margin: 0 auto;
+	max-width: 1200px;
+	padding: 10px;
 }
 
 .utility-menu__item {
@@ -43,11 +43,11 @@ li {
 }
 
 .menu-bar__inner {
-	max-width: 1200px;
-	margin: 0 auto;
 	display: flex;
-	width: 100%;
 	list-style: none;
+	margin: 0 auto;
+	max-width: 1200px;
+	width: 100%;
 }
 
 .menu-bar__list {}
@@ -58,8 +58,8 @@ li {
 }
 
 .menu-bar__link._level-1 {
-	padding: 20px;
 	color: white;
+	padding: 20px;
 }
 
 .menu-bar__link._level-1:hover {
@@ -76,8 +76,8 @@ li {
 
 .menu-bar__popup {
 	display: none;
-	position: absolute;
 	left: 0;
+	position: absolute;
 	right: 0;
 	z-index: 2;
 }
@@ -88,8 +88,8 @@ li {
 
 .menu-bar__popup-inner {
 	box-sizing: border-box;
-	max-width: 1200px;
 	margin: 0 auto;
+	max-width: 1200px;
 	padding: 20px;
 }
 
@@ -98,13 +98,13 @@ li {
 }
 
 .menu-bar__flyout-pane {
-	position: absolute;
-	left: 0;
-	right: 0;
-	z-index: 1;
-	transition: all ease 0.4s;
 	background-color: white;
 	box-shadow: 0 11px 10px rgba(0, 0, 0, 0.3);
+	left: 0;
+	position: absolute;
+	right: 0;
+	transition: all ease 0.4s;
+	z-index: 1;
 }
 
 /* Popup menu */
@@ -115,13 +115,13 @@ li {
 	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 	max-width: 200px;
 	opacity: 0;
+	padding: 0 10px;
 	position: absolute;
 	transform: translateY(10px);
 	transition: ease .3s;
 	transition-property: visibility, opacity, transform;
 	visibility: hidden;
 	z-index: 2;
-	padding: 0 10px;
 }
 
 @supports (filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))) {
@@ -175,7 +175,7 @@ li {
 
 main {
 	box-sizing: border-box;
-	max-width: 1200px;
 	margin: 0 auto;
+	max-width: 1200px;
 	padding: 20px;
 }

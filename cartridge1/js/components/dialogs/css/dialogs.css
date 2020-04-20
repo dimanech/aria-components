@@ -31,10 +31,10 @@ body {
 	position: fixed;
 	right: 0;
 	top: 0;
+	touch-action: none;
 	transition: visibility var(--transition);
 	visibility: hidden;
 	z-index: 1;
-	touch-action: none;
 }
 
 .dialog-backdrop.is-active {
@@ -68,10 +68,10 @@ body {
 }
 
 .dialog-backdrop.m-grabbing {
-	transition: none;
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
+	transition: none;
 	user-select: none;
 }
 
@@ -103,9 +103,9 @@ body {
 }
 
 .panel {
-	box-sizing: border-box;
 	background: white;
 	bottom: 0;
+	box-sizing: border-box;
 	padding: 40px;
 	position: fixed;
 	right: 0;
@@ -125,8 +125,8 @@ body {
 }
 
 .dialog-backdrop.m-grabbing .panel {
-	user-select: none;
 	transition: none;
+	user-select: none;
 }
 
 .close {

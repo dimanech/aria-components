@@ -37,19 +37,19 @@ textarea[aria-invalid=true] {
 }
 
 .form[aria-busy=true]::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	background: rgba(255, 255, 255, 0.6);
+	bottom: 0;
+	content: '';
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 .form__error {
-	padding: 4px 8px;
 	background-color: red;
 	color: white;
+	padding: 4px 8px;
 }
 
 .field { /* consider bettre naming - field-group, because it could be groups of radios and checkboxes*/
@@ -61,12 +61,12 @@ textarea[aria-invalid=true] {
 }
 
 .field__error {
-	max-width: 200px;
-	margin-top: 4px;
-	padding: 4px 8px;
 	background-color: red;
-	color: white;
 	border-radius: 4px;
+	color: white;
+	margin-top: 4px;
+	max-width: 200px;
+	padding: 4px 8px;
 }
 
 fieldset[disabled] .field__error,
@@ -124,14 +124,14 @@ input[disabled] + .field__error {
 
 .button-unmask {
 	appearance: none;
-	border: none;
-	display: block;
-	width: 40px;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-	cursor: pointer;
 	background-color: #eee;
+	border: none;
+	cursor: pointer;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	width: 40px;
 }
 
 .button-unmask[aria-pressed=true] {

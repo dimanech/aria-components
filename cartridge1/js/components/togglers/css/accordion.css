@@ -9,10 +9,10 @@
 	border-top: 1px solid;
 	display: flex;
 	font: inherit;
+	font-weight: bold;
+	padding: 10px 0;
 	text-align: left;
 	width: 100%;
-	padding: 10px 0;
-	font-weight: bold;
 }
 
 .accordion__control svg {

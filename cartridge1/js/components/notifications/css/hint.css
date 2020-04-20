@@ -1,16 +1,16 @@
 .hint {
-	box-sizing: border-box;
-	position: absolute;
-	padding: 6px 8px;
 	background-color: rgba(0, 0, 0, 0.7);
 	border-radius: 5px;
+	box-sizing: border-box;
 	color: white;
 	display: none;
-	font-size: 0.7rem;
 	font-family: sans-serif;
+	font-size: 0.7rem;
+	padding: 6px 8px;
 	pointer-events: none;
-	transform: translateX(-50%);
+	position: absolute;
 	text-align: center;
+	transform: translateX(-50%);
 }
 
 .hint._shown {
