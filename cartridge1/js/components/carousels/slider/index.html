@@ -1,0 +1,201 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta
+		name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+	>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>CSS classes content slider</title>
+	<link rel="stylesheet" href="css/slider.css"/>
+	<!-- <script async type="module" src="../../initiator.js"></script>-->
+</head>
+<body>
+	<h1>Content slider</h1>
+	<h2>3 items</h2>
+	<section
+		class="slider"
+		data-component="./carousels/slider/ContentSlider"
+		role="region"
+		aria-roledescription="carousel"
+	>
+		<div class="slider__paginations">
+			<button
+				class="slider__autoplay-toggle"
+				data-elem-autoplay-toggle
+				aria-pressed="false"
+				aria-label="Stop automatic slide show"
+			>
+				<svg width="15" height="20" viewBox="10 5 20 20" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+					<polygon class="pause" stroke-width="2" points="17 8 17 20"></polygon>
+					<polygon class="pause" stroke-width="2" points="24 8 24 20"></polygon>
+					<polygon class="play"  points="15 8 15 20 27 14"></polygon>
+				</svg>
+			</button>
+			<div data-elem-dots></div>
+		</div>
+		<button
+			class="slider__ctrl _prev"
+			data-elem-prev-button
+			aria-label="Previous Slide"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+				<g
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					style="transform: rotate(-180deg); transform-origin: center"
+				>
+					<path d="M1 9h14M9 2l7 7-7 7"></path>
+				</g>
+			</svg>
+		</button>
+		<button
+			class="slider__ctrl _next"
+			data-elem-next-button
+			aria-label="Next Slide"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+				<g fill="none" stroke="currentColor" stroke-width="2">
+					<path d="M1 9h14M9 2l7 7-7 7"></path>
+				</g>
+			</svg>
+		</button>
+		<div
+			class="slider__content"
+			data-elem-content
+			aria-live="off"
+		>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="1 of 4"
+			>
+				<div class="box _v-1">1</div>
+			</div>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="2 of 4"
+			>
+				<div class="box _v-2">2</div>
+			</div>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="3 of 4"
+			>
+				<div class="box _v-3">3</div>
+			</div>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="4 of 4"
+			>
+				<div class="box _v-4">4</div>
+			</div>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="5 of 5"
+			>
+				<div class="box _v-5">5</div>
+			</div>
+		</div>
+	</section>
+
+	<h2>2 items</h2>
+	<div class="slider" data-component="./carousels/slider/ContentSlider">
+		<div class="slider__paginations">
+			<button
+				class="slider__autoplay-toggle"
+				data-elem-autoplay-toggle
+				aria-pressed="false"
+				aria-label="Stop automatic slide show"
+			>
+				<svg width="15" height="20" viewBox="10 5 20 20" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+					<polygon class="pause" stroke-width="2" points="17 8 17 20"></polygon>
+					<polygon class="pause" stroke-width="2" points="24 8 24 20"></polygon>
+					<polygon class="play"  points="15 8 15 20 27 14"></polygon>
+				</svg>
+			</button>
+			<div data-elem-dots></div>
+		</div>
+		<button
+			class="slider__ctrl _prev"
+			data-elem-prev-button
+			tabindex="-1"
+			aria-hidden="true"
+		>
+			Prev
+		</button>
+		<button
+			class="slider__ctrl _next"
+			data-elem-next-button
+			tabindex="-1"
+			aria-hidden="true"
+		>
+			Next
+		</button>
+		<div class="slider__content" data-elem-content>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="1 of 4"
+			>
+				<div class="box _v-1">1</div>
+			</div>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="2 of 4"
+			>
+				<div class="box _v-2">2</div>
+			</div>
+		</div>
+	</div>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<script type="module">
+		import ContentSlider from './ContentSliderAutoplay.js';
+
+		document.querySelectorAll('[data-component="./carousels/slider/ContentSlider"]').forEach(slider => new ContentSlider(slider).init());
+	</script>
+</body>
+</html>

@@ -167,13 +167,13 @@ export default class Tabs {
 	}
 
 	focusButtonByIndex(requestedIndex) {
-		const buttonsLength = this.tabs.length;
+		const tabsTotal = this.tabs.length;
 		let nextIndex;
 
 		if (requestedIndex < 0) {
-			nextIndex = (buttonsLength - 1);
+			nextIndex = (tabsTotal - 1);
 		} else {
-			nextIndex = requestedIndex % buttonsLength;
+			nextIndex = requestedIndex % tabsTotal;
 		}
 
 		this.focusedTab = this.tabs[nextIndex];

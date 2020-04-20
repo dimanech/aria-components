@@ -387,10 +387,10 @@
 	<br>
 
 	<script type="module">
-		import SnapScrollCarousel from './ScrollCarousel.js';
+		import ScrollCarousel from './ScrollCarousel.js';
 		import ScrollCarouselAutoplay from './ScrollCarouselAutoplay.js';
 
-		document.querySelectorAll('[data-component="./carousels/ScrollCarousel"]').forEach(carousel => new SnapScrollCarousel(carousel).init());
+		document.querySelectorAll('[data-component="./carousels/ScrollCarousel"]').forEach(carousel => new ScrollCarousel(carousel).init());
 		document.querySelectorAll('[data-component="./carousels/ScrollCarouselAutoplay"]').forEach(carousel => new ScrollCarouselAutoplay(carousel).init());
 	</script>
 </body>
