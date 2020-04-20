@@ -162,6 +162,51 @@
 		</div>
 	</div>
 
+	<h2>1 item</h2>
+	<div class="slider" data-component="./carousels/slider/ContentSlider">
+		<div class="slider__paginations">
+			<button
+				class="slider__autoplay-toggle"
+				data-elem-autoplay-toggle
+				aria-pressed="false"
+				aria-label="Stop automatic slide show"
+			>
+				<svg width="15" height="20" viewBox="10 5 20 20" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+					<polygon class="pause" stroke-width="2" points="17 8 17 20"></polygon>
+					<polygon class="pause" stroke-width="2" points="24 8 24 20"></polygon>
+					<polygon class="play"  points="15 8 15 20 27 14"></polygon>
+				</svg>
+			</button>
+			<div data-elem-dots></div>
+		</div>
+		<button
+			class="slider__ctrl _prev"
+			data-elem-prev-button
+			tabindex="-1"
+			aria-hidden="true"
+		>
+			Prev
+		</button>
+		<button
+			class="slider__ctrl _next"
+			data-elem-next-button
+			tabindex="-1"
+			aria-hidden="true"
+		>
+			Next
+		</button>
+		<div class="slider__content" data-elem-content>
+			<div
+				class="slider__slide"
+				role="group"
+				aria-roledescription="slide"
+				aria-label="1 of 4"
+			>
+				<div class="box _v-1">1</div>
+			</div>
+		</div>
+	</div>
+
 	<br>
 	<br>
 	<br>
