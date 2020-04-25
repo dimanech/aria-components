@@ -1,5 +1,9 @@
+:root {
+	--transition: ease 0.4s;
+	--backdrop-opacity: 1;
+}
+
 body {
-	background-color: #e2e2e2;
 	margin: 0;
 }
 
@@ -20,7 +24,7 @@ li {
 /* utility-menu */
 
 .utility-menu {
-	background-color: #959595;
+	background-color: #ccc;
 }
 
 .utility-menu__inner {
@@ -29,7 +33,7 @@ li {
 	justify-content: space-between;
 	margin: 0 auto;
 	max-width: 1200px;
-	padding: 10px;
+	padding: 10px 30px;
 }
 
 .utility-menu__item {
@@ -115,6 +119,7 @@ li {
 		z-index: 1;
 	}
 
+	.menu-bar-toggle,
 	.menu-panel__content,
 	.menu-panel__header {
 		display: none;
@@ -140,32 +145,55 @@ li {
 
 	/* hamburger menu */
 	.menu-panel {
-		overflow: hidden;
 		position: fixed;
 		top: 0;
 		bottom: 0;
 		left: 0;
-		width: 40%;
+		right: 0;
 		z-index: 2;
-		background-color: #fff;
-		display: none;
+		visibility: hidden;
 	}
 
 	.menu-panel._open {
-		display: block;
+		visibility: visible;
 	}
 
-	/*.menu-panel::after {*/
-	/*	content: "";*/
-	/*	display: block;*/
-	/*	position: fixed;*/
-	/*	top: 0;*/
-	/*	left: 0;*/
-	/*	right: 0;*/
-	/*	bottom: 0;*/
-	/*	background-color: rgba(0, 0, 0, 0.5);*/
-	/*	z-index: 1;*/
-	/*}*/
+	.menu-panel::after {
+		background-color: transparent;
+		bottom: 0;
+		content: "";
+		left: 0;
+		opacity: 0;
+		opacity: var(--backdrop-opacity);
+		position: fixed;
+		right: 0;
+		top: 0;
+		transition: var(--transition);
+		transition-property: opacity, background-color;
+		z-index: 1;
+	}
+
+	.menu-panel._open::after {
+		background-color: rgba(0, 0, 0, 0.5);
+		opacity: 1;
+		opacity: var(--backdrop-opacity);
+	}
+
+	.menu-panel__box {
+		position: relative;
+		z-index: 2;
+		background-color: #fff;
+		width: 40%;
+		overflow: hidden;
+		transform: translateX(-100%);
+		transition: var(--transition);
+		transition-property: transform, visibility;
+	}
+
+	.menu-panel._open .menu-panel__box {
+		box-shadow: var(--depth-1);
+		transform: translateX(0);
+	}
 
 	.menu-panel__track {
 		display: flex;

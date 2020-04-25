@@ -20,16 +20,16 @@ export default class MenuItem {
 	 * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 	 */
 	constructor(domNode, menuObj) {
-		this.domNode = domNode;
+		this.domNode = domNode; // needed to access host node from parent componetn
 		this.menu = menuObj;
 
 		this.blurHandledByController = false;
 
+		this.hasSubMenu = this.domNode.hasAttribute('aria-haspopup');
+
 		this.timeout = 20;
 
-		this.cssClassNames = {
-			active: '_active'
-		};
+		this.cssClassActive = '_active';
 	}
 
 	init() {
@@ -47,6 +47,13 @@ export default class MenuItem {
 		this.domNode.addEventListener('click', this.handleClick);
 		this.domNode.addEventListener('focus', this.handleFocus);
 		this.domNode.addEventListener('blur', this.handleBlur);
+	}
+
+	removeEventListeners() {
+		this.domNode.removeEventListener('keydown', this.handleKeydown);
+		this.domNode.removeEventListener('click', this.handleClick);
+		this.domNode.removeEventListener('focus', this.handleFocus);
+		this.domNode.removeEventListener('blur', this.handleBlur);
 	}
 
 	handleKeydown(event) {
@@ -91,14 +98,13 @@ export default class MenuItem {
 				preventEventActions = true;
 				break;
 
-			case keyCode.ESC:
+			case keyCode.TAB:
 				this.menu.setFocusToController();
 				preventEventActions = true;
 				break;
 
-			case keyCode.TAB:
+			case keyCode.ESC:
 				this.menu.setFocusToController();
-				preventEventActions = true;
 				break;
 
 			default:
@@ -114,19 +120,13 @@ export default class MenuItem {
 	handleKeyReturn(event) {
 		// Create simulated mouse event to mimic the behavior of ATs
 		// and let the event handler handleClick do the housekeeping.
-		let clickEvent;
-		if (typeof MouseEvent === 'function') {
-			clickEvent = new MouseEvent('click', {
-				view: window,
-				bubbles: true,
-				cancelable: true
-			});
-		} else if (document.createEvent) { // IE11<
-			clickEvent = document.createEvent('MouseEvents');
-			clickEvent.initEvent('click', true, true);
-		}
+		const clickEvent = new MouseEvent('click', {
+			view: window,
+			bubbles: true,
+			cancelable: true
+		});
 		event.currentTarget.dispatchEvent(clickEvent);
-		event.currentTarget.classList.add(this.cssClassNames.active);
+		event.currentTarget.classList.add(this.cssClassActive);
 	}
 
 	handleKeyRight() {
@@ -140,7 +140,7 @@ export default class MenuItem {
 	}
 
 	handleClick() {
-		this.domNode.classList.add(this.cssClassNames.active);
+		this.domNode.classList.add(this.cssClassActive);
 	}
 
 	handleFocus() {
@@ -161,11 +161,7 @@ export default class MenuItem {
 	}
 
 	destroy() {
+		this.removeEventListeners();
 		this.domNode.tabIndex = 0;
-
-		this.domNode.removeEventListener('keydown', this.handleKeydown);
-		this.domNode.removeEventListener('click', this.handleClick);
-		this.domNode.removeEventListener('focus', this.handleFocus);
-		this.domNode.removeEventListener('blur', this.handleBlur);
 	}
 }

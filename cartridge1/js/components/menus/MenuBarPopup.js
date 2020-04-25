@@ -1,4 +1,4 @@
-import PopupMenu from './PopupMenu.js';
+import PopupMenu from './MenuBarPopupMenu.js';
 
 const keyCode = Object.freeze({
 	TAB: 9,
@@ -15,7 +15,7 @@ const keyCode = Object.freeze({
 	DOWN: 40
 });
 
-export default class MenuBarItem {
+export default class MenuBarPopup {
 	/*
 	 * This content is based on w3.org design pattern examples
 	 * and licensed according to the W3C Software License at
@@ -33,11 +33,8 @@ export default class MenuBarItem {
 		this.hasHover = false;
 		this.isPopUpExpanded = false;
 
-		this.mouseOutTimeout = 30;
-
-		this.cssClassNames = {
-			hover: '_hover'
-		};
+		this.mouseOutDelay = 30;
+		this.cssClassHover = '_hover';
 	}
 
 	init() {
@@ -46,7 +43,7 @@ export default class MenuBarItem {
 
 		// Initialize pop up menus
 		const nextElement = this.domNode.nextElementSibling;
-		if (nextElement && nextElement.hasAttribute('role', 'menu')) {
+		if (nextElement && nextElement.getAttribute('role') === 'menu') {
 			this.popupMenu = new PopupMenu(nextElement, this);
 			this.popupMenu.init();
 		}
@@ -64,6 +61,14 @@ export default class MenuBarItem {
 		this.domNode.addEventListener('blur', this.handleBlur);
 		this.wrapper.addEventListener('mouseenter', this.handleMouseover);
 		this.wrapper.addEventListener('mouseleave', this.handleMouseout);
+	}
+
+	removeEventListeners() {
+		this.domNode.removeEventListener('keydown', this.handleKeydown);
+		this.domNode.removeEventListener('focus', this.handleFocus);
+		this.domNode.removeEventListener('blur', this.handleBlur);
+		this.domNode.removeEventListener('mouseenter', this.handleMouseover);
+		this.domNode.removeEventListener('mouseleave', this.handleMouseout);
 	}
 
 	handleKeydown(event) { // eslint-disable-line complexity
@@ -110,13 +115,8 @@ export default class MenuBarItem {
 				preventEventActions = true;
 				break;
 
-			case keyCode.TAB:
-				if (this.popupMenu) {
-					this.popupMenu.close(true);
-				}
-				break;
-
 			case keyCode.ESC:
+			case keyCode.TAB:
 				if (this.popupMenu) {
 					this.popupMenu.close(true);
 				}
@@ -160,10 +160,10 @@ export default class MenuBarItem {
 		this.hasHover = true;
 		if (this.menuBar.hasHover && this.popupMenu) {
 			// Need timeout to improve UX
-			setTimeout(() => this.popupMenu.open(), this.mouseOutTimeout);
+			this.timeout = setTimeout(() => this.popupMenu.open(), this.mouseOutDelay);
 		}
 		if (this.menuBar.hasHover) {
-			this.domNode.classList.add(this.cssClassNames.hover);
+			this.domNode.classList.add(this.cssClassHover);
 		}
 	}
 
@@ -171,18 +171,14 @@ export default class MenuBarItem {
 		this.hasHover = false;
 		if (this.popupMenu) {
 			// fired twice since menu also handle mouseout and close menu
-			setTimeout(() => this.popupMenu.close(), this.mouseOutTimeout);
+			this.timeout = setTimeout(() => this.popupMenu.close(), this.mouseOutDelay);
 		}
-		this.domNode.classList.remove(this.cssClassNames.hover);
+		this.domNode.classList.remove(this.cssClassHover);
 	}
 
 	destroy() {
-		this.domNode.removeEventListener('keydown', this.handleKeydown);
-		this.domNode.removeEventListener('focus', this.handleFocus);
-		this.domNode.removeEventListener('blur', this.handleBlur);
-		this.domNode.removeEventListener('mouseenter', this.handleMouseover);
-		this.domNode.removeEventListener('mouseleave', this.handleMouseout);
-
+		this.removeEventListeners();
+		clearTimeout(this.timeout);
 		if (this.popupMenu) {
 			this.popupMenu.destroy();
 		}

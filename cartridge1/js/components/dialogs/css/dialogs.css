@@ -120,7 +120,7 @@ body {
 
 .panel.is-open {
 	box-shadow: var(--depth-1);
-	transform: translateX(0%);
+	transform: translateX(0);
 	visibility: visible;
 }
 

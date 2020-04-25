@@ -1,10 +1,11 @@
-import MenuPanelItem from './MenuPanelItem.js';
+import MenuPanelMenu from './MenuPanelMenu.js';
 
 const keyCode = Object.freeze({
 	ESC: 27,
+	TAB: 9
 });
 
-// click on link, overlay,
+// overlay and close, aria-expanded, esc
 
 export default class MenuPanel {
 	constructor(domNode) {
@@ -17,30 +18,30 @@ export default class MenuPanel {
 		this.subPanelsMenus = [];
 		this.trackCurrentLevel = 0;
 
-		this.TRANSITION_DELAY = 400;
+		this.animationDelay = 400;
+		this.selectorBack = 'data-elem-panel-back';
+		this.selectorClose = 'data-elem-panel-close';
 	}
 
 	init() {
+		this.mainMenu.setAttribute('role', 'menu');
+
 		this.addEventListeners();
 		this.moveTrackTo(0);
-		this.initMenuItems();
+		this.initRootMenu();
 	}
 
 	addEventListeners() {
-		this.back = this.back.bind(this);
-		this.closeMenu = this.closeMenu.bind(this);
+		this.backFromClick = this.backFromClick.bind(this);
+		this.forwardFromClick = this.forwardFromClick.bind(this);
+		this.closeMenuFromClick = this.closeMenuFromClick.bind(this);
 		this.openMenu = this.openMenu.bind(this);
 		this.handleKeydown = this.handleKeydown.bind(this);
 
 		this.track.addEventListener('keydown', this.handleKeydown);
-
-		this.container.querySelectorAll('[data-elem-panel-back]').forEach(item => {
-			item.addEventListener('click', this.back);
-		});
-
-		this.container.querySelectorAll('[data-elem-panel-close]').forEach(item => {
-			item.addEventListener('click', this.closeMenu);
-		});
+		this.container.addEventListener('click', this.closeMenuFromClick);
+		this.container.addEventListener('click', this.forwardFromClick);
+		this.container.addEventListener('click', this.backFromClick);
 
 		document.querySelectorAll('[data-elem-hamburger-open]').forEach(item => {
 			item.addEventListener('click', this.openMenu);
@@ -59,6 +60,24 @@ export default class MenuPanel {
 		}
 	}
 
+	forwardFromClick(event) {
+		const element = event.target;
+		if (element.getAttribute('aria-haspopup') !== 'true') {
+			return;
+		}
+		event.preventDefault();
+		this.forward(element);
+	}
+
+	backFromClick(event) {
+		const element = event.target;
+		if (!element.hasAttribute(this.selectorBack)) {
+			return;
+		}
+		event.preventDefault();
+		this.back();
+	}
+
 	forward(element) {
 		if (this.isPanelInTransition) {
 			return;
@@ -73,7 +92,7 @@ export default class MenuPanel {
 		setTimeout(() => {
 			this.subPanelsMenus[requestedLevel].setFocusToFirstItem();
 			this.isPanelInTransition = false;
-		}, this.TRANSITION_DELAY);
+		}, this.animationDelay);
 	}
 
 	back() {
@@ -85,9 +104,9 @@ export default class MenuPanel {
 		const requestedLevel = this.getPanelIndex(this.trackCurrentLevel - 1);
 		this.moveTrackTo(requestedLevel);
 		setTimeout(() => {
-			this.subPanelsMenus[requestedLevel].setFocusToLastFocusedItem();
+			this.subPanelsMenus[requestedLevel].setFocusToCurrentItem();
 			this.isPanelInTransition = false;
-		}, this.TRANSITION_DELAY);
+		}, this.animationDelay);
 	}
 
 	moveTrackTo(requestedLevel) {
@@ -109,8 +128,8 @@ export default class MenuPanel {
 		return requestedLevel;
 	}
 
-	initMenuItems() {
-		const subPanel = new MenuPanelItem(this.mainMenu, this);
+	initRootMenu() {
+		const subPanel = new MenuPanelMenu(this.mainMenu, this);
 		subPanel.init();
 
 		this.subPanelsMenus[0] = subPanel;
@@ -123,27 +142,16 @@ export default class MenuPanel {
 		}
 
 		this.subPanels[requestedLevel].setAttribute('aria-busy', true);
-		const yeilds = this.subPanels[requestedLevel].querySelector('[data-elem-panel-yelds]');
-		yeilds.innerHTML = subMenu.innerHTML;
+		const subPanelContent = this.subPanels[requestedLevel].querySelector('[data-elem-panel-yields]');
+		subPanelContent.innerHTML = subMenu.innerHTML;
 
-		const subPanel = new MenuPanelItem(yeilds.firstElementChild, this); // TODO firstElementChild
+		const subPanel = new MenuPanelMenu(subPanelContent, this);
 		subPanel.init();
 
 		this.subPanelsMenus[requestedLevel] = subPanel;
 
-		this.subPanels[requestedLevel].setAttribute('aria-busy', false);
+		this.subPanels[requestedLevel].setAttribute('aria-busy', false); // TODO: when transition ends
 		return true;
-	}
-
-	setFocusToController(cmd) {
-		const command = typeof cmd !== 'string' ? '' : cmd;
-
-		if (command === 'previous') {
-			this.back();
-		}
-		if (command === 'next') {
-			this.forward();
-		}
 	}
 
 	openMenu() {
@@ -156,11 +164,20 @@ export default class MenuPanel {
 		this.resetHamburgerState();
 	}
 
+	closeMenuFromClick(event) {
+		const element = event.target;
+		if (!element.hasAttribute(this.selectorClose)) {
+			return;
+		}
+		event.preventDefault();
+		this.closeMenu();
+	}
+
 	resetHamburgerState() {
 		this.timeout = setTimeout(() => {
 			this.resetClasses();
 			this.resetPanelsContent();
-		}, this.TRANSITION_DELAY); // 400 panel animation delay
+		}, this.animationDelay); // 400 panel animation delay
 	}
 
 	resetClasses() {
@@ -176,5 +193,6 @@ export default class MenuPanel {
 	destroy() {
 		clearTimeout(this.timeout);
 		this.resetClasses();
+		this.mainMenu.removeAttribute('role');
 	}
 }

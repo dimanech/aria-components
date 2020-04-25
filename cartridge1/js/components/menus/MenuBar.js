@@ -1,6 +1,4 @@
-import MenuBarItem from './MenuBarItem.js';
-
-// TODO: remove menubar role
+import MenuBarPopup from './MenuBarPopup.js';
 
 export default class MenuBar {
 	/*
@@ -26,12 +24,11 @@ export default class MenuBar {
 
 		this.flyout = this.domNode.querySelector('[data-elem-menu-flyout-pane]');
 
-		this.cssClassNames = {
-			hover: '_hover'
-		};
+		this.cssClassHover = '_hover';
 	}
 
 	init() {
+		this.domNode.setAttribute('role', 'menubar');
 		this.setUpMenuItems();
 		if (this.menubarItems.length <= 0) {
 			return;
@@ -47,8 +44,8 @@ export default class MenuBar {
 		while (elem) {
 			const menuElement = elem.firstElementChild;
 
-			if (elem && menuElement && menuElement.tagName === 'A') {
-				const menubarItem = new MenuBarItem(menuElement, this);
+			if (elem && menuElement && menuElement.getAttribute('role') === 'menuitem') {
+				const menubarItem = new MenuBarPopup(menuElement, this);
 				menubarItem.init();
 				this.menubarItems.push(menubarItem);
 			}
@@ -71,12 +68,17 @@ export default class MenuBar {
 		this.domNode.addEventListener('mouseleave', this.handleMouseLeave);
 	}
 
+	removeEventListeners() {
+		this.domNode.removeEventListener('mouseenter', this.handleMouseEnter);
+		this.domNode.removeEventListener('mouseleave', this.handleMouseLeave);
+	}
+
 	handleMouseEnter() {
 		const setIntentionalHover = () => {
 			this.hasHover = true;
 			this.menubarItems.forEach((barItem) => {
 				if (barItem.hasHover) {
-					barItem.domNode.classList.add(this.cssClassNames.hover);
+					barItem.domNode.classList.add(this.cssClassHover);
 				}
 				if (barItem.hasHover && barItem.popupMenu) {
 					barItem.popupMenu.open();
@@ -157,25 +159,12 @@ export default class MenuBar {
 	}
 
 	destroy() {
-		this.domNode.removeEventListener('mouseenter', this.handleMouseEnter);
-		this.domNode.removeEventListener('mouseleave', this.handleMouseLeave);
+		this.domNode.removeAttribute('role');
+		this.removeEventListeners();
 		clearTimeout(this.timeout);
 		this.menubarItems.forEach((item) => {
 			item.domNode.tabIndex = 0;
 			item.destroy();
-		});
-	}
-
-	initRoles() {
-		this.domNode.setAttribute('role', 'menubar');
-		this.domNode.childs.forEach((child) => {
-			if (child.tagName === 'LI') {
-				child.setAttribute('role', 'none');
-			}
-			if (child.tagName === 'A') {
-				child.setAttribute('role', 'menuitem');
-				child.setAttribute('tabindex', 0);
-			}
 		});
 	}
 

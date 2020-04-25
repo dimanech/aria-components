@@ -16,7 +16,8 @@ export default class Popup {
 	 * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 	 */
 	constructor(domNode) {
-		this.popupButton = domNode;
+		this.domNode = domNode; // need to call node from child
+		this.popupButton = this.domNode;
 		this.popupMenu = false;
 
 		this.isMenubarItem = false;
@@ -24,14 +25,15 @@ export default class Popup {
 		this.hasFocus = false;
 		this.hasHover = false;
 
-		this.timeout = 90;
+		this.closeDelay = 90;
+		this.animationDelay = 200;
 	}
 
 	init() {
 		this.initEventListeners();
+		const controlledElement = document.getElementById(this.popupButton.getAttribute('aria-controls'));
 
-		const menu = document.getElementById(this.popupButton.getAttribute('aria-controls'));
-		this.popupMenu = new PopupMenu(menu, this);
+		this.popupMenu = new PopupMenu(controlledElement, this);
 		this.popupMenu.init();
 
 		this.setPopupPosition();
@@ -44,11 +46,19 @@ export default class Popup {
 		this.handleMouseenter = this.handleMouseenter.bind(this);
 		this.handleMouseleave = this.handleMouseleave.bind(this);
 
+		this.popupButton.addEventListener('mouseenter', this.handleMouseenter);
+		this.popupButton.addEventListener('mouseleave', this.handleMouseleave);
 		this.popupButton.addEventListener('keydown', this.handleKeydown);
 		this.popupButton.addEventListener('focus', this.handleFocus);
 		this.popupButton.addEventListener('blur', this.handleBlur);
-		this.popupButton.addEventListener('mouseenter', this.handleMouseenter);
-		this.popupButton.addEventListener('mouseleave', this.handleMouseleave);
+	}
+
+	removeEventListeners() {
+		this.popupButton.removeEventListener('mouseenter', this.handleMouseenter);
+		this.popupButton.removeEventListener('mouseleave', this.handleMouseleave);
+		this.popupButton.removeEventListener('keydown', this.handleKeydown);
+		this.popupButton.removeEventListener('focus', this.handleFocus);
+		this.popupButton.removeEventListener('blur', this.handleBlur);
 	}
 
 	setExpanded(isExpanded) {
@@ -71,13 +81,13 @@ export default class Popup {
 			case keyCode.RETURN:
 			case keyCode.DOWN:
 				this.popupMenu.open();
-				this.popupMenu.setFocusToFirstItem();
+				this.timeout = setTimeout(() => this.popupMenu.setFocusToFirstItem(), this.animationDelay);
 				preventEventActions = true;
 				break;
 
 			case keyCode.UP:
 				this.popupMenu.open();
-				this.popupMenu.setFocusToLastItem();
+				this.timeout = setTimeout(() => this.popupMenu.setFocusToLastItem, this.animationDelay);
 				preventEventActions = true;
 				break;
 
@@ -109,7 +119,7 @@ export default class Popup {
 				this.popupMenu.close();
 			}
 		};
-		this.timeout = setTimeout(closePopup, this.timeout);
+		this.timeout = setTimeout(closePopup, this.closeDelay);
 	}
 
 	handleFocus() {
@@ -123,15 +133,11 @@ export default class Popup {
 				this.popupMenu.close();
 			}
 		};
-		this.timeout = setTimeout(closePopup, this.timeout);
+		this.timeout = setTimeout(closePopup, this.closeDelay);
 	}
 
 	destroy() {
-		this.popupButton.removeEventListener('mouseenter', this.handleMouseenter);
-		this.popupButton.removeEventListener('mouseleave', this.handleMouseleave);
-		this.popupButton.removeEventListener('keydown', this.handleKeydown);
-		this.popupButton.removeEventListener('focus', this.handleFocus);
-		this.popupButton.removeEventListener('blur', this.handleBlur);
+		this.removeEventListeners();
 		clearTimeout(this.timeout);
 		this.popupMenu.destroy();
 	}

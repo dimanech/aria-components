@@ -13,11 +13,12 @@
 			<div class="utility-menu__inner">
 				<div class="utility-menu__item">
 					<button
+						class="menu-bar-toggle"
 						data-elem-hamburger-open
 						aria-haspopup="true"
 						aria-controls="main-menu"
 					>
-						Main menu
+						Hamburger
 					</button>
 					<button
 						data-component="Popup"
@@ -45,7 +46,7 @@
 				</div>
 				<div class="utility-menu__item">
 					<button
-						data-elem-popup-button
+						data-component="Popup"
 						id="orders-menu-button"
 						aria-haspopup="true"
 						aria-controls="orders-popup-menu"
@@ -78,7 +79,8 @@
 			data-component="MainMenu"
 			data-elem-menu-panel
 		>
-			<div class="menu-panel__track" data-elem-hamburger-track>
+			<div class="menu-panel__box">
+				<div class="menu-panel__track" data-elem-hamburger-track>
 				<div class="menu-panel__panel">
 					<div class="menu-panel__header">
 						<button class="menu-panel__close" data-elem-panel-close>&times;</button>
@@ -91,7 +93,6 @@
 						itemtype="http://www.schema.org/SiteNavigationElement"
 					>
 						<ul
-							role="menubar"
 							class="menu-bar__inner"
 							data-elem-menu-bar
 						>
@@ -107,11 +108,11 @@
 									Menu 1
 								</a>
 								<div
-									role="menu"
+									role="none"
 									class="menu-bar__popup menu-panel__content _level_1"
 									data-elem-nav-flyout
 								>
-									<ul class="menu-bar__popup-inner">
+									<ul role="menu" class="menu-bar__popup-inner">
 										<li role="none" class="menu-bar__submenu-item">
 											<a
 												role="menuitem"
@@ -124,10 +125,10 @@
 												Menu 1-1
 											</a>
 											<div
-												role="menu"
+												role="none"
 												class="menu-bar__popup menu-panel__content _level_2"
 											>
-												<ul class="menu-bar__popup-inner">
+												<ul role="menu" class="menu-bar__popup-inner">
 													<li role="none" class="menu-bar__submenu-item">
 														<a
 															role="menuitem"
@@ -186,11 +187,11 @@
 									Menu 2
 								</a>
 								<div
-									role="menu"
+									role="none"
 									class="menu-bar__popup menu-panel__content _level_1"
 									data-elem-nav-flyout
 								>
-									<ul class="menu-bar__popup-inner">
+									<ul role="menu" class="menu-bar__popup-inner">
 										<li role="none" class="menu-bar__submenu-item">
 											<a
 												role="menuitem"
@@ -246,11 +247,11 @@
 									Menu 3
 								</a>
 								<div
-									role="menu"
+									role="none"
 									class="menu-bar__popup menu-panel__content _level_1"
 									data-elem-nav-flyout
 								>
-									<ul class="menu-bar__popup-inner">
+									<ul role="menu" class="menu-bar__popup-inner">
 										<li role="none" class="menu-bar__submenu-item">
 											<a
 												role="menuitem"
@@ -308,7 +309,7 @@
 						<button data-elem-panel-back>Back</button>
 						<button class="menu-panel__close" data-elem-panel-close>&times;</button>
 					</div>
-					<div class="menu-panel__content" data-elem-panel-yelds>
+					<div class="menu-panel__content" data-elem-panel-yields>
 						<button data-elem-panel-forward>Forward</button>
 					</div>
 				</div>
@@ -317,8 +318,9 @@
 						<button data-elem-panel-back>Back</button>
 						<button class="menu-panel__close" data-elem-panel-close>&times;</button>
 					</div>
-					<div class="menu-panel__content" data-elem-panel-yelds></div>
+					<div class="menu-panel__content" data-elem-panel-yields></div>
 				</div>
+			</div>
 			</div>
 		</div>
 
