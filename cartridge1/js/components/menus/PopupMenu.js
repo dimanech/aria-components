@@ -8,11 +8,11 @@ export default class PopupMenu {
 	 * Please see specification:
 	 * https://www.w3.org/TR/wai-aria-practices/#menubutton
 	 */
-	constructor(domNode, controllerObj) {
+	constructor(domNode, controllerComponent) {
 		PopupMenu.validateStructure(domNode);
 
 		this.domNode = domNode;
-		this.controller = controllerObj;
+		this.controller = controllerComponent;
 
 		this.menuitems = [];
 

@@ -39,8 +39,8 @@ export function attemptFocus(element) {
 }
 
 export function focusFirstDescendant(element) {
-	for (let i = 0; i < element.childNodes.length; i++) {
-		const child = element.childNodes[i];
+	for (let i = 0; i < element.children.length; i++) {
+		const child = element.children[i];
 		if (attemptFocus(child) || focusFirstDescendant(child)) {
 			return true;
 		}
@@ -49,8 +49,8 @@ export function focusFirstDescendant(element) {
 }
 
 export function focusLastDescendant(element) {
-	for (let i = element.childNodes.length - 1; i >= 0; i--) {
-		const child = element.childNodes[i];
+	for (let i = element.children.length - 1; i >= 0; i--) {
+		const child = element.children[i];
 		if (attemptFocus(child) || focusLastDescendant(child)) {
 			return true;
 		}

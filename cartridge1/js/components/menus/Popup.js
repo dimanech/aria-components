@@ -5,13 +5,7 @@ const keyCode = Object.freeze({
 	RETURN: 13,
 	ESC: 27,
 	SPACE: 32,
-	PAGEUP: 33,
-	PAGEDOWN: 34,
-	END: 35,
-	HOME: 36,
-	LEFT: 37,
 	UP: 38,
-	RIGHT: 39,
 	DOWN: 40
 });
 
@@ -22,7 +16,7 @@ export default class Popup {
 	 * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 	 */
 	constructor(domNode) {
-		this.domNode = domNode;
+		this.popupButton = domNode;
 		this.popupMenu = false;
 
 		this.isMenubarItem = false;
@@ -36,7 +30,7 @@ export default class Popup {
 	init() {
 		this.initEventListeners();
 
-		const menu = document.getElementById(this.domNode.getAttribute('aria-controls'));
+		const menu = document.getElementById(this.popupButton.getAttribute('aria-controls'));
 		this.popupMenu = new PopupMenu(menu, this);
 		this.popupMenu.init();
 
@@ -50,20 +44,20 @@ export default class Popup {
 		this.handleMouseenter = this.handleMouseenter.bind(this);
 		this.handleMouseleave = this.handleMouseleave.bind(this);
 
-		this.domNode.addEventListener('keydown', this.handleKeydown);
-		this.domNode.addEventListener('focus', this.handleFocus);
-		this.domNode.addEventListener('blur', this.handleBlur);
-		this.domNode.addEventListener('mouseenter', this.handleMouseenter);
-		this.domNode.addEventListener('mouseleave', this.handleMouseleave);
+		this.popupButton.addEventListener('keydown', this.handleKeydown);
+		this.popupButton.addEventListener('focus', this.handleFocus);
+		this.popupButton.addEventListener('blur', this.handleBlur);
+		this.popupButton.addEventListener('mouseenter', this.handleMouseenter);
+		this.popupButton.addEventListener('mouseleave', this.handleMouseleave);
 	}
 
 	setExpanded(isExpanded) {
-		this.domNode.setAttribute('aria-expanded', isExpanded.toString());
+		this.popupButton.setAttribute('aria-expanded', isExpanded.toString());
 	}
 
 	setPopupPosition() {
-		const buttonBottom = this.domNode.offsetTop + this.domNode.clientHeight;
-		const buttonCenter = this.domNode.offsetLeft + (this.domNode.clientWidth / 2);
+		const buttonBottom = this.popupButton.offsetTop + this.popupButton.clientHeight;
+		const buttonCenter = this.popupButton.offsetLeft + (this.popupButton.clientWidth / 2);
 
 		this.popupMenu.domNode.style.top = `${buttonBottom + 14}px`;
 		this.popupMenu.domNode.querySelector('.popup-menu__tail').style.left = `${buttonCenter}px`;
@@ -133,11 +127,11 @@ export default class Popup {
 	}
 
 	destroy() {
-		this.domNode.removeEventListener('mouseenter', this.handleMouseenter);
-		this.domNode.removeEventListener('mouseleave', this.handleMouseleave);
-		this.domNode.removeEventListener('keydown', this.handleKeydown);
-		this.domNode.removeEventListener('focus', this.handleFocus);
-		this.domNode.removeEventListener('blur', this.handleBlur);
+		this.popupButton.removeEventListener('mouseenter', this.handleMouseenter);
+		this.popupButton.removeEventListener('mouseleave', this.handleMouseleave);
+		this.popupButton.removeEventListener('keydown', this.handleKeydown);
+		this.popupButton.removeEventListener('focus', this.handleFocus);
+		this.popupButton.removeEventListener('blur', this.handleBlur);
 		clearTimeout(this.timeout);
 		this.popupMenu.destroy();
 	}

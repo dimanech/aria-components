@@ -11,6 +11,10 @@ projects without any dependencies.
 
 It designed as start point, so it contains only needed code and styles.
 
+* Zero dependencies
+* Portable and atomic
+* Fast and efficient
+
 [See it in action](https://dimanech.github.io/aria-components/)
 
 ## Initialization

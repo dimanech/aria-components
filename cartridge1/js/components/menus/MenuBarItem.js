@@ -15,7 +15,7 @@ const keyCode = Object.freeze({
 	DOWN: 40
 });
 
-export default class MenubarItem {
+export default class MenuBarItem {
 	/*
 	 * This content is based on w3.org design pattern examples
 	 * and licensed according to the W3C Software License at

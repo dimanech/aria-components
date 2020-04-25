@@ -131,12 +131,12 @@ export default class MenuItem {
 
 	handleKeyRight() {
 		this.blurHandledByController = true; // blur and close handled in parent
-		this.menu.setFocusToController('next');
+		this.menu.setFocusToController('next', this);
 	}
 
 	handleKeyLeft() {
 		this.blurHandledByController = true;
-		this.menu.setFocusToController('previous');
+		this.menu.setFocusToController('previous', this);
 	}
 
 	handleClick() {

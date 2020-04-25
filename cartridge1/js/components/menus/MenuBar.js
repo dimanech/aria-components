@@ -1,6 +1,8 @@
-import MenubarItem from './MenubarItem.js';
+import MenuBarItem from './MenuBarItem.js';
 
-export default class Menubar {
+// TODO: remove menubar role
+
+export default class MenuBar {
 	/*
 	 * This content is based on w3.org design pattern examples and licensed according to the
 	 * W3C Software License at
@@ -9,7 +11,7 @@ export default class Menubar {
 	 * https://www.w3.org/TR/wai-aria-practices/#menu
 	 */
 	constructor(domNode) {
-		Menubar.validateStructure(domNode);
+		MenuBar.validateStructure(domNode);
 		this.domNode = domNode;
 
 		this.menubarItems = [];
@@ -46,7 +48,7 @@ export default class Menubar {
 			const menuElement = elem.firstElementChild;
 
 			if (elem && menuElement && menuElement.tagName === 'A') {
-				const menubarItem = new MenubarItem(menuElement, this);
+				const menubarItem = new MenuBarItem(menuElement, this);
 				menubarItem.init();
 				this.menubarItems.push(menubarItem);
 			}
@@ -178,7 +180,7 @@ export default class Menubar {
 	}
 
 	static validateStructure(domNode) {
-		const msgPrefix = 'Menubar constructor argument menubarNode ';
+		const msgPrefix = 'MenuBar constructor argument menubarNode ';
 
 		// Check whether menubarNode is a DOM element
 		if (!(domNode instanceof Element)) {
