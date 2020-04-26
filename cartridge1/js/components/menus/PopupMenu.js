@@ -10,6 +10,8 @@ export default class PopupMenu extends Menu {
 	 */
 	constructor(domNode, controllerComponent) {
 		super(domNode, controllerComponent);
+
+		this.mouseOutDelay = 200;
 	}
 
 	init() {
@@ -43,30 +45,27 @@ export default class PopupMenu extends Menu {
 
 	open() {
 		this.togglePopup(true);
-		return true;
 	}
 
 	close(isForce) {
 		if (isForce) {
 			this.togglePopup(false);
-			return true;
 		}
+
+		clearTimeout(this.mouseOutTimer);
 
 		const hasFocusWithin = this.hasFocus || this.menuItems.some(item => item.popupMenu && item.popupMenu.hasFocus);
 		const hasHoverOnController = this.controller.isMenubarItem ? this.controller.hasHover : false;
 
 		if (!hasFocusWithin && !this.hasHover && !hasHoverOnController) {
 			this.togglePopup(false);
-			return true;
 		}
-
-		return false;
 	}
 
 	togglePopup(isOpen) {
 		this.domNode.classList.toggle('_open', isOpen);
 		this.domNode.setAttribute('aria-hidden', !isOpen);
-		this.controller.setExpanded(isOpen);
+		this.controller.toggleExpanded(isOpen);
 	}
 
 	handleMouseover() {
@@ -76,13 +75,13 @@ export default class PopupMenu extends Menu {
 	handleMouseout() {
 		this.hasHover = false;
 		// Need timeout to improve UX. Note that controller should implement this timeout also.
-		setTimeout(this.close.bind(this), this.mouseOutTimeout);
+		this.mouseOutTimer = setTimeout(() => this.close(), this.mouseOutDelay);
 	}
 
 	destroy() {
 		super.destroy();
 		this.destroyEventListeners();
 		this.close(true);
-		clearTimeout(this.timeout);
+		clearTimeout(this.mouseOutTimer);
 	}
 }

@@ -139,8 +139,13 @@ export default class MenuItem {
 		this.menu.setFocusToController('previous', this);
 	}
 
-	handleClick() {
+	handleClick(event) {
 		this.domNode.classList.add(this.cssClassActive);
+		// TODO: do we need change hasFocus?
+		if (this.hasSubMenu && typeof this.menu.menuItemClick === 'function') {
+			event.preventDefault();
+			this.menu.menuItemClick(this);
+		}
 	}
 
 	handleFocus() {

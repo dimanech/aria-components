@@ -9,14 +9,22 @@ export default class MenuPanelMenu extends Menu {
 		const command = typeof cmd !== 'string' ? '' : cmd;
 
 		if (command === 'previous') {
-			this.controller.back();
+			this.controller.back(menuItem.domNode);
 		}
 
 		if (command === 'next') {
-			if (menuItem.hasSubMenu) {
-				this.menuItems.domNode.setAttribute('aria-expanded', true);
-				this.controller.forward(menuItem.domNode);
-			}
+			this.next(menuItem);
+		}
+	}
+
+	menuItemClick(menuItem) {
+		this.setFocusToItem(menuItem);
+		this.next(menuItem);
+	}
+
+	next(menuItem) {
+		if (menuItem.hasSubMenu) {
+			this.controller.forward(menuItem.domNode);
 		}
 	}
 }

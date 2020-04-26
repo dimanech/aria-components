@@ -1,16 +1,7 @@
 import MenuItem from './MenuItem.js';
 
 export default class Menu {
-	/*
-	 * This content is based on w3.org design pattern examples and licensed according to the
-	 * W3C Software License at
-	 * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
-	 * Please see specification:
-	 * https://www.w3.org/TR/wai-aria-practices/#menubutton
-	 */
 	constructor(domNode, controllerComponent) {
-		Menu.validateStructure(domNode);
-
 		this.domNode = domNode;
 		this.controller = controllerComponent;
 
@@ -128,32 +119,10 @@ export default class Menu {
 		return true;
 	}
 
+	menuItemClick() {}
+
 	destroy() {
 		this.close(true);
 		this.menuItems.forEach(item => item.destroy());
-	}
-
-	static validateStructure(domNode) {
-		const msgPrefix = 'PopupMenu constructor argument domNode ';
-
-		// Check whether menubarNode is a DOM element
-		if (!(domNode instanceof Element)) {
-			throw new TypeError(`${msgPrefix} is not a DOM Element.`);
-		}
-
-		// Check whether menubarNode has descendant elements
-		if (domNode.childElementCount === 0) {
-			throw new Error(`${msgPrefix} has no element children.`);
-		}
-
-		// Check whether domNode descendant elements have A elements
-		let childElement = domNode.firstElementChild;
-		while (childElement) {
-			const menuitem = childElement.firstElementChild;
-			if (menuitem && menuitem === 'A') {
-				throw new Error(`${msgPrefix} has descendant elements that are not A elements.`);
-			}
-			childElement = childElement.nextElementSibling;
-		}
 	}
 }

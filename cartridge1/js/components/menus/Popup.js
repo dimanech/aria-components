@@ -26,7 +26,7 @@ export default class Popup {
 		this.hasHover = false;
 
 		this.closeDelay = 90;
-		this.animationDelay = 200;
+		this.animationsDuration = 200;
 	}
 
 	init() {
@@ -61,8 +61,8 @@ export default class Popup {
 		this.popupButton.removeEventListener('blur', this.handleBlur);
 	}
 
-	setExpanded(isExpanded) {
-		this.popupButton.setAttribute('aria-expanded', isExpanded.toString());
+	toggleExpanded(isExpanded) {
+		this.popupButton.setAttribute('aria-expanded', isExpanded);
 	}
 
 	setPopupPosition() {
@@ -81,13 +81,13 @@ export default class Popup {
 			case keyCode.RETURN:
 			case keyCode.DOWN:
 				this.popupMenu.open();
-				this.timeout = setTimeout(() => this.popupMenu.setFocusToFirstItem(), this.animationDelay);
+				this.timeout = setTimeout(() => this.popupMenu.setFocusToFirstItem(), this.animationsDuration);
 				preventEventActions = true;
 				break;
 
 			case keyCode.UP:
 				this.popupMenu.open();
-				this.timeout = setTimeout(() => this.popupMenu.setFocusToLastItem, this.animationDelay);
+				this.timeout = setTimeout(() => this.popupMenu.setFocusToLastItem, this.animationsDuration);
 				preventEventActions = true;
 				break;
 

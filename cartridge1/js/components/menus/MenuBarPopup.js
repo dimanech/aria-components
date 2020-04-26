@@ -1,4 +1,4 @@
-import PopupMenu from './MenuBarPopupMenu.js';
+import MenuBarPopupMenu from './MenuBarPopupMenu.js';
 
 const keyCode = Object.freeze({
 	TAB: 9,
@@ -35,18 +35,13 @@ export default class MenuBarPopup {
 
 		this.mouseOutDelay = 30;
 		this.cssClassHover = '_hover';
+		this.animationsDuration = 0;
 	}
 
 	init() {
 		this.domNode.tabIndex = -1;
 		this.initEventListeners();
-
-		// Initialize pop up menus
-		const nextElement = this.domNode.nextElementSibling;
-		if (nextElement && nextElement.getAttribute('role') === 'menu') {
-			this.popupMenu = new PopupMenu(nextElement, this);
-			this.popupMenu.init();
-		}
+		this.initPopUpMenus();
 	}
 
 	initEventListeners() {
@@ -71,7 +66,15 @@ export default class MenuBarPopup {
 		this.domNode.removeEventListener('mouseleave', this.handleMouseout);
 	}
 
-	handleKeydown(event) { // eslint-disable-line complexity
+	initPopUpMenus() {
+		const nextElement = this.domNode.nextElementSibling;
+		if (nextElement) {
+			this.popupMenu = new MenuBarPopupMenu(nextElement, this);
+			this.popupMenu.init();
+		}
+	}
+
+	handleKeydown(event) {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
@@ -80,7 +83,15 @@ export default class MenuBarPopup {
 			case keyCode.DOWN:
 				if (this.popupMenu) {
 					this.popupMenu.open();
-					this.popupMenu.setFocusToFirstItem(); // NB. This will not work on transformed elements
+					this.focusTimeout = setTimeout(() => this.popupMenu.setFocusToFirstItem(), this.animationsDuration);
+					preventEventActions = true;
+				}
+				break;
+
+			case keyCode.UP:
+				if (this.popupMenu) {
+					this.popupMenu.open();
+					this.focusTimeout = setTimeout(() => this.popupMenu.setFocusToLastItem(), this.animationsDuration);
 					preventEventActions = true;
 				}
 				break;
@@ -93,14 +104,6 @@ export default class MenuBarPopup {
 			case keyCode.RIGHT:
 				this.menuBar.setFocusToNextItem(this);
 				preventEventActions = true;
-				break;
-
-			case keyCode.UP:
-				if (this.popupMenu) {
-					this.popupMenu.open();
-					this.popupMenu.setFocusToLastItem(); // NB. This will not work on transformed elements
-					preventEventActions = true;
-				}
 				break;
 
 			case keyCode.HOME:
@@ -132,7 +135,7 @@ export default class MenuBarPopup {
 		}
 	}
 
-	setExpanded(isExpanded) {
+	toggleExpanded(isExpanded) {
 		this.domNode.setAttribute('aria-expanded', isExpanded);
 		this.isPopUpExpanded = isExpanded;
 
@@ -156,11 +159,11 @@ export default class MenuBarPopup {
 		if (this.hasHover) {
 			return;
 		}
-
 		this.hasHover = true;
+
 		if (this.menuBar.hasHover && this.popupMenu) {
 			// Need timeout to improve UX
-			this.timeout = setTimeout(() => this.popupMenu.open(), this.mouseOutDelay);
+			this.hoverTimeout = setTimeout(() => this.popupMenu.open(), this.mouseOutDelay);
 		}
 		if (this.menuBar.hasHover) {
 			this.domNode.classList.add(this.cssClassHover);
@@ -169,16 +172,18 @@ export default class MenuBarPopup {
 
 	handleMouseout() {
 		this.hasHover = false;
+
 		if (this.popupMenu) {
 			// fired twice since menu also handle mouseout and close menu
-			this.timeout = setTimeout(() => this.popupMenu.close(), this.mouseOutDelay);
+			this.hoverTimeout = setTimeout(() => this.popupMenu.close(), this.mouseOutDelay);
 		}
 		this.domNode.classList.remove(this.cssClassHover);
 	}
 
 	destroy() {
 		this.removeEventListeners();
-		clearTimeout(this.timeout);
+		clearTimeout(this.hoverTimeout);
+		clearTimeout(this.focusTimeout);
 		if (this.popupMenu) {
 			this.popupMenu.destroy();
 		}

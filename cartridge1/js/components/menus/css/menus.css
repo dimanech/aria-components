@@ -198,7 +198,7 @@ li {
 	.menu-panel__track {
 		display: flex;
 		height: 100%;
-		transition: transform ease-out 0.3s;
+		transition: transform ease 0.3s;
 	}
 
 	.menu-panel__track._level-1 {

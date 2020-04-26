@@ -9,7 +9,6 @@ export default class MenuBar {
 	 * https://www.w3.org/TR/wai-aria-practices/#menu
 	 */
 	constructor(domNode) {
-		MenuBar.validateStructure(domNode);
 		this.domNode = domNode;
 
 		this.menubarItems = [];
@@ -85,11 +84,11 @@ export default class MenuBar {
 				}
 			});
 		};
-		this.timeout = setTimeout(setIntentionalHover, this.activationDelay);
+		this.hoverOverTimeout = setTimeout(setIntentionalHover, this.activationDelay);
 	}
 
 	handleMouseLeave() {
-		clearTimeout(this.timeout);
+		clearTimeout(this.hoverOverTimeout);
 		this.hasHover = false;
 	}
 
@@ -144,51 +143,22 @@ export default class MenuBar {
 			flyoutStyles.opacity = 0;
 			flyoutStyles.height = '10vh';
 			flyoutStyles.visibility = 'hidden';
-
-			//window.partialOverlay.close();
 		} else {
-			clearTimeout(this.flyoutTimer);
 			const topPosition = window.scrollY ? window.scrollY : window.pageYOffset;
 			flyoutStyles.top = `${parseInt(this.domNode.getBoundingClientRect().bottom + topPosition, 10)}px`;
 			flyoutStyles.opacity = 1;
 			flyoutStyles.height = `${height + 4}px`;
 			flyoutStyles.visibility = 'visible';
-
-			//window.partialOverlay.open();
 		}
 	}
 
 	destroy() {
 		this.domNode.removeAttribute('role');
 		this.removeEventListeners();
-		clearTimeout(this.timeout);
+		clearTimeout(this.hoverOverTimeout);
 		this.menubarItems.forEach((item) => {
 			item.domNode.tabIndex = 0;
 			item.destroy();
 		});
-	}
-
-	static validateStructure(domNode) {
-		const msgPrefix = 'MenuBar constructor argument menubarNode ';
-
-		// Check whether menubarNode is a DOM element
-		if (!(domNode instanceof Element)) {
-			throw new TypeError(`${msgPrefix} is not a DOM Element.`);
-		}
-
-		// Check whether menubarNode has descendant elements
-		if (domNode.childElementCount === 0) {
-			throw new Error(`${msgPrefix} has no element children.`);
-		}
-
-		// Check whether menubarNode has A elements
-		let menuElement = domNode.firstElementChild;
-		while (menuElement) {
-			const menubarItem = menuElement.firstElementChild;
-			if (menuElement && menubarItem && menubarItem.tagName !== 'A') {
-				throw new Error(`${msgPrefix} has child elements are not A elements.`);
-			}
-			menuElement = menuElement.nextElementSibling;
-		}
 	}
 }

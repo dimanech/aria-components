@@ -73,6 +73,7 @@ body {
 	cursor: grab;
 	transition: none;
 	user-select: none;
+	/*touch-action: pan-x;*/
 }
 
 .modal {
