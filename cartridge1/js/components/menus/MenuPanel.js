@@ -87,7 +87,7 @@ export default class MenuPanel {
 		}
 		this.moveTrackTo(requestedLevel);
 
-		this.waitForTransitionEnd(() => {
+		this.waitForTransitionEnd(this.track, () => {
 			this.toggleBusy(false, requestedLevel);
 			const currentMenu = this.subPanelsMenus[requestedLevel];
 			currentMenu.setFocusToFirstItem();
@@ -105,7 +105,7 @@ export default class MenuPanel {
 		const requestedLevel = this.getPanelIndex(this.trackCurrentLevel - 1);
 		this.moveTrackTo(requestedLevel);
 
-		this.waitForTransitionEnd(() => {
+		this.waitForTransitionEnd(this.track,() => {
 			const currentMenu = this.subPanelsMenus[requestedLevel];
 			currentMenu.setFocusToCurrentItem();
 			currentMenu.currentMenuItem.domNode.setAttribute('aria-expanded', false);
@@ -149,7 +149,7 @@ export default class MenuPanel {
 	}
 
 	resetPanelsState() {
-		this.waitForTransitionEnd(() => {
+		this.waitForTransitionEnd(this.track,() => {
 			this.resetClasses();
 			this.resetPanelsContent();
 			this.moveTrackTo(0);
@@ -184,13 +184,13 @@ export default class MenuPanel {
 			case keyCode.RETURN:
 			case keyCode.DOWN:
 				this.openMenuPanel();
-				this.waitForTransitionEnd(() => this.subPanelsMenus[0].setFocusToFirstItem());
+				this.waitForTransitionEnd(this.track,() => this.subPanelsMenus[0].setFocusToFirstItem());
 				preventEventActions = true;
 				break;
 
 			case keyCode.UP:
 				this.openMenuPanel();
-				this.waitForTransitionEnd(() => this.subPanelsMenus[0].setFocusToLastItem());
+				this.waitForTransitionEnd(this.track,() => this.subPanelsMenus[0].setFocusToLastItem());
 				preventEventActions = true;
 				break;
 
@@ -215,7 +215,7 @@ export default class MenuPanel {
 	openMenuPanel() {
 		this.setExpanded(true);
 		this.container.classList.add('_open');
-		this.waitForTransitionEnd(() => this.subPanelsMenus[0].setFocusToFirstItem());
+		this.waitForTransitionEnd(this.container, () => this.subPanelsMenus[0].setFocusToFirstItem());
 	}
 
 	closeMenuPanel() {
@@ -232,18 +232,18 @@ export default class MenuPanel {
 		}
 	}
 
-	waitForTransitionEnd(callback) {
+	waitForTransitionEnd(container, callback) {
 		const onEnd = () => {
 			clearTimeout(this.transitionFallbackTimer);
-			this.track.removeEventListener('transitionend', onEnd);
+			container.removeEventListener('transitionend', onEnd);
 			callback();
 		}
 		const onRun = () => {
-			this.track.removeEventListener('transitionrun', onRun);
-			this.track.addEventListener('transitionend', onEnd);
+			container.removeEventListener('transitionrun', onRun);
+			container.addEventListener('transitionend', onEnd);
 		}
 
-		this.track.addEventListener('transitionrun', onRun);
+		container.addEventListener('transitionrun', onRun);
 		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 
