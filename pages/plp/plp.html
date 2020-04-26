@@ -17,18 +17,26 @@
 			document.dispatchEvent(new Event('googleApi:ready'));
 		}
 	</script>
-	<script async type="module" src="/js/initiator.js"></script>
-<!--	<script async type="module" src="/js/bundle.initiator.js"></script>-->
-	<script
-		async
-		src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"
-	></script>
+<!--	<link rel="preload" href="/js/initiator.js" as="script" crossorigin="anonymous" />-->
+<!--	<script async type="module" src="/js/initiator.js"></script>-->
+	<link rel="preload" href="/js/bundle.initiator.js" as="script" crossorigin="anonymous" />
+	<script async type="module" src="/js/bundle.initiator.js"></script>
+<!--	<script-->
+<!--		async-->
+<!--		src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"-->
+<!--	></script>-->
+	<!--
+	Add dynamic component loading
+	data-component="./components/togglers/Accordion"
+	or
+	data-component="/js/components/forms/Form"
+	-->
 </head>
 <body>
 	<div data-component="ProductListingManager">
 		<div data-elem-plp-content class="plp">
 			<aside data-elem-refinments class="plp__aside">
-				<div data-component="./components/togglers/Accordion" data-allow-multiple class="accordion">
+				<div data-component="Accordion" data-allow-multiple class="accordion">
 					<button aria-controls="section-1" aria-expanded="true" class="accordion__control">
 						Filters 1
 					</button>
@@ -74,7 +82,7 @@
 		</div>
 	</div>
 
-	<form action="" data-component="/js/components/forms/Form">
+	<form action="" data-component="Form">
 		<div class="field" data-elem-field>
 			<input
 				type="text"
@@ -106,6 +114,7 @@
 			></div>
 		</div>
 		<div class="field" data-elem-field>
+			<!-- Add component from different cartridge without explicit dependencies -->
 			<input
 				data-component="/js/components/forms/GoogleAddresses"
 				data-config='{"formElements": {"address": "#address", "country": ".postal-code-info"}}'
