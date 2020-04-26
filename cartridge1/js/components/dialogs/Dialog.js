@@ -38,7 +38,7 @@ export default class Dialog {
 		this.dialogNode.classList.add('is-open');
 		this.dialogNode.setAttribute('aria-hidden', 'false');
 
-		// handle animation/transition delay that could temporary modify a11y tree
+		// handle animation/transition delay that could temporary modify other tree
 		// focus could not trap into modal if user tab before this timeout
 		// please see tab handler
 		const handleTransitionEnd = (event) => {

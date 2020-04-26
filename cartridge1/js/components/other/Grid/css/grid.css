@@ -1,0 +1,73 @@
+:focus {
+	outline: 4px solid red;
+}
+
+.grid {
+	display: flex;
+}
+
+.grid > div {
+	border: 1px solid;
+}
+
+.grid._equal > div {
+	width: 100%;
+}
+
+.grid._three {
+	flex-wrap: wrap;
+}
+
+.grid._three > div {
+	width: 33%;
+}
+
+/* breadcrumbs */
+
+.breadcrumbs__item,
+.breadcrumbs__list {
+	display: inline-block;
+	padding: 0;
+}
+
+/* applied filters */
+
+.applied-filters,
+.applied-filters__item {
+	display: flex;
+}
+
+.applied-filters__item {
+	border: 1px solid grey;
+	margin-right: 10px;
+	padding: 5px 10px;
+}
+
+.applied-filters__item button {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+/* calendar */
+
+.calendar {
+	border-collapse: collapse;
+	display: table;
+}
+
+.calendar > div {
+	display: table-row;
+}
+
+.calendar > div > div {
+	border: 1px solid;
+	display: table-cell;
+	text-align: center;
+	width: 20px;
+}
+
+.calendar [role="presentation"] {
+	background-color: grey;
+}

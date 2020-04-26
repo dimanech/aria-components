@@ -1,0 +1,8 @@
+:focus {
+	outline: solid 4px red;
+}
+
+[role=article] {
+	display: block;
+	margin: 20px 0;
+}

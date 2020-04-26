@@ -1,0 +1,131 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta
+		name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+	>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Feed</title>
+	<link rel="stylesheet" href="./css/feed.css"/>
+</head>
+<body>
+
+	<a href="" id="before-feed">Before</a>
+
+	<div id="feed-description" aria-hidden="true" hidden>
+		1 of 10 articles inside a Feed. Use PageUp and PageDown to navigate on items.
+		Use tab to interact with inner elements.
+		Use ctr + Home, ctr + End move exit from Feed.
+	</div>
+
+	<div role="feed" aria-roledescription="feed-description">
+		<div
+			role="article"
+			aria-posinset="1"
+			aria-setsize="10"
+			tabindex="0"
+			aria-labelledby="restaurant-name-1"
+			aria-describedby="restaurant-rating-1 restaurant-type-1 restaurant-location-1"
+			class="restaurant-item"
+		>
+			<div class="restaurant-details">
+				<div
+					class="restaurant-name"
+					id="restaurant-name-1"
+				>Tito's Tacos
+				</div>
+				<div
+					class="restaurant-rating"
+					id="restaurant-rating-1"
+				>5 stars
+				</div>
+				<div
+					class="restaurant-type"
+					id="restaurant-type-1"
+				>Mexican, Tacos
+				</div>
+			</div>
+			<div class="restaurant-actions">
+				<button class="bookmark-button">Bookmark</button>
+			</div>
+		</div>
+		<div
+			role="article"
+			aria-posinset="2"
+			aria-setsize="10"
+			tabindex="0"
+			aria-labelledby="restaurant-name-2"
+			aria-describedby="restaurant-rating-2 restaurant-type-2 restaurant-location-2"
+			class="restaurant-item"
+		>
+			<div class="restaurant-details">
+				<div
+					class="restaurant-name"
+					id="restaurant-name-2"
+				>Tito's Tacos
+				</div>
+				<div
+					class="restaurant-rating"
+					id="restaurant-rating-2"
+				>5 stars
+				</div>
+				<div
+					class="restaurant-type"
+					id="restaurant-type-2"
+				>Mexican, Tacos
+				</div>
+			</div>
+			<div class="restaurant-actions">
+				<button class="bookmark-button">Bookmark</button>
+			</div>
+		</div>
+
+		<div
+			role="article"
+			aria-posinset="3"
+			aria-setsize="10"
+			tabindex="0"
+			aria-labelledby="restaurant-name-3"
+			aria-describedby="restaurant-rating-3 restaurant-type-3 restaurant-location-3"
+			class="restaurant-item"
+		>
+			<div class="restaurant-details">
+				<div
+					class="restaurant-name"
+					id="restaurant-name-3"
+				>Tito's Tacos
+				</div>
+				<div
+					class="restaurant-rating"
+					id="restaurant-rating-3"
+				>5 stars
+				</div>
+				<div
+					class="restaurant-type"
+					id="restaurant-type-3"
+				>Mexican, Tacos
+				</div>
+			</div>
+			<div class="restaurant-actions">
+				<button class="bookmark-button">Bookmark</button>
+			</div>
+		</div>
+	</div>
+
+	<a href="" id="after-feed">After</a>
+
+	<script type="module">
+		import Feed from './Feed.js';
+
+		const feedElement = document.querySelector('[role="feed"]');
+		const beforeFeedElement = document.getElementById('before-feed');
+		const afterFeedElement = document.getElementById('after-feed');
+
+		if (feedElement && beforeFeedElement && afterFeedElement) {
+			new Feed(feedElement, beforeFeedElement, afterFeedElement).init()
+		}
+	</script>
+
+</body>
+</html>
