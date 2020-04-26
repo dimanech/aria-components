@@ -35,7 +35,6 @@ export default class MenuBarPopup {
 
 		this.mouseOutDelay = 30;
 		this.cssClassHover = '_hover';
-		this.animationsDuration = 0;
 	}
 
 	init() {
@@ -83,7 +82,7 @@ export default class MenuBarPopup {
 			case keyCode.DOWN:
 				if (this.popupMenu) {
 					this.popupMenu.open();
-					this.focusTimeout = setTimeout(() => this.popupMenu.setFocusToFirstItem(), this.animationsDuration);
+					this.popupMenu.setFocusToFirstItem(); // wait for animation in case if animated otherwise would not gain focus
 					preventEventActions = true;
 				}
 				break;
@@ -91,7 +90,7 @@ export default class MenuBarPopup {
 			case keyCode.UP:
 				if (this.popupMenu) {
 					this.popupMenu.open();
-					this.focusTimeout = setTimeout(() => this.popupMenu.setFocusToLastItem(), this.animationsDuration);
+					this.popupMenu.setFocusToLastItem(); // wait for animation in case if animated otherwise would not gain focus
 					preventEventActions = true;
 				}
 				break;
@@ -175,15 +174,14 @@ export default class MenuBarPopup {
 
 		if (this.popupMenu) {
 			// fired twice since menu also handle mouseout and close menu
-			this.hoverTimeout = setTimeout(() => this.popupMenu.close(), this.mouseOutDelay);
+			this.hoverTimer = setTimeout(() => this.popupMenu.close(), this.mouseOutDelay);
 		}
 		this.domNode.classList.remove(this.cssClassHover);
 	}
 
 	destroy() {
 		this.removeEventListeners();
-		clearTimeout(this.hoverTimeout);
-		clearTimeout(this.focusTimeout);
+		clearTimeout(this.hoverTimer);
 		if (this.popupMenu) {
 			this.popupMenu.destroy();
 		}

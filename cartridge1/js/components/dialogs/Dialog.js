@@ -38,20 +38,8 @@ export default class Dialog {
 		this.dialogNode.classList.add('is-open');
 		this.dialogNode.setAttribute('aria-hidden', 'false');
 
-		// handle animation/transition delay that could temporary modify other tree
-		// focus could not trap into modal if user tab before this timeout
-		// please see tab handler
-		const handleTransitionEnd = (event) => {
-			if (event && event.target !== this.dialogNode) {
-				return;
-			}
-			clearTimeout(this.transitionEndFallbackTimeout);
-			this.dialogNode.removeEventListener('transitionend', handleTransitionEnd);
-			this.focusElementAfterOpen();
-		};
-		this.dialogNode.addEventListener('transitionend', handleTransitionEnd);
-		this.transitionEndFallbackTimeout = setTimeout(handleTransitionEnd, 500);
 
+		this.waitForTransitionEnd(() => this.focusElementAfterOpen());
 		this.afterOpen();
 
 		return true;
@@ -170,6 +158,21 @@ export default class Dialog {
 		}
 
 		this.dialogManager.closeDialogFromOutside();
+	}
+
+	waitForTransitionEnd(callback) {
+		const onEnd = () => {
+			clearTimeout(this.transitionFallbackTimer);
+			this.dialogNode.removeEventListener('transitionend', onEnd);
+			callback();
+		}
+		const onRun = () => {
+			this.dialogNode.removeEventListener('transitionrun', onRun);
+			this.dialogNode.addEventListener('transitionend', onEnd);
+		}
+
+		this.dialogNode.addEventListener('transitionrun', onRun);
+		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 
 	afterOpen() {}

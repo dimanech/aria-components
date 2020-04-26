@@ -23,7 +23,6 @@ export default class MenuPanel {
 		this.subPanelsCount = this.subPanels.length;
 		this.subPanelsMenus = [];
 
-		this.animationsDuration = 400;
 		this.selectorBack = 'data-elem-panel-back';
 		this.selectorClose = 'data-elem-panel-close';
 	}
@@ -88,13 +87,13 @@ export default class MenuPanel {
 		}
 		this.moveTrackTo(requestedLevel);
 
-		setTimeout(() => {
+		this.waitForTransitionEnd(() => {
 			this.toggleBusy(false, requestedLevel);
 			const currentMenu = this.subPanelsMenus[requestedLevel];
 			currentMenu.setFocusToFirstItem();
 			currentMenu.currentMenuItem.domNode.setAttribute('aria-expanded', true);
 			this.isPanelInTransition = false;
-		}, this.animationsDuration);
+		})
 	}
 
 	back() {
@@ -106,12 +105,12 @@ export default class MenuPanel {
 		const requestedLevel = this.getPanelIndex(this.trackCurrentLevel - 1);
 		this.moveTrackTo(requestedLevel);
 
-		setTimeout(() => {
+		this.waitForTransitionEnd(() => {
 			const currentMenu = this.subPanelsMenus[requestedLevel];
 			currentMenu.setFocusToCurrentItem();
 			currentMenu.currentMenuItem.domNode.setAttribute('aria-expanded', false);
 			this.isPanelInTransition = false;
-		}, this.animationsDuration);
+		});
 	}
 
 	moveTrackTo(requestedLevel) {
@@ -150,11 +149,11 @@ export default class MenuPanel {
 	}
 
 	resetPanelsState() {
-		this.timeout = setTimeout(() => {
+		this.waitForTransitionEnd(() => {
 			this.resetClasses();
 			this.resetPanelsContent();
 			this.moveTrackTo(0);
-		}, this.animationsDuration);
+		});
 	}
 
 	resetClasses() {
@@ -185,13 +184,13 @@ export default class MenuPanel {
 			case keyCode.RETURN:
 			case keyCode.DOWN:
 				this.openMenuPanel();
-				this.timeout = setTimeout(() => this.subPanelsMenus[0].setFocusToFirstItem(), this.animationsDuration);
+				this.waitForTransitionEnd(() => this.subPanelsMenus[0].setFocusToFirstItem());
 				preventEventActions = true;
 				break;
 
 			case keyCode.UP:
 				this.openMenuPanel();
-				this.timeout = setTimeout(() => this.subPanelsMenus[0].setFocusToLastItem(), this.animationsDuration);
+				this.waitForTransitionEnd(() => this.subPanelsMenus[0].setFocusToLastItem());
 				preventEventActions = true;
 				break;
 
@@ -216,7 +215,7 @@ export default class MenuPanel {
 	openMenuPanel() {
 		this.setExpanded(true);
 		this.container.classList.add('_open');
-		this.subPanelsMenus[0].setFocusToFirstItem();
+		this.waitForTransitionEnd(() => this.subPanelsMenus[0].setFocusToFirstItem());
 	}
 
 	closeMenuPanel() {
@@ -233,8 +232,23 @@ export default class MenuPanel {
 		}
 	}
 
+	waitForTransitionEnd(callback) {
+		const onEnd = () => {
+			clearTimeout(this.transitionFallbackTimer);
+			this.track.removeEventListener('transitionend', onEnd);
+			callback();
+		}
+		const onRun = () => {
+			this.track.removeEventListener('transitionrun', onRun);
+			this.track.addEventListener('transitionend', onEnd);
+		}
+
+		this.track.addEventListener('transitionrun', onRun);
+		this.transitionFallbackTimer = setTimeout(onEnd, 800);
+	}
+
 	destroy() {
-		clearTimeout(this.timeout);
+		clearTimeout(this.transitionFallbackTimer);
 		this.removeEventListeners();
 		this.resetPanelsState();
 		this.mainMenu.removeAttribute('role');

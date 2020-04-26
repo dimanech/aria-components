@@ -14,6 +14,8 @@ export default class Popup {
 	 * This content is based on w3.org design pattern examples and licensed according to the
 	 * W3C Software License at
 	 * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+	 * Please see specification:
+	 * https://www.w3.org/TR/wai-aria-practices/#menubutton
 	 */
 	constructor(domNode) {
 		this.domNode = domNode; // need to call node from child
@@ -26,7 +28,6 @@ export default class Popup {
 		this.hasHover = false;
 
 		this.closeDelay = 90;
-		this.animationsDuration = 200;
 	}
 
 	init() {
@@ -81,13 +82,13 @@ export default class Popup {
 			case keyCode.RETURN:
 			case keyCode.DOWN:
 				this.popupMenu.open();
-				this.timeout = setTimeout(() => this.popupMenu.setFocusToFirstItem(), this.animationsDuration);
+				this.waitForTransitionEnd(() => this.popupMenu.setFocusToFirstItem());
 				preventEventActions = true;
 				break;
 
 			case keyCode.UP:
 				this.popupMenu.open();
-				this.timeout = setTimeout(() => this.popupMenu.setFocusToLastItem, this.animationsDuration);
+				this.waitForTransitionEnd(() => this.popupMenu.setFocusToLastItem());
 				preventEventActions = true;
 				break;
 
@@ -110,6 +111,7 @@ export default class Popup {
 		this.hasHover = true;
 		this.popupMenu.open();
 		this.setPopupPosition();
+		clearTimeout(this.closeDelayTimer);
 	}
 
 	handleMouseleave() {
@@ -119,11 +121,12 @@ export default class Popup {
 				this.popupMenu.close();
 			}
 		};
-		this.timeout = setTimeout(closePopup, this.closeDelay);
+		this.closeDelayTimer = setTimeout(closePopup, this.closeDelay);
 	}
 
 	handleFocus() {
 		this.hasFocus = true;
+		clearTimeout(this.blurDelayTimer);
 	}
 
 	handleBlur() {
@@ -133,12 +136,29 @@ export default class Popup {
 				this.popupMenu.close();
 			}
 		};
-		this.timeout = setTimeout(closePopup, this.closeDelay);
+		this.blurDelayTimer = setTimeout(closePopup, this.closeDelay);
+	}
+
+	waitForTransitionEnd(callback) {
+		const onEnd = () => {
+			clearTimeout(this.transitionFallbackTimer);
+			this.popupMenu.domNode.removeEventListener('transitionend', onEnd);
+			callback();
+		}
+		const onRun = () => {
+			this.popupMenu.domNode.removeEventListener('transitionrun', onRun);
+			this.popupMenu.domNode.addEventListener('transitionend', onEnd);
+		}
+
+		this.popupMenu.domNode.addEventListener('transitionrun', onRun);
+		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 
 	destroy() {
 		this.removeEventListeners();
-		clearTimeout(this.timeout);
 		this.popupMenu.destroy();
+		clearTimeout(this.closeDelayTimer);
+		clearTimeout(this.blurDelayTimer);
+		clearTimeout(this.transitionFallbackTimer);
 	}
 }

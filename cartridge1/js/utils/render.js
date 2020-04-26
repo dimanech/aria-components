@@ -1,4 +1,4 @@
-// NOT PRODUCTION READY! - add hot reload
+// NOT PRODUCTION READY! - add hot reload, load on demand and make async
 import DiffDOM from '../libs/DiffDOM.js';
 import { default as Mustache } from '../libs/Mustache.js';
 
