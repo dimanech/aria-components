@@ -4,9 +4,9 @@ module.exports = {
 	mode: 'production',
 	entry: { 'initiator': './cartridge1/js/initiator.js' },
 	output: {
-		path: path.resolve(__dirname, 'cartridge1', 'dist', 'js'),
-		filename: '[name].bundle.js',
-		chunkFilename: '[name].bundle.js',
-		publicPath: 'dist/js/'
+		path: path.resolve(__dirname, 'cartridge1', 'js'),
+		filename: 'bundle.[name].js',
+		chunkFilename: 'chunk.[name].js',
+		publicPath: '/js/'
 	}
 };

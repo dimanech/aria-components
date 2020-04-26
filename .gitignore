@@ -28,4 +28,5 @@ logs
 node_modules
 .nyc_output
 api
-dist
+bundle.*.js
+chunk.*.js
