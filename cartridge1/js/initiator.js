@@ -2,13 +2,15 @@ import ComponentsInitiator from './components/ComponentsInitiator.js';
 
 (async function() {
 	let loadedComponents = [];
+	let componentsSet = [];
 
-	const commonComponents = await import(/* webpackChunkName: "common" */ './components-aggregation-common.js');
-	loadedComponents = loadedComponents.concat(commonComponents.default);
+	componentsSet = await import(/* webpackChunkName: "common" */ './components-aggregation-common.js');
+	loadedComponents = loadedComponents.concat(componentsSet.default);
 
 	switch (window.appScope) {
 		case 'plp':
-			loadedComponents = loadedComponents.concat(await import(/* webpackChunkName: "plp" */ './components-aggregation-plp.js').default);
+			componentsSet = await import(/* webpackChunkName: "plp" */ './components-aggregation-plp.js');
+			loadedComponents = loadedComponents.concat(componentsSet.default);
 			break;
 		default:
 	}

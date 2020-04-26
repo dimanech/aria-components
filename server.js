@@ -12,32 +12,34 @@ const certs = {
 };
 
 const app = connect('https://127.0.0.1');
-app.use(serveStatic(path.join(__dirname, 'public')));
+app.use(serveStatic(path.join(__dirname, 'pages')));
 app.use(serveStatic(path.join(__dirname, 'cartridge1')));
 app.use(serveStatic(path.join(__dirname, 'cartridge2')));
 
-app.use('/plp', function(req, res, next) {
+app.use('/plp', function(req, res) {
 	const queryObject = url.parse(req.url, true).query;
 	let html;
+
 	for (let prop in queryObject) {
-		const url = `./public/plp/${prop}/${queryObject[prop]}.html`;
+		const url = `./pages/plp/${prop}/${queryObject[prop]}.html`;
+
 		if (fs.existsSync(url)) {
 			html = fs.readFileSync(url);
 			break;
 		}
 	}
+
 	if (!html) {
-		html = fs.readFileSync('./public/plp/plp.html');
+		html = fs.readFileSync('./pages/plp/plp.html');
 	}
+
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	res.end(html);
 });
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use('/endpoint', function(req, res, next) {
-	if (req.method !== 'POST'){}
-
+app.use('/endpoint', function(req, res) {
 	const request = req.body;
 	let response = {success: 'success message'};
 	let head = {

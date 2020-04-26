@@ -28,3 +28,4 @@ logs
 node_modules
 .nyc_output
 api
+dist

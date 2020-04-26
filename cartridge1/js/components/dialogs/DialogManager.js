@@ -35,7 +35,7 @@ export default class DialogManager {
      * focus subset of main document. It is required to domNode that is focused after
      * dialog is closed. Broadcast native 'dialog:open' after open to handle callbacks.
      *
-     * @public
+     * @pages
      * @param {String} dialogType - type of dialog. Could be panel or modal. Currently used to much Bootstrap modals.
      * @param {String} dialogId - ID of dialog node. Eg: `myDialog`.
      * @param {HTMLElement} [focusAfterClose] - domNode of element that focused when dialog is closed and focus
@@ -69,7 +69,7 @@ export default class DialogManager {
      * Close the last one dialog in the stack
      * It throws native 'dialog:closed' event on dialog node after close.
      *
-     * @public
+     * @pages
      * @returns {Boolean}
      */
 	closeDialog() {
@@ -98,7 +98,7 @@ export default class DialogManager {
      * Close all dialogs in the stack
      * It calls closeDialog function for each dialog in stack.
      *
-     * @public
+     * @pages
      * @returns {Boolean}
      */
 	closeAll() {
@@ -116,7 +116,7 @@ export default class DialogManager {
      * like close modal button, backdrop click or ESC. For element that do not know
      * if particular dialog is try to *force user to make a choice* inside the dialog.
      *
-     * @public
+     * @pages
      * @returns {Boolean}
      */
 	closeDialogFromOutside() {
@@ -138,7 +138,7 @@ export default class DialogManager {
      *
      * Same as open dialog, but replace current dialog with new one.
      *
-     * @public
+     * @pages
      * @param {String} dialogType - type of dialog. Could be panel or modal.
      * @param {String} newDialogId - ID of dialog node in format of CSS selector.
 	 * Eg: `#myDialog`. Currently used to much Bootstrap modals.
@@ -164,7 +164,7 @@ export default class DialogManager {
      * isDialogOpen
      *
      * Check if dialogNode showed on page as Dialog
-     * @public
+     * @pages
      * @param {HTMLElement} domNode - domNode of dialog
      * @returns {Boolean}
      */

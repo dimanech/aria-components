@@ -17,7 +17,7 @@ function getFetch() {
 	if (window.fetch) {
 		return Promise.resolve(window.fetch);
 	}
-	return import(/* webpackChunkName: 'fetch-polyfill' */ '../libs/whatwg-fetch.js');// use polyfill
+	return import(/* webpackChunkName: 'fetch-polyfill' */ '../libs/whatwg-fetch.js');
 }
 
 /**
