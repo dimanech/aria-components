@@ -39,7 +39,6 @@ export default class AccordionNoRoles extends Accordion {
 			const controlledSection = document.getElementById(button.getAttribute('data-aria-controls-acc'));
 			controlledSection.removeAttribute('role');
 			controlledSection.removeAttribute('aria-hidden');
-			controlledSection.classList.remove('m-expanded');
 		});
 	}
 }
