@@ -11,16 +11,16 @@ const keyCode = Object.freeze({
 
 export default class Tabs {
 	/*
-     * Tabs
-     * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#tabpanel
-     *
-     * Configuration:
-     * `data-selection-follow-focus?=[true|false]` - Focused element will be selected it is default behaviour.
-     * In case if tab content dynamically loaded it is better to activate tab by click|Enter|Space for better UX.
-     * `data-preselect-tab="{HTMLElement.id}"` - Id of tab that should be selected on component init
-     * `aria-orientation=[vertical|horizontal]` - orientation of the tablist. This is for information only since
-     * in current implementation up/down arrows act alongside with left/right.
-     */
+	 * Tabs
+	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#tabpanel
+	 *
+	 * Configuration:
+	 * `data-selection-follow-focus?=[true|false]` - Focused element will be selected it is default behaviour.
+	 * In case if tab content dynamically loaded it is better to activate tab by click|Enter|Space for better UX.
+	 * `data-preselect-tab="{HTMLElement.id}"` - Id of tab that should be selected on component init
+	 * `aria-orientation=[vertical|horizontal]` - orientation of the tablist. This is for information only since
+	 * in current implementation up/down arrows act alongside with left/right.
+	 */
 	constructor(tablist) {
 		this.tablist = tablist;
 		this.tabs = Array.from(this.tablist.querySelectorAll('[role=tab]'));
@@ -88,13 +88,12 @@ export default class Tabs {
 
 		tab.setAttribute('aria-selected', 'false');
 		tab.setAttribute('tabindex', '-1');
-		tab.classList.remove('m-selected');
 
 		const controlledTabPanel = document.getElementById(tab.getAttribute('aria-controls'));
 		if (controlledTabPanel) {
 			controlledTabPanel.setAttribute('aria-hidden', 'true');
 			controlledTabPanel.removeAttribute('tabindex');
-			tab.dispatchEvent(new CustomEvent('tab:closed', { bubbles: true, cancelable: true }));
+			tab.dispatchEvent(new Event('tab:closed'));
 		}
 	}
 
@@ -105,13 +104,12 @@ export default class Tabs {
 
 		tab.setAttribute('aria-selected', 'true');
 		tab.setAttribute('tabindex', '0');
-		tab.classList.add('m-selected');
 
 		const controlledTabPanel = document.getElementById(tab.getAttribute('aria-controls'));
 		if (controlledTabPanel) {
 			controlledTabPanel.setAttribute('aria-hidden', 'false');
 			controlledTabPanel.setAttribute('tabindex', 0);
-			tab.dispatchEvent(new CustomEvent('tab:open', { bubbles: true, cancelable: true }));
+			tab.dispatchEvent(new Event('tab:open'));
 		}
 	}
 

@@ -10,27 +10,27 @@ export default class ExpandInput extends Expand {
 		this.handleEscape = this.handleEscape.bind(this);
 	}
 
-	open() {
-		super.open();
-		this.input = this.controledElement.querySelector('input');
-		if (!this.input) {
-			return;
-		}
-		this.input.addEventListener('keyup', this.handleEscape);
-		this.input.focus();
-	}
+	toggle(isOpen) {
+		super.toggle(isOpen);
 
-	close() {
-		super.close();
-		if (this.input) {
-			this.input.removeEventListener('keyup', this.handleEscape);
+		if (isOpen) {
+			this.input = this.controledElement.querySelector('input');
+			if (!this.input) {
+				return;
+			}
+			this.input.addEventListener('keyup', this.handleEscape);
+			this.input.focus();
+		} else {
+			if (this.input) {
+				this.input.removeEventListener('keyup', this.handleEscape);
+			}
+			this.button.focus();
 		}
-		this.button.focus();
 	}
 
 	handleEscape(event) {
 		if (event.keyCode === keyCode.ESC) {
-			this.close();
+			this.toggle(!this.isOpen);
 		}
 	}
 }

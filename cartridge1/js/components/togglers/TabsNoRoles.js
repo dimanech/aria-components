@@ -47,7 +47,6 @@ export default class TabsNoRoles extends Tabs {
 			tab.tabIndex = -1;
 			const controlledTabPanel = document.getElementById(tab.getAttribute('data-aria-controls-tab'));
 			if (controlledTabPanel) {
-				controlledTabPanel.classList.remove('m-selected');
 				controlledTabPanel.removeAttribute('aria-hidden');
 				controlledTabPanel.removeAttribute('role');
 				controlledTabPanel.removeAttribute('tabindex');

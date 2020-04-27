@@ -12,7 +12,7 @@
 
 	<link rel="stylesheet" href="css/tabs.css"/>
 	<div class="tabs">
-		<div data-component="Tabs" role="tablist" aria-orientation="horizontal">
+		<div data-component="./togglers/Tabs" role="tablist" aria-orientation="horizontal">
 			<button role="tab" aria-controls="tabpanel-1" id="tab-1">Tab 1</button>
 			<button role="tab" aria-controls="tabpanel-2" tabindex="-1" id="tab-2">Tab 2</button>
 			<button role="tab" aria-controls="tabpanel-3" tabindex="-1" id="tab-3">Tab 3</button>
@@ -36,7 +36,7 @@
 
 	<h2>Click to active</h2>
 	<div class="tabs" >
-		<div data-component="Tabs" role="tablist" data-selection-follow-focus="false">
+		<div data-component="./togglers/Tabs" role="tablist" data-selection-follow-focus="false">
 			<button role="tab" aria-controls="tabpanel-10" id="tab-10">Tab 10</button>
 			<button role="tab" aria-controls="tabpanel-11" tabindex="-1" id="tab-11">Tab 11</button>
 			<button role="tab" aria-controls="tabpanel-12" tabindex="-1" id="tab-12">Tab 12</button>
@@ -62,7 +62,7 @@
 
 	<h1>Accordion</h1>
 	<link rel="stylesheet" href="css/accordion.css"/>
-	<div class="accordion" data-component="Accordion">
+	<div class="accordion" data-component="./togglers/Accordion">
 		<button class="accordion__control" aria-controls="section-1">
 			Section 1
 			<svg aria-hidden="true" class="icon-plus" viewBox="0 0 14 14" width="14" height="14" focusable="false">
@@ -101,7 +101,7 @@
 	</div>
 
 	<h2>data-allow-multiple + data-allow-toggle</h2>
-	<div class="accordion" data-component="Accordion" data-allow-multiple data-allow-toggle>
+	<div class="accordion" data-component="./togglers/Accordion" data-allow-multiple data-allow-toggle>
 		<button class="accordion__control" aria-controls="section-10">
 			Section 10
 			<svg aria-hidden="true" class="icon-plus" viewBox="0 0 14 14" width="14" height="14" focusable="false">
@@ -150,7 +150,7 @@
 			<p>
 				This is image description
 			</p>
-			<button class="disclosure-control" data-component="Expand" aria-controls="details-1">
+			<button class="disclosure-control" data-component="./togglers/Expand" aria-controls="details-1">
 				Show more...
 			</button>
 			<p class="disclosure-content" id="details-1" aria-hidden="true">
