@@ -1,4 +1,4 @@
-export default class InputsMatch {
+export default class InputMatch {
 	constructor(domNode) {
 		this.input = domNode;
 		this.referenceInput = document.getElementById(this.input.getAttribute('data-compare-with'));

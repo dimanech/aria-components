@@ -68,7 +68,7 @@ export default class Expand {
 	toggle(isOpen) {
 		this.button.setAttribute('aria-expanded', isOpen);
 		this.controledElement.setAttribute('aria-hidden', !isOpen);
-		this.button.dispatchEvent(new Event(isOpen ? 'toggle:open' : 'toggle:close'));
+		this.button.dispatchEvent(new Event(isOpen ? 'expand:expanded' : 'expand:collapsed'));
 		this.isOpen = !!isOpen;
 	}
 

@@ -145,12 +145,7 @@ export default class Popup {
 			this.popupMenu.domNode.removeEventListener('transitionend', onEnd);
 			callback();
 		}
-		const onRun = () => {
-			this.popupMenu.domNode.removeEventListener('transitionrun', onRun);
-			this.popupMenu.domNode.addEventListener('transitionend', onEnd);
-		}
-
-		this.popupMenu.domNode.addEventListener('transitionrun', onRun);
+		this.popupMenu.domNode.addEventListener('transitionend', onEnd);
 		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 

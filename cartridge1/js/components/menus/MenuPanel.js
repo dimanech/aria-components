@@ -238,12 +238,7 @@ export default class MenuPanel {
 			container.removeEventListener('transitionend', onEnd);
 			callback();
 		}
-		const onRun = () => {
-			container.removeEventListener('transitionrun', onRun);
-			container.addEventListener('transitionend', onEnd);
-		}
-
-		container.addEventListener('transitionrun', onRun);
+		container.addEventListener('transitionend', onEnd);
 		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 

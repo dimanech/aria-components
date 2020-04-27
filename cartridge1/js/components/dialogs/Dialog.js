@@ -166,12 +166,7 @@ export default class Dialog {
 			this.dialogNode.removeEventListener('transitionend', onEnd);
 			callback();
 		}
-		const onRun = () => {
-			this.dialogNode.removeEventListener('transitionrun', onRun);
-			this.dialogNode.addEventListener('transitionend', onEnd);
-		}
-
-		this.dialogNode.addEventListener('transitionrun', onRun);
+		this.dialogNode.addEventListener('transitionend', onEnd);
 		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 
