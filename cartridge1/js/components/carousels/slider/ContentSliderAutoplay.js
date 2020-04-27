@@ -12,6 +12,9 @@ export default class ContentSliderAutoplay extends ContentSlider {
 	init() {
 		super.init();
 
+		if (this.slidesTotal <= 1) {
+			return;
+		}
 		if (!this.autoPlayEnabled) {
 			console.log('No autoplay option. Autoplay not enabled.')
 			return;

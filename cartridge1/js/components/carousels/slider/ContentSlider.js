@@ -72,12 +72,20 @@ export default class ContentSlider {
 			return;
 		}
 
-		const newSlide = this.normalizeIndex(index);
-		this.slidesModel = this.getSlidesModel(newSlide);
-		this.addTransitionEndListener();
+		const newSlideIndex = this.normalizeIndex(index);
+		this.slidesModel = this.getSlidesModel(newSlideIndex);
+
+		this.toggleAnimationMode(true);
+		this.waitForTransitionEnd(newSlideIndex, () => this.toggleAnimationMode(false));
+
 		this.applySlidesModel();
-		this.setActivePagination(newSlide);
-		this.currentSlideIndex = newSlide;
+		this.setActivePagination(newSlideIndex);
+		this.currentSlideIndex = newSlideIndex;
+	}
+
+	toggleAnimationMode(isAnimated) {
+		this.blockedByAnimations = isAnimated;
+		this.sliderContent.setAttribute('aria-live', isAnimated ? 'polite' : 'off'); // TODO
 	}
 
 	applySlidesModel() {
@@ -118,31 +126,34 @@ export default class ContentSlider {
 		}
 	}
 
-	addTransitionEndListener() {
-		this.blockedByAnimations = true;
-		this.transitionEndTimeout = setTimeout(this.removeTransitionEndListener.bind(this), 300);
-		this.sliderContent.setAttribute('aria-live', 'polite'); // TODO
-	}
-
-	removeTransitionEndListener() {
-		if (this.transitionEndTimeout) {
-			clearTimeout(this.transitionEndTimeout);
-		}
-		this.blockedByAnimations = false;
-		this.sliderContent.setAttribute('aria-live', 'off');
-	}
-
 	handleKeydown(event) {
+		let preventEventActions = false;
+
 		switch (event.keyCode) {
 			case keyCode.LEFT:
 				this.goToPrevSlide();
+				preventEventActions = true;
 				break;
 			case keyCode.RIGHT:
 				this.goToNextSlide();
+				preventEventActions = true;
 				return;
 			default:
 				return;
 		}
+
+		if (preventEventActions) {
+			event.stopPropagation();
+			event.preventDefault();
+		}
+	}
+
+	waitForTransitionEnd(index, callback) {
+		const onEnd = () => {
+			clearTimeout(this.transitionFallbackTimer);
+			callback();
+		}
+		this.transitionFallbackTimer = setTimeout(onEnd, 400);
 	}
 
 	// Pagination
@@ -163,13 +174,25 @@ export default class ContentSlider {
 
 		for (let i = 0; i < tipsTotal; i++) {
 			const dot = document.createElementNS(xmlns, 'circle');
-			dot.setAttributeNS(null, 'class', 'dot');
-			dot.setAttributeNS(null, 'cx', ((10 * i) + 5));
+			dot.setAttributeNS(null, 'class', 'dot__point');
+			dot.setAttributeNS(null, 'cx', (8 * i) + 5);
 			dot.setAttributeNS(null, 'cy', 2);
-			dot.setAttributeNS(null, 'r', 2);
-			dot.setAttributeNS(null, 'stroke-dasharray', 2 * Math.PI * 2);
+			dot.setAttributeNS(null, 'r', 1);
 
-			this.pagination.appendChild(dot);
+			const progress = document.createElementNS(xmlns, 'circle');
+			progress.setAttributeNS(null, 'class', 'dot__circle');
+			progress.setAttributeNS(null, 'cx', (8 * i) + 5);
+			progress.setAttributeNS(null, 'cy', 2);
+			progress.setAttributeNS(null, 'r', 2);
+			progress.setAttributeNS(null, 'stroke-dasharray', 2 * (Math.PI * 2));
+
+			const group = document.createElementNS(xmlns, 'g');
+			group.setAttributeNS(null, 'class', 'dot');
+
+			group.appendChild(dot);
+			group.appendChild(progress);
+
+			this.pagination.appendChild(group);
 		}
 
 		this.paginationContent.appendChild(this.pagination);
