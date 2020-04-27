@@ -2,8 +2,3 @@
 @import "../js/components/menus/css/menus.css";
 @import "../js/components/togglers/css/accordion.css";
 @import "../js/components/forms/css/search-combobox.css";
-
-[aria-hidden="true"] {
-	display: none;
-}
-
