@@ -29,9 +29,9 @@ body {
 	overscroll-behavior-x: none; /* contain */
 	scroll-behavior: smooth;
 	-ms-scroll-chaining: none;
-	-ms-scroll-snap-type: x mandatory;
-	-webkit-scroll-snap-type: x mandatory;
-	scroll-snap-type: x mandatory;
+	/*-ms-scroll-snap-type: x mandatory;*/
+	/*-webkit-scroll-snap-type: x mandatory;*/
+	scroll-snap-type: x proximity;
 	scrollbar-width: none; /* FF */
 }
 
@@ -211,6 +211,14 @@ body {
 }
 
 .box:nth-child(7) {
+	background: #fb8a67;
+}
+
+.box:nth-child(8) {
+	background: #ff754b;
+}
+
+.box:nth-child(9) {
 	background: #ff5722;
 }
 

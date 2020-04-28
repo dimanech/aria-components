@@ -5,7 +5,7 @@ export default class ScrollCarouselAutoplay extends ScrollCarousel {
 		super(domNode);
 
 		this.autoPlayEnabled = this.carousel.hasAttribute('data-autoplay') || false;
-		this.autoPlayDelay = 1000;
+		this.autoPlayDelay = this.autoPlayEnabled ? this.carousel.getAttribute('data-autoplay') : 3000;
 	}
 
 	init() {

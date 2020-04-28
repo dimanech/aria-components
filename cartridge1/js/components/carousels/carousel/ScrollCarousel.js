@@ -116,7 +116,7 @@ export default class ScrollCarousel {
 	}
 
 	scrollToPage(pageIndex) {
-		if (!pageIndex) {
+		if (pageIndex < 0) {
 			return;
 		}
 
