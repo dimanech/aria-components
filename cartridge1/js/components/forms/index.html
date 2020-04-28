@@ -132,7 +132,7 @@
 					id="interests-other-details"
 					name="other"
 					minlength="3"
-					data-component="./forms/InputConditional"
+					data-component="./forms/InputDependsFrom"
 					data-input-depends-from='["interests-other"]'
 				></textarea>
 				<div
@@ -194,7 +194,7 @@
 
 		<div style="display:flex">
 			<fieldset
-				data-component="./forms/InputConditional"
+				data-component="./forms/InputDependsFrom"
 				data-input-depends-from='["contact-mail"]'
 			>
 				<legend>Mail address</legend>
@@ -309,7 +309,7 @@
 			</fieldset>
 
 			<fieldset
-				data-component="./forms/InputConditional"
+				data-component="./forms/InputDependsFrom"
 				data-input-depends-from='["contact-phone"]'
 			>
 				<legend>Phone number</legend>
@@ -339,7 +339,7 @@
 			</fieldset>
 
 			<fieldset
-				data-component="./forms/InputConditional"
+				data-component="./forms/InputDependsFrom"
 				data-input-depends-from='["contact-email"]'
 			>
 				<legend>Email address</legend>
@@ -406,8 +406,8 @@
 						autocapitalize="off"
 						autocomplete="new-password"
 						autocorrect="off"
+						data-component="./forms/InputCompareWith"
 						data-compare-with="password"
-						data-component="./forms/InputMatch"
 						data-error-custom="Fields should be equal"
 						id="password-confirm"
 						placeholder="Confirm password"
