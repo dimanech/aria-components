@@ -115,6 +115,18 @@ export default class ScrollCarousel {
 		this.scrollToPage(this.getCurrentPageIndex() - 1);
 	}
 
+	scrollBy(isNext) {
+		const isHorizontal = this.carouselDirection === 'horizontal';
+		const x = isHorizontal ? this.carouselTrack.clientWidth : 0;
+		const y = isHorizontal ? 0 : this.carouselTrack.clientHeight;
+
+		if (isNext) {
+			this.carouselTrack.scrollBy(x, y);
+		} else {
+			this.carouselTrack.scrollBy(-x, -y);
+		}
+	}
+
 	scrollToPage(pageIndex) {
 		if (pageIndex < 0) {
 			return;
@@ -153,10 +165,10 @@ export default class ScrollCarousel {
 			return;
 		}
 		const paginationOption = this.carousel.getAttribute('data-pagination');
-		if (paginationOption === '') {
-			this.createPaginationElements();
-		} else {
+		if (paginationOption) {
 			this.pagination = document.getElementById(paginationOption);
+		} else {
+			this.createPaginationElements();
 		}
 		this.pagination.onclick = this.handlePaginationClick.bind(this);
 		this.setActivePagination();
@@ -198,21 +210,22 @@ export default class ScrollCarousel {
 	}
 
 	setActivePagination() {
+		this.pagination.children[this.currentPage].classList.remove('_current'); // should be here because reinit pagination could change pages count
+
 		const currentPageIndex = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
-		const currentPageNode = this.pagination.children[currentPageIndex];
-		if (!currentPageNode) {
+		let currentPageNode = this.pagination.children[currentPageIndex];
+		// TODO: recreate pagination if pages become less that on init
+		if (!currentPageNode) { // recreate pagination in case if pages more than it was on start
 			this.initPagination();
 		}
-
-		this.pagination.children[this.currentPage].classList.remove('_current');
+		currentPageNode = this.pagination.children[currentPageIndex];
 		currentPageNode.classList.add('_current');
 
 		this.currentPage = currentPageIndex;
 	}
 
 	scrollActivePaginationIntoView() {
-		// In case if pagination has scroll itself we scroll pagination into view.
-		// Ex. if pagination is thumbnails
+		// In case if pagination has scroll itself we scroll pagination into view. Ex: if pagination is thumbnails
 		if (this.pagination.scrollHeight === this.pagination.offsetHeight) {
 			return;
 		}
@@ -230,11 +243,14 @@ export default class ScrollCarousel {
 	handlePaginationClick(event) {
 		event.preventDefault();
 		const pageIndex = event.target.getAttribute('data-page');
-		this.scrollToPage(pageIndex);
+		if (!pageIndex) {
+			return;
+		}
+		this.scrollToPage(parseInt(pageIndex, 10));
 	}
 
 	// Grab to scroll functionality only for horizontal direction
-
+	// NOT PRODUCTION READY
 	addGrabEventListeners() {
 		if (this.carouselDirection !== 'horizontal') {
 			return;
@@ -283,6 +299,7 @@ export default class ScrollCarousel {
 
 		switch (true) {
 			case (this.deltaX <= -10):
+				// could not be scrollBy since user drug to scroll at the moment
 				this.scrollToPrevPage();
 				break;
 			case (this.deltaX >= 10):
