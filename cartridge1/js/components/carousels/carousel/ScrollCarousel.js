@@ -21,24 +21,20 @@ export default class ScrollCarousel {
 
 	addEventListeners() {
 		this.onScroll = this.onScroll.bind(this);
-		this.scrollToPrevPage = this.scrollToPrevPage.bind(this);
-		this.scrollToNextPage = this.scrollToNextPage.bind(this);
+		this.prevPage = this.prevPage.bind(this);
+		this.nextPage = this.nextPage.bind(this);
 
 		this.carouselTrack.addEventListener('scroll', this.onScroll, { passive: true });
 		this.carouselTrack.addEventListener('touchstart', this.onScroll, { passive: true });
-		this.prevButton.addEventListener('click', this.scrollToPrevPage);
-		this.nextButton.addEventListener('click', this.scrollToNextPage);
-
-		this.addGrabEventListeners();
+		this.prevButton.addEventListener('click', this.prevPage);
+		this.nextButton.addEventListener('click', this.nextPage);
 	}
 
 	removeEventListeners() {
 		this.carouselTrack.removeEventListener('scroll', this.onScroll);
 		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
-		this.prevButton.removeEventListener('click', this.scrollToPrevPage);
-		this.nextButton.removeEventListener('click', this.scrollToNextPage);
-
-		this.removeGrabEventListeners();
+		this.prevButton.removeEventListener('click', this.prevPage);
+		this.nextButton.removeEventListener('click', this.nextPage);
 	}
 
 	// Prev next buttons and UI
@@ -99,6 +95,30 @@ export default class ScrollCarousel {
 
 	// Prev next functionality
 
+	// relative scroll
+
+	prevPage() {
+		this.scrollBy(true);
+	}
+
+	nextPage() {
+		this.scrollBy(true);
+	}
+
+	scrollBy(isNext) {
+		const isHorizontal = this.carouselDirection === 'horizontal';
+		const x = isHorizontal ? this.carouselTrack.clientWidth : 0;
+		const y = isHorizontal ? 0 : this.carouselTrack.clientHeight;
+
+		if (isNext) {
+			this.carouselTrack.scrollBy(x, y);
+		} else {
+			this.carouselTrack.scrollBy(-x, -y);
+		}
+	}
+
+	// abs scroll
+
 	getCurrentPageIndex() {
 		const currentPosition = this.carouselDirection === 'horizontal'
 			? this.carouselTrack.scrollLeft : this.carouselTrack.scrollTop;
@@ -113,18 +133,6 @@ export default class ScrollCarousel {
 
 	scrollToPrevPage() {
 		this.scrollToPage(this.getCurrentPageIndex() - 1);
-	}
-
-	scrollBy(isNext) {
-		const isHorizontal = this.carouselDirection === 'horizontal';
-		const x = isHorizontal ? this.carouselTrack.clientWidth : 0;
-		const y = isHorizontal ? 0 : this.carouselTrack.clientHeight;
-
-		if (isNext) {
-			this.carouselTrack.scrollBy(x, y);
-		} else {
-			this.carouselTrack.scrollBy(-x, -y);
-		}
 	}
 
 	scrollToPage(pageIndex) {
@@ -214,11 +222,7 @@ export default class ScrollCarousel {
 
 		const currentPageIndex = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
 		let currentPageNode = this.pagination.children[currentPageIndex];
-		// TODO: recreate pagination if pages become less that on init
-		if (!currentPageNode) { // recreate pagination in case if pages more than it was on start
-			this.initPagination();
-		}
-		currentPageNode = this.pagination.children[currentPageIndex];
+		// TODO: recreate pagination if pages become less or more that on init
 		currentPageNode.classList.add('_current');
 
 		this.currentPage = currentPageIndex;
@@ -247,70 +251,6 @@ export default class ScrollCarousel {
 			return;
 		}
 		this.scrollToPage(parseInt(pageIndex, 10));
-	}
-
-	// Grab to scroll functionality only for horizontal direction
-	// NOT PRODUCTION READY
-	addGrabEventListeners() {
-		if (this.carouselDirection !== 'horizontal') {
-			return;
-		}
-
-		this.onTouchMove = this.onTouchMove.bind(this);
-		this.onTouchStart = this.onTouchStart.bind(this);
-		this.onTouchEnd = this.onTouchEnd.bind(this);
-
-		this.carouselTrack.addEventListener('mousedown', this.onTouchStart);
-		this.carouselTrack.addEventListener('mouseup', this.onTouchEnd);
-	}
-
-	removeGrabEventListeners() {
-		this.carouselTrack.removeEventListener('mousedown', this.onTouchStart);
-		this.carouselTrack.removeEventListener('mouseup', this.onTouchEnd);
-	}
-
-	onTouchStart(event) {
-		this.initialX = event.pageX || event.touches[0].pageX;
-		this.carouselWidth = this.carousel.clientWidth;
-		this.deltaX = 0;
-
-		this.carouselTrack.addEventListener('mousemove', this.onTouchMove);
-		this.carouselTrack.addEventListener('mouseleave', this.onTouchEnd);
-		this.carouselTrack.classList.add('_grabbing');
-
-		clearTimeout(this.grabbingRemoveTimeout);
-	}
-
-	onTouchMove(event) {
-		const x = event.touches !== undefined ? event.touches[0].pageX : event.clientX;
-		this.deltaX = (this.initialX - x) / this.carouselWidth * 100;
-
-		this.carouselTrack.scrollTo({
-			top: 0,
-			left: this.carouselTrack.scrollLeft + this.deltaX
-		});
-	}
-
-	onTouchEnd() {
-		this.carouselTrack.removeEventListener('mousemove', this.onTouchMove);
-		this.carouselTrack.removeEventListener('mouseleave', this.onTouchEnd);
-		// we should remove scroll-snap-type with delay, otherwise it cause bouncing
-		this.grabbingRemoveTimeout = setTimeout(() => this.carouselTrack.classList.remove('_grabbing'), 600);
-
-		switch (true) {
-			case (this.deltaX <= -10):
-				// could not be scrollBy since user drug to scroll at the moment
-				this.scrollToPrevPage();
-				break;
-			case (this.deltaX >= 10):
-				this.scrollToNextPage();
-				break;
-			default:
-				// remove immediate for this case
-				this.carouselTrack.classList.remove('_grabbing');
-		}
-
-		this.deltaX = 0;
 	}
 
 	// Destroy
