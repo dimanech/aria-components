@@ -21,7 +21,7 @@ export default class ScrollCarouselGrub extends ScrollCarousel {
 	}
 
 	addGrabEventListeners() {
-		if (this.carouselDirection !== 'horizontal') {
+		if (!this.isDirectionHorizontal) {
 			return;
 		}
 

@@ -5,7 +5,7 @@ export default class ScrollCarousel {
 		this.prevButton = this.carousel.querySelector('[data-elem-prev-button]');
 		this.nextButton = this.carousel.querySelector('[data-elem-next-button]');
 
-		this.carouselDirection = this.carousel.getAttribute('data-direction') || 'horizontal';
+		this.isDirectionHorizontal = this.carousel.getAttribute('data-direction') !== 'vertical';
 		this.currentPage = 0;
 
 		this.scrollEndSensitivity = 40; // Workaround IE rounding for clientWidth and scrollWidth
@@ -49,7 +49,7 @@ export default class ScrollCarousel {
 
 	updateCarouselMetric() {
 		// Possible optimization: Resize Observer that watch carousel width and cache this.carousel.offsetWidth
-		if (this.carouselDirection === 'horizontal') {
+		if (this.isDirectionHorizontal) {
 			const totalScrollWidth = this.carouselTrack.scrollLeft + this.carousel.offsetWidth;
 			this.isScrollStart = this.carouselTrack.scrollLeft <= 0;
 			this.isScrollEnd = totalScrollWidth + this.scrollEndSensitivity >= this.carouselTrack.scrollWidth;
@@ -95,10 +95,9 @@ export default class ScrollCarousel {
 
 	// Prev next functionality
 
-	// relative scroll
-
+	// relative scroll - page by page
 	prevPage() {
-		this.scrollBy(true);
+		this.scrollBy();
 	}
 
 	nextPage() {
@@ -106,9 +105,8 @@ export default class ScrollCarousel {
 	}
 
 	scrollBy(isNext) {
-		const isHorizontal = this.carouselDirection === 'horizontal';
-		const x = isHorizontal ? this.carouselTrack.clientWidth : 0;
-		const y = isHorizontal ? 0 : this.carouselTrack.clientHeight;
+		const x = this.isDirectionHorizontal ? this.carouselTrack.clientWidth : 0;
+		const y = this.isDirectionHorizontal ? 0 : this.carouselTrack.clientHeight;
 
 		if (isNext) {
 			this.carouselTrack.scrollBy(x, y);
@@ -117,12 +115,11 @@ export default class ScrollCarousel {
 		}
 	}
 
-	// abs scroll
-
+	// abs scroll - page to page
 	getCurrentPageIndex() {
-		const currentPosition = this.carouselDirection === 'horizontal'
+		const currentPosition = this.isDirectionHorizontal
 			? this.carouselTrack.scrollLeft : this.carouselTrack.scrollTop;
-		const pageWidth = this.carouselDirection === 'horizontal'
+		const pageWidth = this.isDirectionHorizontal
 			? this.carouselTrack.clientWidth : this.carouselTrack.clientHeight;
 		return Math.round(currentPosition / pageWidth);
 	}
@@ -140,7 +137,7 @@ export default class ScrollCarousel {
 			return;
 		}
 
-		if (this.carouselDirection === 'horizontal') {
+		if (this.isDirectionHorizontal) {
 			this.scrollToPoint(0, Math.round(this.carousel.clientWidth * pageIndex));
 		} else {
 			this.scrollToPoint(Math.round(this.carousel.clientHeight * pageIndex), 0);
@@ -158,7 +155,7 @@ export default class ScrollCarousel {
 				behavior: 'smooth'
 			});
 		} else {
-			if (this.carouselDirection === 'horizontal') {
+			if (this.isDirectionHorizontal) {
 				element.scrollLeft = left;
 			} else {
 				element.scrollTop = top;
