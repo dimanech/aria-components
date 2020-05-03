@@ -75,7 +75,7 @@ function handleResponse500(response) {
  * @param {'POST'|'GET'} [method] typeof request
  * @param {boolean} [skipToken] skip token for request
  */
-export const submitFormJson = (url, data = {}, method = 'POST', skipToken = false) => {
+export function submitFormJson(url, data = {}, method = 'POST', skipToken = false) {
 	return getFetch().then(() => {
 		const { valuedUrl, formData } = handleUrlOrFormData(method, data, skipToken, url);
 
@@ -113,7 +113,7 @@ export const submitFormJson = (url, data = {}, method = 'POST', skipToken = fals
 			});
 		});
 	});
-};
+}
 
 /**
  *
