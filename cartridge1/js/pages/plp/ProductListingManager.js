@@ -20,12 +20,13 @@ export default class ProductListingMgr {
 		this.filterButton = 'data-elem-plp-filter';
 		this.sortingSelect = 'data-elem-plp-sort';
 		this.loadMoreButton = 'data-elem-load-more';
+		this.eventBus = document;
 	}
 
 	init() {
 		this.addEventListeners();
 
-		window.onpopstate = event => this.updatePLP(event.state.url, event.state.message);
+		//window.onpopstate = event => this.updatePLP(event.state.url, event.state.message);
 		// just returns fully rendered variant of page
 	}
 
@@ -71,32 +72,32 @@ export default class ProductListingMgr {
 			const renderTo = onlyProductsList ? this.list : this.plp;
 			const content = onlyProductsList ? this.getDocumentFragment(response, '[data-elem-plp-grid]') : response;
 
-			render(undefined, undefined, renderTo, content);
-
-			this.pushHistoryState('updatePLP', url, message);
-			this.plp.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message } }));
-		}).finally(() => {
+			render(undefined, undefined, renderTo, content).then(() => {
+				//this.pushHistoryState('updatePLP', url, message);
+				this.plp.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message } }));
+				this.eventBus.dispatchEvent(new Event('plp:updated'));
+				this.toggleBusy(false);
+			});
+		}).catch(() => {
 			this.toggleBusy(false);
 		});
 	}
 
 	appendToProductsList(url, message, button) {
-		button.classList.add('m-loading');
+		button.classList.add('_loading');
 		this.toggleBusy(true);
 		getContentByUrl(url)
 			.then(response => {
 				button.parentElement.remove();
 
-				const template = document.createElement('template');
-				template.innerHTML = response;
-				this.list.appendChild(template.content);
+				this.list.insertAdjacentHTML('beforeend', response);
 
-				this.pushHistoryState('appendToProductsList', url, message);
-				this.list.dispatchEvent(
-					new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
+				//this.pushHistoryState('appendToProductsList', url, message);
+				this.list.dispatchEvent(new CustomEvent('notifier:notify', { bubbles: true, detail: { message: message} }));
+				this.eventBus.dispatchEvent(new Event('plp:updated'));
 			}).finally(() => {
 				this.toggleBusy(false);
-				button.classList.remove('m-loading');
+				button.classList.remove('_loading');
 			});
 	}
 

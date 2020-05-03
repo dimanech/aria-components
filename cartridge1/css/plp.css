@@ -34,3 +34,43 @@
 	padding-bottom: 100%;
 	background-color: lightgrey;
 }
+
+.wishlist-button {
+	background-color: transparent;
+	border: none;
+	width: 20px;
+	height: 20px;
+	color: transparent;
+	text-align: center;
+	padding: 0;
+}
+
+.wishlist-button svg {
+	pointer-events: none;
+}
+
+.wishlist-button[aria-pressed=true] {
+	color: black;
+}
+
+.wishlist-icon {
+	display: inline-block;
+	position: relative;
+	text-decoration: none;
+	color: grey;
+}
+
+.wishlist-icon div {
+	position: absolute;
+	height: 14px;
+	min-width: 14px;
+	color: white;
+	background-color: red;
+	border-radius: 14px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 16px;
+	top: 0;
+	right: -7px;
+}

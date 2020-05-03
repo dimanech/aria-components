@@ -40,30 +40,31 @@ function applyDiff(el, diffNode) {
 }
 
 export function render(templateId, data = {}, renderTo, strToRender) {
-	return import(/* webpackChunkName: 'Mustache' */ '../libs/Mustache.js').then(Mustache => {
-		let template = cachedTemplates && cachedTemplates[templateId];
-		const templateElement = document.getElementById(templateId);
+	return new Promise((resolve, reject) => {
+		return import(/* webpackChunkName: 'Mustache' */ '../libs/Mustache.js').then(Mustache => {
+			let template = cachedTemplates && cachedTemplates[templateId];
+			const templateElement = document.getElementById(templateId);
 
-		if (!strToRender && templateElement) {
-			template = templateElement.innerHTML;
-			Mustache.parse(template);
-			cachedTemplates[templateId] = template;
-		}
+			if (!strToRender && templateElement) {
+				template = templateElement.innerHTML;
+				Mustache.parse(template);
+				cachedTemplates[templateId] = template;
+			}
 
-		const renderedStr = strToRender || Mustache.render(template, data);
+			const renderedStr = strToRender || Mustache.render(template, data);
 
-		if (renderTo && renderTo.parentNode) {
-			// use new document to avoid loading images when diffing
-			const newHTMLDocument = document.implementation.createHTMLDocument('diffDOM'); // TODO: change to template
-			const diffNode = newHTMLDocument.createElement('div');
+			if (renderTo && renderTo.parentNode) {
+				// use new document to avoid loading images when diffing
+				const newHTMLDocument = document.implementation.createHTMLDocument('diffDOM'); // TODO: change to template
+				const diffNode = newHTMLDocument.createElement('div');
 
-			diffNode.innerHTML = renderedStr;
+				diffNode.innerHTML = renderedStr;
 
-			applyDiff(renderTo, diffNode);
-		} else {
-			console.error(`Missing el to render ${renderTo}`, this);
-		}
-
-		return Promise.resolve();
-	});
+				applyDiff(renderTo, diffNode).then(() => resolve())
+			} else {
+				console.error(`Missing el to render ${renderTo}`, this);
+				reject();
+			}
+		});
+	})
 }

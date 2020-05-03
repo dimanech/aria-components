@@ -30,7 +30,7 @@ app.use('/plp', function(req, res) {
 	}
 
 	if (!html) {
-		html = fs.readFileSync('./pages/plp/plp.html');
+		html = fs.readFileSync('./pages/plp.html');
 	}
 
 	res.writeHead(200, {'Content-Type': 'text/html'});
