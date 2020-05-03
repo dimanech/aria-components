@@ -7,11 +7,11 @@ const serveStatic = require('serve-static');
 const bodyParser = require('body-parser');
 const port = 3000;
 const certs = {
-	key: fs.readFileSync(__dirname +  '/certs/devserv.key', 'utf8'),
-	cert: fs.readFileSync(__dirname + '/certs/devserv.crt', 'utf8')
+	key: fs.readFileSync(__dirname +  '/.certs/localhost.key', 'utf8'),
+	cert: fs.readFileSync(__dirname + '/.certs/localhost.crt', 'utf8')
 };
 
-const app = connect('https://127.0.0.1');
+const app = connect('127.0.0.1');
 app.use(serveStatic(path.join(__dirname, 'pages')));
 app.use(serveStatic(path.join(__dirname, 'cartridge1')));
 app.use(serveStatic(path.join(__dirname, 'cartridge2')));
@@ -78,5 +78,6 @@ app.use('/endpoint', function(req, res) {
 });
 
 app.listen();
+// to check service worker 1) comment http2.createServer 2) change to app.listen(port);
 http2.createSecureServer(certs, app).listen(process.env.PORT || port);
 console.log('https://127.0.0.1:' + (process.env.PORT || port));
