@@ -13,7 +13,7 @@ export default class MessageRelay {
 
 	init() {
 		if (!navigator.serviceWorker) {
-			return;
+			throw new Error('Browser doesn\'t support service worker');
 		}
 
 		this.registerServiceWorker();
