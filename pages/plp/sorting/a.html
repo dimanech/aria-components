@@ -1,6 +1,6 @@
 <div data-elem-plp-content class="plp">
 	<aside data-elem-refinments class="plp__aside">
-		<div data-component="./togglers/Accordion" data-allow-multiple class="accordion">
+		<div data-component="Accordion" data-allow-multiple class="accordion">
 			<button aria-controls="section-1" aria-expanded="true" class="accordion__control">
 				Filters 1
 				<svg aria-hidden="true" class="icon-plus" viewBox="0 0 14 14" width="14" height="14" focusable="false">
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 	</aside>
-	<main class="plp__main">
+	<main class="plp__main" data-component="/js/plp/Wishlist">
 		<select name="sort" data-elem-plp-sort>
 			<option value="?sorting=a" selected>Top rated</option>
 			<option value="?sorting=b">Alphabetical</option>
