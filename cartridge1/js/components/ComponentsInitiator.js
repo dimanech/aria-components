@@ -63,16 +63,9 @@ export default class ComponentsInitiator {
 			component = new componentConstructor(domNode, this.pageComponents);
 			component.init();
 		} catch (error) {
-			if (error instanceof ReferenceError) {
-				// if default export not constructor
-				component = componentConstructor(domNode, this.pageComponents);
-			}
-
-			console.groupCollapsed(`[ComponentsInitiator.js]:\x1b[31m ${componentName}.js error: ${error.message}`);
-			console.log(error);
+			console.groupCollapsed(`[ComponentsInitiator]:\x1b[31m ${componentName}.js ${error.name}: ${error.message}`);
+			console.error(error);
 			console.groupEnd();
-
-			// TODO: implement different types of errors and logic to clean up components
 		}
 
 		domNode.setAttribute('data-inited', true);
