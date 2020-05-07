@@ -211,15 +211,15 @@ body {
 }
 
 .box:nth-child(7) {
-	background: #fb8a67;
+	background: #c8bafe;
 }
 
 .box:nth-child(8) {
-	background: #ff754b;
+	background: #9980ff;
 }
 
 .box:nth-child(9) {
-	background: #ff5722;
+	background: #7b5cfd;
 }
 
 /* Vertical carousel */

@@ -1,4 +1,5 @@
 import ComponentsInitiator from './components/ComponentsInitiator.js';
+import ComponentsObserver from './components/ComponentsObserver.js';
 
 (async function() {
 	let loadedComponents = [];
@@ -16,6 +17,9 @@ import ComponentsInitiator from './components/ComponentsInitiator.js';
 	}
 
 	const initiator = new ComponentsInitiator(loadedComponents);
-	document.querySelectorAll('[data-component]')
-			.forEach(node => initiator.initComponent(node));
+	const initComponent = node => initiator.initComponent(node);
+
+	document.querySelectorAll('[data-component]').forEach(initComponent);
+	new ComponentsObserver({ onAddedComponents: initComponent });
+
 })();

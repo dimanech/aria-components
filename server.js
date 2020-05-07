@@ -1,20 +1,28 @@
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
-const http2 = require('http2');
 const connect = require('connect');
 const serveStatic = require('serve-static');
 const bodyParser = require('body-parser');
 const port = 3000;
+const http2 = require('http2');
 const certs = {
-	key: fs.readFileSync(__dirname +  '/certs/devserv.key', 'utf8'),
-	cert: fs.readFileSync(__dirname + '/certs/devserv.crt', 'utf8')
+	key: fs.readFileSync(__dirname +  '/.certs/localhost.key', 'utf8'),
+	cert: fs.readFileSync(__dirname + '/.certs/localhost.crt', 'utf8')
 };
 
-const app = connect('https://127.0.0.1');
-app.use(serveStatic(path.join(__dirname, 'pages')));
+const app = connect('127.0.0.1');
+
 app.use(serveStatic(path.join(__dirname, 'cartridge1')));
 app.use(serveStatic(path.join(__dirname, 'cartridge2')));
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+app.use('/service-worker.js', function(req, res) {
+	res.writeHead(200, {'Content-Type': 'application/javascript'});
+	res.end(fs.readFileSync('./cartridge1/js/services/service-worker.js'));
+});
 
 app.use('/plp', function(req, res) {
 	const queryObject = url.parse(req.url, true).query;
@@ -30,15 +38,13 @@ app.use('/plp', function(req, res) {
 	}
 
 	if (!html) {
-		html = fs.readFileSync('./pages/plp/plp.html');
+		html = fs.readFileSync('./pages/plp.html');
 	}
 
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	res.end(html);
 });
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 app.use('/endpoint', function(req, res) {
 	const request = req.body;
 	let response = {success: 'success message'};
@@ -77,6 +83,12 @@ app.use('/endpoint', function(req, res) {
 	res.end(isTextType ? response : JSON.stringify(response));
 });
 
+app.use('/', function(req, res) {
+	res.writeHead(200, {'Content-Type': 'text/html'});
+	res.end(fs.readFileSync('./index.html'));
+});
+
 app.listen();
+// to check service worker 1) comment http2.createServer 2) change to app.listen(port);
 http2.createSecureServer(certs, app).listen(process.env.PORT || port);
 console.log('https://127.0.0.1:' + (process.env.PORT || port));

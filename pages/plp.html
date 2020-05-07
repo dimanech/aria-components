@@ -17,10 +17,10 @@
 			document.dispatchEvent(new Event('googleApi:ready'));
 		}
 	</script>
-<!--	<link rel="preload" href="/js/initiator.js" as="script" crossorigin="anonymous" />-->
-<!--	<script async type="module" src="/js/initiator.js"></script>-->
-	<link rel="preload" href="/js/bundle.initiator.js" as="script" crossorigin="anonymous" />
-	<script async type="module" src="/js/bundle.initiator.js"></script>
+	<link rel="preload" href="/js/initiator.js" as="script" crossorigin="anonymous" />
+	<script async type="module" src="/js/initiator.js"></script>
+<!--	<link rel="preload" href="/js/bundle.initiator.js" as="script" crossorigin="anonymous" />-->
+<!--	<script async type="module" src="/js/bundle.initiator.js"></script>-->
 <!--	<script-->
 <!--		async-->
 <!--		src="https://maps.googleapis.com/maps/api/js?key=KEY&libraries=places&callback=googleApiCallback"-->
@@ -32,7 +32,18 @@
 	data-component="/js/components/forms/Form"
 	-->
 </head>
-<body>
+<body data-component="MessageRelayService">
+	<svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
+		<symbol id="heart" viewBox="-20 0 600 600">
+			<path stroke-width="40" stroke="black" fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path>
+		</symbol>
+	</svg>
+
+	<a class="wishlist-icon" href="/wishlist.html">
+		<svg width="20" height="20" focusable="false" aria-hidden="true"><use href="#heart"></use></svg>
+		<div id="wishlist-icon"></div>
+	</a>
+
 	<div data-component="ProductListingManager">
 		<div data-elem-plp-content class="plp">
 			<aside data-elem-refinments class="plp__aside">
@@ -67,7 +78,7 @@
 					</div>
 				</div>
 			</aside>
-			<main class="plp__main">
+			<main class="plp__main" data-component="/js/plp/Wishlist">
 				<select data-elem-plp-sort name="sort">
 					<option value="?sorting=a">Top rated</option>
 					<option value="?sorting=b" selected>Alphabetical</option>
@@ -75,15 +86,27 @@
 				<ul data-elem-plp-grid class="plp__grid">
 					<li class="product-tile">
 						<a href="productA.html">Product A</a>
+						<button class="wishlist-button" data-element-wishlist-button data-uuid="uuidA">
+							<svg width="14" height="14" focusable="false" aria-hidden="true"><use href="#heart"></use></svg>
+						</button>
 					</li>
 					<li class="product-tile">
 						<a href="productB.html">Product B</a>
+						<button class="wishlist-button" data-element-wishlist-button data-uuid="uuidB">
+							<svg width="14" height="14" focusable="false" aria-hidden="true"><use href="#heart"></use></svg>
+						</button>
 					</li>
 					<li class="product-tile">
 						<a href="productB.html">Product C</a>
+						<button class="wishlist-button" data-element-wishlist-button data-uuid="uuidC">
+							<svg width="14" height="14" focusable="false" aria-hidden="true"><use href="#heart"></use></svg>
+						</button>
 					</li>
 					<li class="product-tile">
 						<a href="productB.html">Product D</a>
+						<button class="wishlist-button" data-element-wishlist-button data-uuid="uuidD">
+							<svg width="14" height="14" focusable="false" aria-hidden="true"><use href="#heart"></use></svg>
+						</button>
 					</li>
 					<li class="plp__grid-footer">
 						<button

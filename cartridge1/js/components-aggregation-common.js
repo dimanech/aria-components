@@ -5,13 +5,15 @@ import NotificationsManager from './components/notifications/NotificationsManage
 import DialogManager from './components/dialogs/DialogManager.js';
 import DialogButton from './components/dialogs/DialogButton.js';
 import Accordion from './components/togglers/Accordion.js';
+import MessageRelayService from './services/MessageRelay.js';
 
 export default [
-	['MainMenu', MainMenu],
-	['Popup', Popup],
-	['ComboboxSearch', ComboboxSearch],
+	['MessageRelayService', MessageRelayService],
 	['NotificationsManager', NotificationsManager],
 	['DialogManager', DialogManager],
 	['DialogButton', DialogButton],
+	['MainMenu', MainMenu],
+	['Popup', Popup],
+	['ComboboxSearch', ComboboxSearch],
 	['Accordion', Accordion]
 ];
