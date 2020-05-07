@@ -35,7 +35,7 @@ export default class ComponentsInitiator {
 		const componentIndex = this.componentsNames.indexOf(componentName);
 
 		if (componentIndex === -1) {
-			console.warn(`[ComponentsInitiator]: Could not init. "${componentName}" present on page, but it is import not found`);
+			console.warn(`[ComponentsInitiator]: Could not init. "${componentName}" component present on page, but it import not found`);
 			return;
 		}
 

@@ -14,7 +14,7 @@ export default class ScrollCarousel {
 	init() {
 		this.addEventListeners();
 		this.onScroll();
-		this.updateCarouselState();
+		this.syncPrevNextButtons();
 		this.initPagination();
 		this.carousel.classList.add('_inited');
 	}
@@ -61,7 +61,7 @@ export default class ScrollCarousel {
 	}
 
 	scrollHandlers() {
-		this.updateCarouselState();
+		this.syncPrevNextButtons();
 		if (this.pagination) {
 			this.setActivePagination();
 			this.scrollActivePaginationIntoView();
@@ -69,7 +69,7 @@ export default class ScrollCarousel {
 		this.isCallInNextFrameRequested = false;
 	}
 
-	updateCarouselState() {
+	syncPrevNextButtons() {
 		if (this.isScrollStart && this.isScrollEnd) { // No scroll case
 			this.carousel.classList.add('_no-scroll');
 		} else {
@@ -97,7 +97,7 @@ export default class ScrollCarousel {
 
 	// relative scroll - page by page
 	prevPage() {
-		this.scrollBy();
+		this.scrollBy(false);
 	}
 
 	nextPage() {
