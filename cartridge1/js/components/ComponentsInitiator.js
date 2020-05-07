@@ -24,7 +24,8 @@ export default class ComponentsInitiator {
 		const module = await import(/* webpackIgnore: true */componentName + '.js');
 
 		if (typeof module.default !== 'function') {
-			console.error('Initiator: Default export not a function', componentName);
+			console.warn('[ComponentsInitiator]: Could not init. Default export not a function ', componentName);
+			return;
 		}
 
 		return module.default;
@@ -34,7 +35,7 @@ export default class ComponentsInitiator {
 		const componentIndex = this.componentsNames.indexOf(componentName);
 
 		if (componentIndex === -1) {
-			console.warn(`Initiator: "${componentName}" present on page, but it is import not found!`);
+			console.warn(`[ComponentsInitiator]: Could not init. "${componentName}" present on page, but it is import not found`);
 			return;
 		}
 
@@ -49,7 +50,8 @@ export default class ComponentsInitiator {
 		if (/\//g.test(componentName)) {
 			// if component has path in the name we load it async
 			// eg. data-component="/js/components/togglers/Accordion" or relative to Initiator data-component="./togglers/Accordion"
-			componentConstructor = await this.loadAsync(componentName).catch(err => console.error('Initiator:', err, componentName));
+			componentConstructor = await this.loadAsync(componentName)
+				.catch(err => console.error('[ComponentsInitiator]:', err, componentName));
 		} else {
 			componentConstructor = this.loadSync(componentName);
 		}
