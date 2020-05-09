@@ -28,7 +28,7 @@ export default class InputDependsFrom {
 
 	init() {
 		if (!this.prepareDependants(this.input)) {
-            console.error('InputDependsFrom component has wrong JSON configuration. Component not inited!'); // eslint-disable-line
+            console.error('InputDependsFrom component has wrong JSON configuration. Component not initialized!'); // eslint-disable-line
 			return;
 		}
 

@@ -19,7 +19,7 @@ export default class ContentSlider {
 		this.initStructure();
 
 		if (this.slidesTotal <= 1) {
-			console.log('Only one slide is present. Slider do not inited')
+			console.log('Only one slide is present. Slider not initialized')
 			return;
 		}
 		if (this.slidesTotal === 2) {

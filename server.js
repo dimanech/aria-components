@@ -83,11 +83,6 @@ app.use('/endpoint', function(req, res) {
 	res.end(isTextType ? response : JSON.stringify(response));
 });
 
-app.use('/', function(req, res) {
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	res.end(fs.readFileSync('./index.html'));
-});
-
 app.listen();
 // to check service worker 1) comment http2.createServer 2) change to app.listen(port);
 http2.createSecureServer(certs, app).listen(process.env.PORT || port);

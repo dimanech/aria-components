@@ -2,13 +2,23 @@ export default class ScrollCarousel {
 	constructor(domNode) {
 		this.carousel = domNode;
 		this.carouselTrack = this.carousel.querySelector('[data-elem-carousel-track]');
-		this.prevButton = this.carousel.querySelector('[data-elem-prev-button]');
+		this.prevButton = this.carousel.querySelector('[data-elem-prev-button]'); // TODO: make optional?
 		this.nextButton = this.carousel.querySelector('[data-elem-next-button]');
 
 		this.isDirectionHorizontal = this.carousel.getAttribute('data-direction') !== 'vertical';
-		this.currentPage = 0;
+		this.currentPageIndex = 0;
 
-		this.scrollEndSensitivity = 40; // Workaround IE rounding for clientWidth and scrollWidth
+		this.SCROLL_END_SENSITIVITY = 40; // Workaround IE rounding for clientWidth and scrollWidth
+
+		this.stylesClass = {
+			initialized: '_initialized',
+			noScroll: '_no-scroll',
+			prevVisible: '_prev-visible',
+			nextVisible: '_next-visible',
+			pagination: 'pagination',
+			page: 'page',
+			current: '_current'
+		}
 	}
 
 	init() {
@@ -16,30 +26,31 @@ export default class ScrollCarousel {
 		this.onScroll();
 		this.syncPrevNextButtons();
 		this.initPagination();
-		this.carousel.classList.add('_inited');
+		this.setActivePagination(this.getCurrentPageIndex());
+		this.carousel.classList.add(this.stylesClass.initialized);
 	}
 
 	addEventListeners() {
 		this.onScroll = this.onScroll.bind(this);
-		this.prevPage = this.prevPage.bind(this);
-		this.nextPage = this.nextPage.bind(this);
+		this.scrollBackward = this.scrollBackward.bind(this);
+		this.scrollForward = this.scrollForward.bind(this);
 
 		this.carouselTrack.addEventListener('scroll', this.onScroll, { passive: true });
 		this.carouselTrack.addEventListener('touchstart', this.onScroll, { passive: true });
-		this.prevButton.addEventListener('click', this.prevPage);
-		this.nextButton.addEventListener('click', this.nextPage);
+		this.prevButton.addEventListener('click', this.scrollBackward);
+		this.nextButton.addEventListener('click', this.scrollForward);
 	}
 
 	removeEventListeners() {
 		this.carouselTrack.removeEventListener('scroll', this.onScroll);
 		this.carouselTrack.removeEventListener('touchstart', this.onScroll);
-		this.prevButton.removeEventListener('click', this.prevPage);
-		this.nextButton.removeEventListener('click', this.nextPage);
+		this.prevButton.removeEventListener('click', this.scrollBackward);
+		this.nextButton.removeEventListener('click', this.scrollForward);
 	}
 
 	// Prev next buttons and UI
 	onScroll() {
-		this.updateCarouselMetric();
+		this.getScrollState();
 
 		if (!this.isCallInNextFrameRequested) {
 			window.requestAnimationFrame(this.scrollHandlers.bind(this));
@@ -47,64 +58,79 @@ export default class ScrollCarousel {
 		}
 	}
 
-	updateCarouselMetric() {
+	getScrollState() {
 		// Possible optimization: Resize Observer that watch carousel width and cache this.carousel.offsetWidth
 		if (this.isDirectionHorizontal) {
 			const totalScrollWidth = this.carouselTrack.scrollLeft + this.carousel.offsetWidth;
 			this.isScrollStart = this.carouselTrack.scrollLeft <= 0;
-			this.isScrollEnd = totalScrollWidth + this.scrollEndSensitivity >= this.carouselTrack.scrollWidth;
+			this.isScrollEnd = totalScrollWidth + this.SCROLL_END_SENSITIVITY >= this.carouselTrack.scrollWidth;
 		} else {
 			const totalScrollHeight = this.carouselTrack.scrollTop + this.carousel.offsetHeight;
 			this.isScrollStart = this.carouselTrack.scrollTop <= 0;
-			this.isScrollEnd = totalScrollHeight + this.scrollEndSensitivity >= this.carouselTrack.scrollHeight;
+			this.isScrollEnd = totalScrollHeight + this.SCROLL_END_SENSITIVITY >= this.carouselTrack.scrollHeight;
 		}
 	}
 
 	scrollHandlers() {
 		this.syncPrevNextButtons();
-		if (this.pagination) {
-			this.setActivePagination();
-			this.scrollActivePaginationIntoView();
-		}
+		this.updateCurrentPageIndex();
 		this.isCallInNextFrameRequested = false;
+	}
+
+	updateCurrentPageIndex() {
+		const requestedPageIndex = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
+		if (this.currentPageIndex === requestedPageIndex) {
+			return;
+		}
+
+		this.onPageChanged(requestedPageIndex);
+
+		this.currentPageIndex = requestedPageIndex;
+		this.carousel.dispatchEvent(new CustomEvent('scrollCarousel:pageChanged', { bubbles: false, detail: this.currentPageIndex}));
 	}
 
 	syncPrevNextButtons() {
 		if (this.isScrollStart && this.isScrollEnd) { // No scroll case
-			this.carousel.classList.add('_no-scroll');
+			this.carousel.classList.add(this.stylesClass.noScroll);
+			this.hasScroll = false;
 		} else {
-			this.carousel.classList.remove('_no-scroll');
+			this.carousel.classList.remove(this.stylesClass.noScroll);
+			this.hasScroll = true;
 		}
 
 		if (this.isScrollStart) {
-			this.carousel.classList.remove('_prev-visible');
-			this.prevButton.setAttribute('disabled', 'true');
+			this.carousel.classList.remove(this.stylesClass.prevVisible);
+			this.prevButton.setAttribute('disabled', '');
 		} else {
-			this.carousel.classList.add('_prev-visible');
+			this.carousel.classList.add(this.stylesClass.prevVisible);
 			this.prevButton.removeAttribute('disabled');
 		}
 
 		if (this.isScrollEnd) {
-			this.carousel.classList.remove('_next-visible');
-			this.nextButton.setAttribute('disabled', 'true');
+			this.carousel.classList.remove(this.stylesClass.nextVisible);
+			this.nextButton.setAttribute('disabled', '');
 		} else {
-			this.carousel.classList.add('_next-visible');
+			this.carousel.classList.add(this.stylesClass.nextVisible);
 			this.nextButton.removeAttribute('disabled');
 		}
+	}
+
+	onPageChanged(requestedPageIndex) {
+		this.setActivePagination(requestedPageIndex);
 	}
 
 	// Prev next functionality
 
 	// relative scroll - page by page
-	prevPage() {
-		this.scrollBy(false);
+	scrollBackward() {
+		this.scrollByPage(false);
 	}
 
-	nextPage() {
-		this.scrollBy(true);
+	scrollForward() {
+		this.scrollByPage(true);
 	}
 
-	scrollBy(isNext) {
+	scrollByPage(isNext) {
 		const x = this.isDirectionHorizontal ? this.carouselTrack.clientWidth : 0;
 		const y = this.isDirectionHorizontal ? 0 : this.carouselTrack.clientHeight;
 
@@ -144,8 +170,8 @@ export default class ScrollCarousel {
 		}
 	}
 
-	scrollToPoint(top, left, node) {
-		let element = node || this.carouselTrack;
+	scrollToPoint(top, left) {
+		const element = this.carouselTrack;
 		// Safari and Edge do not have smooth scrolling please use polyfill or just leave it as is
 		// If you still using jQuery you could call $.animate()
 		if (typeof element.scrollTo === 'function' && 'scrollBehavior' in document.documentElement.style) {
@@ -169,43 +195,26 @@ export default class ScrollCarousel {
 		if (!this.carousel.hasAttribute('data-pagination')) {
 			return;
 		}
-		const paginationOption = this.carousel.getAttribute('data-pagination');
-		if (paginationOption) {
-			this.pagination = document.getElementById(paginationOption);
-		} else {
-			this.createPaginationElements();
-		}
-		this.pagination.onclick = this.handlePaginationClick.bind(this);
-		this.setActivePagination();
+		this.createPagination();
+		this.updateCurrentPageIndex();
 	}
 
-	destroyPagination() {
-		if (this.pagination) {
-			this.pagination.onclick = null;
-
-			if (this.carousel.getAttribute('data-pagination') === '') { // existed pagination
-				this.carousel.removeChild(this.pagination);
-			}
-		}
-	}
-
-	createPaginationElements() {
+	createPagination() {
 		const hasPagination = !!this.pagination;
-		// We need to use round, not ceil, since it called on scroll, in case of last it would generate falls positive
+		// We need to use round, not ceil, since it called on scroll, in case of last it would generate false positive
 		const numberOfPages = Math.round(this.carouselTrack.scrollWidth / this.carouselTrack.clientWidth);
 
 		if (!hasPagination) {
 			this.pagination = document.createElement('div');
-			this.pagination.className = 'pagination';
+			this.pagination.className = this.stylesClass.pagination;
 		} else {
-			this.pagination.innerHTML = '';
+			this.carousel.removeChild(this.pagination);
 		}
 
 		for (let i = 0; i < numberOfPages; i++) {
-			const page = document.createElement('button');
-			page.className = 'page';
+			const page = document.createElement('div');
+			page.className = this.stylesClass.page;
 			page.setAttribute('data-page', i);
-			page.tabIndex = -1;
 			this.pagination.appendChild(page);
 		}
 
@@ -214,40 +223,22 @@ export default class ScrollCarousel {
 		}
 	}
 
-	setActivePagination() {
-		this.pagination.children[this.currentPage].classList.remove('_current'); // should be here because reinit pagination could change pages count
-
-		const currentPageIndex = Math.round(this.carouselTrack.scrollLeft / this.carousel.clientWidth);
-		let currentPageNode = this.pagination.children[currentPageIndex];
-		// TODO: recreate pagination if pages become less or more that on init
-		currentPageNode.classList.add('_current');
-
-		this.currentPage = currentPageIndex;
-	}
-
-	scrollActivePaginationIntoView() {
-		// In case if pagination has scroll itself we scroll pagination into view. Ex: if pagination is thumbnails
-		if (this.pagination.scrollHeight === this.pagination.offsetHeight) {
+	setActivePagination(requestedPageIndex) {
+		if (!this.pagination) {
 			return;
 		}
 
-		const currentPageNode = this.pagination.children[this.currentPage];
-
-		if (currentPageNode.offsetTop > this.pagination.clientHeight) {
-			this.scrollToPoint(this.pagination.scrollTop + this.pagination.clientHeight, 0, this.pagination);
-		}
-		if (currentPageNode.offsetTop < this.pagination.scrollTop) {
-			this.scrollToPoint(this.pagination.scrollTop - this.pagination.clientHeight, 0, this.pagination);
-		}
+		const pages = this.pagination.children;
+		pages[this.currentPageIndex].classList.remove(this.stylesClass.current);
+		pages[requestedPageIndex].classList.add(this.stylesClass.current);
 	}
 
-	handlePaginationClick(event) {
-		event.preventDefault();
-		const pageIndex = event.target.getAttribute('data-page');
-		if (!pageIndex) {
-			return;
+	destroyPagination() {
+		if (!this.pagination) {
+			return
 		}
-		this.scrollToPage(parseInt(pageIndex, 10));
+		this.carousel.removeChild(this.pagination);
+		delete this.pagination;
 	}
 
 	// Destroy

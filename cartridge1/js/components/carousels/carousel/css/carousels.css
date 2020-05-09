@@ -16,7 +16,7 @@ body {
 	position: relative;
 }
 
-.carousel._inited {}
+.carousel._initialized {}
 
 .carousel__track {
 	display: flex;
@@ -39,15 +39,17 @@ body {
 	display: none;
 }
 
+.scroll__track._grabbing,
 .carousel__track._grabbing {
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
 	scroll-behavior: auto;
-	scroll-snap-type: none;
+	scroll-snap-type: none !important;
 	user-select: none;
 }
 
+.scroll__track._grabbing::before,
 .carousel__track._grabbing::before {
 	bottom: 0;
 	content: "";
@@ -56,6 +58,7 @@ body {
 	position: absolute;
 	right: 0;
 	top: 0;
+	z-index: 999;
 }
 
 .carousel._mandatory .carousel__track {
@@ -91,8 +94,8 @@ body {
 	right: 0;
 }
 
-.carousel._inited._next-visible::after,
-.carousel._inited._prev-visible::before {
+.carousel._initialized._next-visible::after,
+.carousel._initialized._prev-visible::before {
 	opacity: 1;
 	visibility: visible;
 }
@@ -132,6 +135,7 @@ body {
 }
 
 .page {
+	display: inline-block;
 	background-color: lightgrey;
 	border: none;
 	border-radius: 10px;
@@ -243,8 +247,8 @@ body {
 	z-index: 1;
 }
 
-.scroll._inited._prev-visible::before,
-.scroll._inited._next-visible::after {
+.scroll._initialized._prev-visible::before,
+.scroll._initialized._next-visible::after {
 	left: 0;
 	opacity: 1;
 	width: 100%;
