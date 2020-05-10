@@ -17,24 +17,10 @@
 	<section
 		class="slider"
 		data-component="./carousels/slider/ContentSlider"
+		data-autoplay="8000"
 		role="region"
 		aria-roledescription="carousel"
 	>
-		<div class="slider__paginations">
-			<button
-				class="slider__autoplay-toggle"
-				data-elem-autoplay-toggle
-				aria-pressed="false"
-				aria-label="Stop automatic slide show"
-			>
-				<svg width="15" height="20" viewBox="10 5 20 20" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-					<polygon class="pause" stroke-width="2" points="17 8 17 20"></polygon>
-					<polygon class="pause" stroke-width="2" points="24 8 24 20"></polygon>
-					<polygon class="play"  points="15 8 15 20 27 14"></polygon>
-				</svg>
-			</button>
-			<div data-elem-dots></div>
-		</div>
 		<button
 			class="slider__ctrl _prev"
 			data-elem-prev-button
@@ -62,10 +48,26 @@
 				</g>
 			</svg>
 		</button>
+		<div class="slider__pagination">
+			<button
+				class="slider__autoplay-toggle"
+				data-elem-autoplay-toggle
+				aria-pressed="false"
+				aria-label="Stop automatic slide show"
+			>
+				<svg width="15" height="20" viewBox="10 5 20 20" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+					<polygon class="pause" stroke-width="2" points="17 8 17 20"></polygon>
+					<polygon class="pause" stroke-width="2" points="24 8 24 20"></polygon>
+					<polygon class="play"  points="15 8 15 20 27 14"></polygon>
+				</svg>
+			</button>
+			<div data-elem-dots></div>
+		</div>
 		<div
 			class="slider__content"
 			data-elem-content
 			aria-live="off"
+			tabindex="0"
 		>
 			<div
 				class="slider__slide"
@@ -73,7 +75,9 @@
 				aria-roledescription="slide"
 				aria-label="1 of 5"
 			>
-				<div class="box _v-1">1</div>
+				<div class="box _v-1">
+					<a href="/some.html">1</a>
+				</div>
 			</div>
 			<div
 				class="slider__slide"
@@ -81,7 +85,9 @@
 				aria-roledescription="slide"
 				aria-label="2 of 5"
 			>
-				<div class="box _v-2">2</div>
+				<div class="box _v-2">
+					<a href="/some.html">2</a>
+				</div>
 			</div>
 			<div
 				class="slider__slide"
@@ -111,8 +117,23 @@
 	</section>
 
 	<h2>2 items</h2>
-	<div class="slider" data-component="./carousels/slider/ContentSlider">
-		<div class="slider__paginations">
+	<div
+		class="slider"
+		data-component="./carousels/slider/ContentSlider"
+	>
+		<button
+			class="slider__ctrl _prev"
+			data-elem-prev-button
+		>
+			Prev
+		</button>
+		<button
+			class="slider__ctrl _next"
+			data-elem-next-button
+		>
+			Next
+		</button>
+		<div class="slider__pagination">
 			<button
 				class="slider__autoplay-toggle"
 				data-elem-autoplay-toggle
@@ -127,22 +148,7 @@
 			</button>
 			<div data-elem-dots></div>
 		</div>
-		<button
-			class="slider__ctrl _prev"
-			data-elem-prev-button
-			tabindex="-1"
-			aria-hidden="true"
-		>
-			Prev
-		</button>
-		<button
-			class="slider__ctrl _next"
-			data-elem-next-button
-			tabindex="-1"
-			aria-hidden="true"
-		>
-			Next
-		</button>
+
 		<div class="slider__content" data-elem-content>
 			<div
 				class="slider__slide"
@@ -164,8 +170,23 @@
 	</div>
 
 	<h2>1 item</h2>
-	<div class="slider" data-component="./carousels/slider/ContentSlider">
-		<div class="slider__paginations">
+	<div
+		class="slider"
+		data-component="./carousels/slider/ContentSlider"
+	>
+		<button
+			class="slider__ctrl _prev"
+			data-elem-prev-button
+		>
+			Prev
+		</button>
+		<button
+			class="slider__ctrl _next"
+			data-elem-next-button
+		>
+			Next
+		</button>
+		<div class="slider__pagination">
 			<button
 				class="slider__autoplay-toggle"
 				data-elem-autoplay-toggle
@@ -180,22 +201,7 @@
 			</button>
 			<div data-elem-dots></div>
 		</div>
-		<button
-			class="slider__ctrl _prev"
-			data-elem-prev-button
-			tabindex="-1"
-			aria-hidden="true"
-		>
-			Prev
-		</button>
-		<button
-			class="slider__ctrl _next"
-			data-elem-next-button
-			tabindex="-1"
-			aria-hidden="true"
-		>
-			Next
-		</button>
+
 		<div class="slider__content" data-elem-content>
 			<div
 				class="slider__slide"

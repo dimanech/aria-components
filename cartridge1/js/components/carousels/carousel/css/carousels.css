@@ -9,8 +9,23 @@ body {
 }
 
 :focus {
-	box-shadow: 0 0 0 4px lightblue;
+	box-shadow: 0 0 0 1px blue, 0 0 0 4px lightblue;
 }
+
+button:focus {
+	box-shadow: 0 0 0 1px blue, 0 0 0 4px lightblue;
+}
+
+button::-moz-focus-inner {
+	border: none;
+	padding: 0;
+}
+
+button:-moz-focusring {
+	outline: none !important;
+}
+
+/* Carousels */
 
 .carousel {
 	position: relative;

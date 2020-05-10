@@ -1,72 +1,73 @@
 import ContentSlider from './ContentSlider.js';
 
+// TODO: pause on hover
+// TODO: seems like slide animation not synced with timer
+
 export default class ContentSliderAutoplay extends ContentSlider {
 	constructor(domNode) {
 		super(domNode);
 
-		this.autoPlayEnabled = true;
+		this.autoPlayEnabled = this.slider.hasAttribute('data-autoplay');
 		this.playButton = this.slider.querySelector('[data-elem-autoplay-toggle]');
-		this.autoPlayDuration = 3000;
+		this.autoPlayDuration = this.slider.getAttribute('data-autoplay') || 3000;
+
+		this.remainingTime = undefined;
+
+		this.stylesClass.autoplay = '_autoplay';
+		this.stylesClass.paused = '_paused';
 	}
 
 	init() {
 		super.init();
 
-		if (this.slidesTotal <= 1) {
-			return;
-		}
 		if (!this.autoPlayEnabled) {
-			console.log('No autoplay option. Autoplay not enabled.')
 			return;
 		}
 
-		this.addAutoPlayEventListeners();
-		this.startAutoPlay(true);
+		this.start(true);
 	}
 
 	addEventListeners() {
 		super.addEventListeners();
 
-		this.startAutoPlay = this.startAutoPlay.bind(this);
-		this.pauseAutoPlay = this.pauseAutoPlay.bind(this);
-		this.toggleAutoPlay = this.toggleAutoPlay.bind(this);
+		this.togglePlay = this.togglePlay.bind(this);
+		this.pause = this.pause.bind(this);
 
-		this.playButton.addEventListener('click', this.toggleAutoPlay);
-	}
-
-	addAutoPlayEventListeners() {
-		this.slider.addEventListener('keyup', this.pauseAutoPlay);
-		// TODO: focus out start play again
+		this.playButton.addEventListener('click', this.togglePlay);
+		this.sliderContent.addEventListener('focusin', this.pause);
 	}
 
 	goToSlide(index) {
+		this.end();
 		super.goToSlide(index);
-
-		this.startAutoPlay();
+		this.start();
 	}
 
 	setActivePagination(index) {
 		super.setActivePagination(index);
+
 		if (!this.autoPlayPaused) {
-			this.dots[index].classList.add('_autoplay');
+			this.dots[index].classList.add(this.stylesClass.autoplay);
 		}
 	}
 
 	cycle() {
-		this.stopAutoPlay();
+		this.end();
 		this.goToNextSlide();
-		this.startAutoPlay();
+		this.start();
 	}
 
-	toggleAutoPlay() {
+	togglePlay(event) {
+		event.stopPropagation();
+
 		if (this.autoPlayPaused) {
-			this.startAutoPlay(true);
+			this.start(true);
 		} else {
-			this.pauseAutoPlay();
+			this.pause();
 		}
 	}
 
-	startAutoPlay(isForce) {
+	start(isForce) {
 		if (this.autoPlayPaused && !isForce) {
 			return;
 		}
@@ -74,60 +75,65 @@ export default class ContentSliderAutoplay extends ContentSlider {
 		if (this.nextSlideTimer) {
 			window.clearTimeout(this.nextSlideTimer);
 		}
-
 		this.autoPlayPaused = false;
+		this.slider.classList.remove(this.stylesClass.paused);
 
 		this.creationTime = Date.now();
-		this.remainingTime = parseInt(this.autoPlayDuration);
+		if (this.remainingTime === undefined || isForce) {
+			this.remainingTime = parseInt(this.autoPlayDuration, 10); // force to access by value
+		}
 		this.nextSlideTimer = window.setTimeout(this.cycle.bind(this), this.remainingTime);
 
-		this.startTipAnimation(this.autoPlayDuration);
-		this.toggleButtonState();
-
-		this.slider.classList.add('_autoplay');
+		this.startTipAnimation(this.remainingTime);
+		this.togglePlayButtonState();
+		this.slider.classList.add(this.stylesClass.autoplay);
 	}
 
-	pauseAutoPlay() {
+	pause() {
 		if (this.nextSlideTimer) {
 			window.clearTimeout(this.nextSlideTimer);
 		}
-
 		this.autoPlayPaused = true;
+		this.slider.classList.add(this.stylesClass.paused);
 
-		this.remainingTime -= Date.now() - this.creationTime;
+		this.remainingTime -= (Date.now() - this.creationTime);
 
 		this.pauseTipAnimation();
-		this.toggleButtonState();
-
-		this.slider.classList.remove('_autoplay');
+		this.togglePlayButtonState();
+		this.slider.classList.remove(this.stylesClass.autoplay);
 	}
 
-	stopAutoPlay() {
+	end() {
 		if (this.nextSlideTimer) {
 			window.clearTimeout(this.nextSlideTimer);
 		}
+		this.slider.classList.remove(this.stylesClass.paused);
+
+		this.remainingTime = undefined;
 
 		this.removeTipAnimation();
-
-		this.slider.classList.remove('_autoplay');
+		this.slider.classList.remove(this.stylesClass.autoplay);
 	}
 
-	toggleButtonState() {
+	togglePlayButtonState() {
 		this.playButton.setAttribute('aria-pressed', this.autoPlayPaused);
 	}
 
-	disableAutoPlay() {
-		this.stopAutoPlay();
-		this.autoPlayEnabled = false;
+	// destroy
 
-		this.slider.removeEventListener('keyup', this.disableAutoPlay);
+	removeEventListeners() {
+		super.removeEventListeners();
+		this.playButton.removeEventListener('click', this.togglePlay);
+		this.sliderContent.removeEventListener('focusin', this.pause);
+	}
+
+	disableAutoPlay() {
+		this.end();
+		this.autoPlayEnabled = false;
 	}
 
 	destroy() {
 		super.destroy();
-
-		this.playButton.removeEventListener('click', this.toggleAutoPlay);
-
 		this.disableAutoPlay();
 	}
 }

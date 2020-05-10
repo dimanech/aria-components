@@ -1,9 +1,16 @@
+// Not production ready
+// TODO: add slide indexes
+
 const keyCode = Object.freeze({
 	LEFT: 37,
 	RIGHT: 39,
 });
 
 export default class ContentSlider {
+	/*
+	 * ContentSlider
+	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#carousel
+	 */
 	constructor(domNode) {
 		this.slider = domNode;
 		this.sliderContent = this.slider.querySelector('[data-elem-content]')
@@ -13,13 +20,24 @@ export default class ContentSlider {
 
 		this.currentSlideIndex = 0;
 		this.slidesModel = [];
+
+		this.stylesClass = {
+			initialized: '_initialized',
+			prev: '_prev',
+			next: '_next',
+			current: '_current',
+			dots: 'dots',
+			dot: 'dot',
+			dotPoint: 'dot__point',
+			dotCircle: 'dot__circle'
+		}
 	}
 
 	init() {
 		this.initStructure();
 
 		if (this.slidesTotal <= 1) {
-			console.log('Only one slide is present. Slider not initialized')
+			console.log('Only one slide is present. Slider not initialized');
 			return;
 		}
 		if (this.slidesTotal === 2) {
@@ -31,7 +49,7 @@ export default class ContentSlider {
 		this.initPagination();
 		this.goToSlide(0);
 		this.addEventListeners();
-		this.slider.classList.add('_inited');
+		this.slider.classList.add(this.stylesClass.initialized);
 	}
 
 	initStructure() {
@@ -89,7 +107,7 @@ export default class ContentSlider {
 	}
 
 	applySlidesModel() {
-		const allClasses = ['_prev', '_next', '_current'];
+		const allClasses = [this.stylesClass.prev, this.stylesClass.next, this.stylesClass.current];
 		let n = 0;
 
 		while (n < this.slidesTotal) { // NB: sparsed array
@@ -111,9 +129,9 @@ export default class ContentSlider {
 		const prevIndex = this.normalizeIndex(requestedIndex - 1);
 		const currentIndex = this.normalizeIndex(requestedIndex);
 
-		model[currentIndex] = '_current';
-		model[nextIndex] = '_next';
-		model[prevIndex] = '_prev';
+		model[currentIndex] = this.stylesClass.current;
+		model[nextIndex] = this.stylesClass.next;
+		model[prevIndex] = this.stylesClass.prev;
 
 		return model;
 	}
@@ -164,30 +182,30 @@ export default class ContentSlider {
 	}
 
 	createPaginationElements() {
-		const tipsTotal = this.slidesTotal;
+		const slidesTotal = this.slidesTotal;
 		const xmlns = "http://www.w3.org/2000/svg";
 		this.pagination = document.createElementNS(xmlns, 'svg');
-		this.pagination.setAttributeNS(null, 'class', 'dots');
+		this.pagination.setAttributeNS(null, 'class', this.stylesClass.dots);
 		this.pagination.setAttributeNS(null, 'height', 25);
-		this.pagination.setAttributeNS(null, 'width', (25 * tipsTotal));
-		this.pagination.setAttributeNS(null, 'viewBox', `0 0 ${10 * tipsTotal} 5`);
+		this.pagination.setAttributeNS(null, 'width', 25 * slidesTotal);
+		this.pagination.setAttributeNS(null, 'viewBox', `0 0 ${10 * slidesTotal} 5`);
 
-		for (let i = 0; i < tipsTotal; i++) {
+		for (let i = 0; i < slidesTotal; i++) {
 			const dot = document.createElementNS(xmlns, 'circle');
-			dot.setAttributeNS(null, 'class', 'dot__point');
+			dot.setAttributeNS(null, 'class', this.stylesClass.dotPoint);
 			dot.setAttributeNS(null, 'cx', (8 * i) + 5);
 			dot.setAttributeNS(null, 'cy', 2);
 			dot.setAttributeNS(null, 'r', 1);
 
 			const progress = document.createElementNS(xmlns, 'circle');
-			progress.setAttributeNS(null, 'class', 'dot__circle');
+			progress.setAttributeNS(null, 'class', this.stylesClass.dotCircle);
 			progress.setAttributeNS(null, 'cx', (8 * i) + 5);
 			progress.setAttributeNS(null, 'cy', 2);
 			progress.setAttributeNS(null, 'r', 2);
-			progress.setAttributeNS(null, 'stroke-dasharray', 2 * (Math.PI * 2));
+			progress.setAttributeNS(null, 'stroke-dasharray', (Math.PI * 2) * 2);
 
 			const group = document.createElementNS(xmlns, 'g');
-			group.setAttributeNS(null, 'class', 'dot');
+			group.setAttributeNS(null, 'class', this.stylesClass.dot);
 
 			group.appendChild(dot);
 			group.appendChild(progress);
@@ -198,17 +216,13 @@ export default class ContentSlider {
 		this.paginationContent.appendChild(this.pagination);
 	}
 
-	destroyPagination() {
-		this.paginationContent.innerHTML = '';
-	}
-
 	setActivePagination(index) {
-		this.dots[this.currentSlideIndex].classList.remove('_current');
-		this.dots[index].classList.add('_current');
+		this.dots[this.currentSlideIndex].classList.remove(this.stylesClass.current);
+		this.dots[index].classList.add(this.stylesClass.current);
 	}
 
 	startTipAnimation(duration) {
-		this.dots[this.currentSlideIndex].style.animationDuration = (duration || 0) + 'ms';
+		this.dots[this.currentSlideIndex].style.animationDuration = `${duration || 0}ms`;
 		this.dots[this.currentSlideIndex].style.animationPlayState = 'running';
 	}
 
@@ -221,6 +235,10 @@ export default class ContentSlider {
 	}
 
 	// Destroy
+
+	destroyPagination() {
+		this.paginationContent.innerHTML = '';
+	}
 
 	destroy() {
 		this.removeEventListeners();
