@@ -44,8 +44,6 @@ body {
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
-	scroll-behavior: auto;
-	scroll-snap-type: none !important;
 	user-select: none;
 }
 

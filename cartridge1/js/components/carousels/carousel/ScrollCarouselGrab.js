@@ -5,6 +5,7 @@ export default class ScrollCarouselGrab extends ScrollCarousel {
 		super(domNode);
 
 		this.EDGE_RESISTANCE = 100;
+		this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
 		this.stylesClass.grubbing = '_grabbing';
 		this.position = { top: 0, left: 0, x: 0, y: 0 };
@@ -38,8 +39,6 @@ export default class ScrollCarouselGrab extends ScrollCarousel {
 
 		this.carouselTrack.addEventListener('mousemove', this.onMouseMove);
 		this.carouselTrack.addEventListener('mouseleave', this.onMouseUp);
-
-		clearTimeout(this.grabbingRemoveTimer);
 	}
 
 	onMouseMove(event) {
@@ -60,8 +59,14 @@ export default class ScrollCarouselGrab extends ScrollCarousel {
 	onMouseUp() {
 		this.carouselTrack.removeEventListener('mousemove', this.onMouseMove);
 		this.carouselTrack.removeEventListener('mouseleave', this.onMouseUp);
-		// we should remove scroll-snap-type with delay, otherwise it cause bouncing
-		this.grabbingRemoveTimer = setTimeout(() => this.carouselTrack.classList.remove(this.stylesClass.grubbing), 600);
+
+		// FF and Chrome process differently snapping
+		if (this.isFirefox) {
+			clearTimeout(this.transitionFallbackTimer);
+			this.waitForTransitionEnd(() => this.carouselTrack.classList.remove(this.stylesClass.grubbing));
+		} else {
+			this.carouselTrack.classList.remove(this.stylesClass.grubbing);
+		}
 
 		switch (true) {
 			case (this.delta < -this.EDGE_RESISTANCE):
@@ -80,6 +85,14 @@ export default class ScrollCarouselGrab extends ScrollCarousel {
 		this.isMouseMoved = false;
 	}
 
+	waitForTransitionEnd(callback) {
+		const onEnd = () => {
+			clearTimeout(this.transitionFallbackTimer);
+			callback();
+		}
+		this.transitionFallbackTimer = setTimeout(onEnd, 800);
+	}
+
 	removeEventListeners() {
 		super.removeEventListeners();
 		this.removeGrabEventListeners();
@@ -92,6 +105,6 @@ export default class ScrollCarouselGrab extends ScrollCarousel {
 
 	destroy() {
 		super.destroy();
-		clearTimeout(this.grabbingRemoveTimer);
+		clearTimeout(this.transitionFallbackTimer);
 	}
 }

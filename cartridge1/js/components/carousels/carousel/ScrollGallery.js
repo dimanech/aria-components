@@ -1,4 +1,4 @@
-import ScrollCarousel from './ScrollCarousel.js';
+import ScrollCarousel from './ScrollCarouselGrab.js';
 
 export default class ScrollGallery {
 	constructor(domNode) {
