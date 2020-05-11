@@ -1,4 +1,4 @@
-import { appendParamsToUrl } from './url.js';
+import { appendParamMultiple } from './url.js';
 
 const SAME_ORIGIN = 'same-origin';
 let tokenName = '';
@@ -38,9 +38,9 @@ function handleUrlOrFormData(method, data, skipToken, url) {
 
 		valuedUrl = url;
 	} else if (skipToken) {
-		valuedUrl = appendParamsToUrl(url, data);
+		valuedUrl = appendParamMultiple(url, data);
 	} else {
-		valuedUrl = appendParamsToUrl(url, { ...data, ...{ [tokenName]: tokenValue } });
+		valuedUrl = appendParamMultiple(url, { ...data, ...{ [tokenName]: tokenValue } });
 	}
 
 	return { valuedUrl, formData };
@@ -124,7 +124,7 @@ export function getContentByUrl(url, params = {}) {
 	/**
 	 * This magic is mandatory for MS Edge because fetch polyfill is returning not polyfilled Promise object
 	 */
-	return Promise.resolve(fetch(appendParamsToUrl(url, params), {
+	return Promise.resolve(fetch(appendParamMultiple(url, params), {
 		method: 'GET',
 		mode: SAME_ORIGIN,
 		cache: 'default',
