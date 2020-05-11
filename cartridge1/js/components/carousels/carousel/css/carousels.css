@@ -8,12 +8,9 @@ body {
 	}
 }
 
-:focus {
-	box-shadow: 0 0 0 1px blue, 0 0 0 4px lightblue;
-}
-
+:focus,
 button:focus {
-	box-shadow: 0 0 0 1px blue, 0 0 0 4px lightblue;
+	box-shadow: 0 0 0 1px hsl(195, 100%, 50%), 0 0 0 4px hsl(195, 53%, 79%);
 }
 
 button::-moz-focus-inner {

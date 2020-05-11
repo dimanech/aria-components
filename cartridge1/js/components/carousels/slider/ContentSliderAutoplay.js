@@ -1,7 +1,6 @@
 import ContentSlider from './ContentSlider.js';
 
-// TODO: pause on hover
-// TODO: seems like slide animation not synced with timer
+// TODO: pause on hover?
 
 export default class ContentSliderAutoplay extends ContentSlider {
 	constructor(domNode) {

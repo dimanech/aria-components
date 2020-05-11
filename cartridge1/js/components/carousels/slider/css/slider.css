@@ -8,12 +8,9 @@ body {
 	}
 }
 
-:focus {
-	box-shadow: 0 0 0 1px blue, 0 0 0 4px lightblue;
-}
-
+:focus,
 button:focus {
-	box-shadow: 0 0 0 1px blue, 0 0 0 4px lightblue;
+	box-shadow: 0 0 0 1px hsl(200, 100%, 50%), 0 0 0 4px hsla(200, 100%, 79%, 0.5);
 }
 
 button::-moz-focus-inner {
@@ -175,15 +172,14 @@ button:-moz-focusring {
 	stroke: transparent;
 }
 
-.slider._autoplay .dot._current {
+.slider._autoplay .dot._current,
+.slider._paused .dot._current {
 	animation: progress linear;
 	stroke: deepskyblue;
 }
 
 .slider._paused .dot._current {
-	animation: progress linear;
 	animation-play-state: paused;
-	stroke: deepskyblue;
 }
 
 .dot__point {
@@ -202,11 +198,11 @@ button:-moz-focusring {
 
 @keyframes progress {
 	from {
-		stroke-dashoffset: 12.56;
+		stroke-dashoffset: 12.566;
 	}
 
 	to {
-		stroke-dashoffset: 0;
+		stroke-dashoffset: 1;
 	}
 }
 
