@@ -16,8 +16,8 @@ export default class AccordionNoRoles extends Accordion {
 	}
 
 	destroy() {
-		this.destroyRoles();
 		super.destroy();
+		this.destroyRoles();
 	}
 
 	initRoles() {

@@ -1,15 +1,15 @@
-const keyCode = Object.freeze({
-	RETURN: 13,
-	SPACE: 32,
-	END: 35,
-	HOME: 36,
-	LEFT: 37,
-	UP: 38,
-	RIGHT: 39,
-	DOWN: 40
-});
-
 export default class Tabs {
+	keyCode = Object.freeze({
+		RETURN: 13,
+		SPACE: 32,
+		END: 35,
+		HOME: 36,
+		LEFT: 37,
+		UP: 38,
+		RIGHT: 39,
+		DOWN: 40
+	});
+
 	/*
 	 * Tabs
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#tabpanel
@@ -21,22 +21,25 @@ export default class Tabs {
 	 * `aria-orientation=[vertical|horizontal]` - orientation of the tablist. This is for information only since
 	 * in current implementation up/down arrows act alongside with left/right.
 	 */
-	constructor(tablist) {
+	constructor(tablist, config) {
+		// elements
 		this.tablist = tablist;
 		this.tabs = Array.from(this.tablist.querySelectorAll('[role=tab]'));
+		// options
+		this.options = {
+			selectionFollowFocus: config?.selectionFollowFocus || !this.isSetToFalse(this.tablist.getAttribute('data-selection-follow-focus')),
+			orientation: config?.orientation || this.tablist.getAttribute('aria-orientation') || 'horizontal',
+			preSelectTab: config?.preSelectTab || this.tablist.getAttribute('data-preselect-tab')
+		}
+		// state
 		this.selectedTab = null;
-		this.selectionFollowFocus = !this.hasFalseValue(this.tablist.getAttribute('data-selection-follow-focus'));
-		this.orientation = this.tablist.getAttribute('aria-orientation') || 'horizontal';
-		this.preSelectTab = this.tablist.getAttribute('[aria-selected=true]');
+		this.focusedTab = null;
 	}
 
 	init() {
 		this.addEventListeners();
-		if (this.preSelectTab && document.getElementById(this.preSelectTab)) {
-			this.selectTab(this.getButtonIndex(document.getElementById(this.preSelectTab)));
-		} else {
-			this.selectTab(this.tabs[0]);
-		}
+		const activeTabIndex = this.options.preSelectTab ? this.getButtonIndex(document.getElementById(this.options.preSelectTab)) : 0;
+		this.selectTab(this.tabs[activeTabIndex]);
 	}
 
 	destroy() {
@@ -65,91 +68,69 @@ export default class Tabs {
 		this.selectTab(event.target);
 	}
 
-	selectTab(tab) {
-		if (!tab) { // since we expecting to init on empty tablist to fill it later
+	selectTab(tabNode) {
+		if (!tabNode) { // since we expecting to init on empty tablist to fill it later
 			return;
 		}
 
-		const isSelected = tab.getAttribute('aria-selected') === 'true';
+		const isSelected = tabNode.getAttribute('aria-selected') === 'true';
 		if (isSelected) {
 			return; // Could exit earlier since only one tab from tablist could be selected
 		}
 
-		Tabs.closeTab(this.selectedTab);
-		Tabs.openTab(tab);
-		this.selectedTab = tab;
-		this.focusedTab = tab;
+		if (this.selectedTab) {
+			Tabs.toggleTab(false, this.selectedTab);
+		}
+		Tabs.toggleTab(true, tabNode);
+		this.selectedTab = tabNode;
+		this.focusedTab = tabNode;
 	}
 
-	static closeTab(tab) {
-		if (!tab) {
+	static toggleTab(isOpen, tabNode) {
+		tabNode.setAttribute('aria-selected', isOpen);
+		tabNode.setAttribute('tabindex', isOpen ? '0' : '-1');
+
+		const controlledTabPanelNode = document.getElementById(tabNode.getAttribute('aria-controls'));
+		if (!controlledTabPanelNode) {
 			return;
 		}
+		controlledTabPanelNode.setAttribute('aria-hidden', !isOpen);
+		controlledTabPanelNode.setAttribute('tabindex', isOpen ? '0' : '-1');
 
-		tab.setAttribute('aria-selected', 'false');
-		tab.setAttribute('tabindex', '-1');
-
-		const controlledTabPanel = document.getElementById(tab.getAttribute('aria-controls'));
-		if (controlledTabPanel) {
-			controlledTabPanel.setAttribute('aria-hidden', 'true');
-			controlledTabPanel.removeAttribute('tabindex');
-			tab.dispatchEvent(new Event('tab:closed'));
-		}
-	}
-
-	static openTab(tab) {
-		if (!tab) {
-			return;
-		}
-
-		tab.setAttribute('aria-selected', 'true');
-		tab.setAttribute('tabindex', '0');
-
-		const controlledTabPanel = document.getElementById(tab.getAttribute('aria-controls'));
-		if (controlledTabPanel) {
-			controlledTabPanel.setAttribute('aria-hidden', 'false');
-			controlledTabPanel.setAttribute('tabindex', 0);
-			tab.dispatchEvent(new Event('tab:open'));
-		}
-	}
-
-	addTab() {
-	}
-
-	removeTab() {
+		tabNode.dispatchEvent(new Event('tab:' + (isOpen ? 'open': 'closed')));
 	}
 
 	handleKeydown(event) {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case keyCode.SPACE:
+			case this.keyCode.SPACE:
 				this.handleClick(event);
 				break;
-			case keyCode.RETURN:
+			case this.keyCode.RETURN:
 				this.handleClick(event);
 				break;
-			case keyCode.RIGHT:
-			case keyCode.DOWN:
+			case this.keyCode.RIGHT:
+			case this.keyCode.DOWN:
 				this.focusButtonByIndex(this.getButtonIndex(event.target) + 1);
 				preventEventActions = true;
 				break;
-			case keyCode.LEFT:
-			case keyCode.UP:
+			case this.keyCode.LEFT:
+			case this.keyCode.UP:
 				this.focusButtonByIndex(this.getButtonIndex(event.target) - 1);
 				preventEventActions = true;
 				break;
-			case keyCode.HOME:
+			case this.keyCode.HOME:
 				this.focusButtonByIndex(0);
 				preventEventActions = true;
 				break;
-			case keyCode.END:
+			case this.keyCode.END:
 				this.focusButtonByIndex(-1);
 				preventEventActions = true;
 				break;
 		}
 
-		if (this.selectionFollowFocus) {
+		if (this.options.selectionFollowFocus) {
 			this.selectTab(this.focusedTab);
 		}
 
@@ -178,7 +159,7 @@ export default class Tabs {
 		this.tabs[nextIndex].focus();
 	}
 
-	hasFalseValue(attr) {
+	isSetToFalse(attr) {
 		return attr !== null && attr === 'false';
 	}
 }

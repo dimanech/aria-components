@@ -1,0 +1,122 @@
+.accordion {}
+
+.accordion__title { /* wrapper around button */
+	margin: 0;
+}
+
+.accordion__control {
+	align-items: center;
+	appearance: none;
+	background-color: transparent;
+	border: none;
+	border-top: 1px solid transparent;
+	cursor: pointer;
+	display: flex;
+	font: inherit;
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin: 0;
+	padding: 10px 0;
+	text-align: left;
+	width: 100%;
+}
+
+.accordion__control[aria-expanded=true] {
+	border-color: #ccc;
+}
+
+.accordion__control span {
+	margin-left: auto;
+	margin-right: 10px;
+}
+
+.accordion__content {
+	/*display: none;*/
+	border-bottom: 1px solid transparent;
+	overflow: hidden; /* we use height to hide content */
+	transition: height 0.23s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion__content[aria-hidden=false] {
+	/*display: block;*/
+	border-color: #ccc;
+}
+
+.accordion__content-inner {
+	overflow: hidden; /* prevent of margin collapse is necessary for height calculation */
+}
+
+/* Chevron icon */
+
+.icon-chevron {
+	display: block;
+	height: 14px;
+	position: relative;
+	width: 14px;
+}
+
+.icon-chevron::after,
+.icon-chevron::before {
+	animation-duration: 0.23s;
+	animation-fill-mode: forwards;
+	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	background-color: black;
+	content: "";
+	display: block;
+	height: 2px;
+	position: absolute;
+	top: 50%;
+	width: 9px;
+}
+
+.icon-chevron::before {
+	animation-name: animation-chevron-down;
+	border-bottom-left-radius: 1px;
+	border-top-left-radius: 1px;
+	left: 0;
+}
+
+.icon-chevron::after {
+	animation-name: animation-chevron-up;
+	border-bottom-right-radius: 1px;
+	border-top-right-radius: 1px;
+	right: 0;
+}
+
+.accordion__control[aria-expanded=true] .icon-chevron::after {
+	animation-name: animation-chevron-down;
+}
+
+.accordion__control[aria-expanded=true] .icon-chevron::before {
+	animation-name: animation-chevron-up;
+}
+
+@keyframes animation-chevron-up {
+	0% {
+		transform: translateY(-50%) rotate(46deg);
+		width: 9px;
+	}
+	50% {
+		transform: translate(-20%, -50%) rotate(0deg);
+		width: 7px;
+	}
+	100% {
+		transform: translateY(-50%) rotate(-46deg);
+		width: 9px;
+	}
+}
+
+@keyframes animation-chevron-down {
+	0% {
+		transform: translateY(-50%) rotate(-46deg);
+		width: 9px;
+	}
+	50% {
+		transform: translate(-20%, -50%) rotate(0deg);
+		width: 7px;
+	}
+	100% {
+		transform: translateY(-50%) rotate(46deg);
+		width: 9px;
+	}
+}

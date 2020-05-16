@@ -1,13 +1,15 @@
-const keyCode = Object.freeze({
-	RETURN: 13,
-	SPACE: 32,
-	END: 35,
-	HOME: 36,
-	UP: 38,
-	DOWN: 40
-});
+// TODO: disable active button in case if not allow multiple
 
 export default class Accordion {
+	keyCode = Object.freeze({
+		RETURN: 13,
+		SPACE: 32,
+		END: 35,
+		HOME: 36,
+		UP: 38,
+		DOWN: 40
+	});
+
 	/*
 	 * Accordion
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#accordion
@@ -18,20 +20,25 @@ export default class Accordion {
 	 * `data-allow-multiple` - Allow for multiple accordion sections to be expanded
 	 *  at the same time.
 	 */
-	constructor(groupNode) {
-		this.group = groupNode;
+	constructor(domNode, config) {
+		// elements
+		this.group = domNode;
 		this.buttons = Array.from(this.group.querySelectorAll('[aria-controls]'));
-		this.allowToggle = this.isAttributeSet(this.group.getAttribute('data-allow-toggle'));
-		this.allowMultiple = this.isAttributeSet(this.group.getAttribute('data-allow-multiple'));
-		this.keyCode = keyCode;
+		// options
+		this.options = {
+			allowToggle: config?.allowToggle || this.isAttributeSet(this.group.getAttribute('data-allow-toggle')),
+			allowMultiple: config?.allowMultiple || this.isAttributeSet(this.group.getAttribute('data-allow-multiple'))
+		}
 	}
 
 	init() {
 		this.addEventListeners();
+		this.initSectionHeight();
 	}
 
 	destroy() {
 		this.removeEventListeners();
+		this.destroySectionHeight();
 	}
 
 	addEventListeners() {
@@ -56,41 +63,40 @@ export default class Accordion {
 
 	handleClick(event) {
 		event.preventDefault();
-		this.toggleSection(event.target);
+		this.activateSection(event.target);
 	}
 
-	toggleSection(button) {
+	initSectionHeight() {
+		this.buttons.forEach(button => Accordion.toggleSection(false, button));
+	}
+
+	destroySectionHeight() {
+		this.buttons.forEach(button => Accordion.toggleSection(null, button));
+	}
+
+	activateSection(button) {
 		const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
-		if (!this.allowMultiple) {
-			this.buttons.forEach(button => Accordion.closeSection(button));
+		if (!this.options.allowMultiple) {
+			this.buttons.forEach(button => Accordion.toggleSection(false, button));
 		}
 
-		if ((this.allowToggle || this.allowMultiple) && isExpanded) {
-			Accordion.closeSection(button);
+		if ((this.options.allowToggle || this.options.allowMultiple) && isExpanded) {
+			Accordion.toggleSection(false, button);
 		} else {
-			Accordion.openSection(button);
+			Accordion.toggleSection(true, button);
 		}
 	}
 
-	static closeSection(button) {
-		button.setAttribute('aria-expanded', 'false');
+	static toggleSection(isOpen, button) {
+		button.setAttribute('aria-expanded', !!isOpen);
 
 		const controlledSection = document.getElementById(button.getAttribute('aria-controls'));
 		if (!controlledSection) {
 			return;
 		}
-		controlledSection.setAttribute('aria-hidden', 'true');
-	}
-
-	static openSection(button) {
-		button.setAttribute('aria-expanded', 'true');
-
-		const controlledSection = document.getElementById(button.getAttribute('aria-controls'));
-		if (!controlledSection) {
-			return;
-		}
-		controlledSection.setAttribute('aria-hidden', 'false');
+		controlledSection.setAttribute('aria-hidden', !isOpen);
+		Accordion.animateHeight(isOpen, controlledSection);
 	}
 
 	handleKeydown(event) {
@@ -128,8 +134,8 @@ export default class Accordion {
 
 	handleKeyup(event) {
 		const key = event.keyCode;
-		// FF fires click event on button node after keyup
 		if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
+			// Firefox synthetically fires click event on button element after keyup
 			event.preventDefault();
 		}
 	}
@@ -150,6 +156,24 @@ export default class Accordion {
 		}
 
 		this.buttons[nextIndex].focus();
+	}
+
+	static animateHeight(isOpen, domNode) {
+		const innerElement = domNode.querySelector('[data-elem-acc-inner]');
+		if (!innerElement) {
+			return;
+		}
+
+		switch (isOpen) {
+			case true:
+				domNode.style.height = `${innerElement.offsetHeight}px`;
+				break;
+			case false:
+				domNode.style.height = '0px';
+				break;
+			default:
+				domNode.style.height = 'auto'; // remove hardcoded height in case of destroy
+		}
 	}
 
 	isAttributeSet(attr) {

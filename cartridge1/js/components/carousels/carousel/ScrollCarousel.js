@@ -1,15 +1,13 @@
 export default class ScrollCarousel {
 	constructor(domNode) {
+		// elements
 		this.carousel = domNode;
 		this.carouselTrack = this.carousel.querySelector('[data-elem-carousel-track]');
 		this.prevButton = this.carousel.querySelector('[data-elem-prev-button]'); // TODO: make optional?
 		this.nextButton = this.carousel.querySelector('[data-elem-next-button]');
-
+		// options
 		this.isDirectionHorizontal = this.carousel.getAttribute('data-direction') !== 'vertical';
-		this.currentPageIndex = 0;
-
 		this.SCROLL_END_SENSITIVITY = 40; // Workaround IE rounding for clientWidth and scrollWidth
-
 		this.stylesClass = {
 			initialized: '_initialized',
 			noScroll: '_no-scroll',
@@ -19,6 +17,8 @@ export default class ScrollCarousel {
 			page: 'page',
 			current: '_current'
 		}
+		// state
+		this.currentPageIndex = 0;
 	}
 
 	init() {

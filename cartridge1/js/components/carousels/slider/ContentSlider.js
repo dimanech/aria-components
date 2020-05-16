@@ -1,26 +1,24 @@
 // Not production ready
 // TODO: add slide indexes
 
-const keyCode = Object.freeze({
-	LEFT: 37,
-	RIGHT: 39,
-});
-
 export default class ContentSlider {
+	keyCode = Object.freeze({
+		LEFT: 37,
+		RIGHT: 39,
+	});
+
 	/*
 	 * ContentSlider
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#carousel
 	 */
 	constructor(domNode) {
+		// elements
 		this.slider = domNode;
 		this.sliderContent = this.slider.querySelector('[data-elem-content]')
 		this.paginationContent = this.slider.querySelector('[data-elem-dots]')
 		this.prevButton = this.slider.querySelector('[data-elem-prev-button]');
 		this.nextButton = this.slider.querySelector('[data-elem-next-button]');
-
-		this.currentSlideIndex = 0;
-		this.slidesModel = [];
-
+		// options
 		this.stylesClass = {
 			initialized: '_initialized',
 			prev: '_prev',
@@ -31,6 +29,9 @@ export default class ContentSlider {
 			dotPoint: 'dot__point',
 			dotCircle: 'dot__circle'
 		}
+		// state
+		this.currentSlideIndex = 0;
+		this.slidesModel = [];
 	}
 
 	init() {
@@ -148,11 +149,11 @@ export default class ContentSlider {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case keyCode.LEFT:
+			case this.keyCode.LEFT:
 				this.goToPrevSlide();
 				preventEventActions = true;
 				break;
-			case keyCode.RIGHT:
+			case this.keyCode.RIGHT:
 				this.goToNextSlide();
 				preventEventActions = true;
 				return;

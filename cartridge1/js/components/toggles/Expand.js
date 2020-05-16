@@ -1,9 +1,9 @@
-const keyCode = Object.freeze({
-	RETURN: 13,
-	SPACE: 32
-});
-
 export default class Expand {
+	keyCode = Object.freeze({
+		RETURN: 13,
+		SPACE: 32
+	});
+
 	/**
 	 * Expand (Disclosure / Summary)
 	 * This is expand button implementation that could be used for several different
@@ -16,13 +16,14 @@ export default class Expand {
 	 * <div id="more-details">Lorem ipsum...</div>
 	 */
 	constructor(domNode) {
+		// elements
 		this.button = domNode;
+		this.controledElement = document.getElementById(this.button.getAttribute('aria-controls'));
+		// state
 		this.isOpen = false;
-		this.keyCode = keyCode;
 	}
 
 	init() {
-		this.controledElement = document.getElementById(this.button.getAttribute('aria-controls'));
 		if (!this.controledElement) {
 			return;
 		}
@@ -68,14 +69,13 @@ export default class Expand {
 	toggle(isOpen) {
 		this.button.setAttribute('aria-expanded', isOpen);
 		this.controledElement.setAttribute('aria-hidden', !isOpen);
-		this.button.dispatchEvent(new Event(isOpen ? 'expand:expanded' : 'expand:collapsed'));
+		this.button.dispatchEvent(new Event('expand:' + (isOpen ? 'expanded' : 'collapsed')));
 		this.isOpen = !!isOpen;
 	}
 
 	handleKeydown(event) {
 		const key = event.keyCode;
 		if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
-			event.stopPropagation();
 			event.preventDefault();
 			this.toggle(!this.isOpen);
 		}
@@ -83,8 +83,8 @@ export default class Expand {
 
 	handleKeyup(event) {
 		const key = event.keyCode;
-		// FF fires click event on button node after keyup
 		if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
+			// Firefox synthetically fires click event on button element after keyup
 			event.preventDefault();
 		}
 	}

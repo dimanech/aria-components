@@ -1,9 +1,5 @@
 import Expand from './Expand.js';
 
-const keyCode = Object.freeze({
-	ESC: 27
-});
-
 export default class ExpandInput extends Expand {
 	constructor(domNode) {
 		super(domNode);
@@ -29,7 +25,8 @@ export default class ExpandInput extends Expand {
 	}
 
 	handleEscape(event) {
-		if (event.keyCode === keyCode.ESC) {
+		const ESC = 27;
+		if (event.keyCode === ESC) {
 			this.toggle(!this.isOpen);
 		}
 	}

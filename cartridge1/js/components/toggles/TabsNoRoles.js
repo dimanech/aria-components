@@ -16,8 +16,8 @@ export default class TabsNoRoles extends Tabs {
 	}
 
 	destroy() {
-		this.destroyRoles();
 		super.destroy();
+		this.destroyRoles();
 	}
 
 	initRoles() {

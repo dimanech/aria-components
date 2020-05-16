@@ -49,7 +49,7 @@ export default class ComponentsInitiator {
 
 		if (/\//g.test(componentName)) {
 			// if component has path in the name we load it async
-			// eg. data-component="/js/components/togglers/Accordion" or relative to Initiator data-component="./togglers/Accordion"
+			// eg. data-component="/js/components/toggles/Accordion" or relative to Initiator data-component="./toggles/Accordion"
 			componentConstructor = await this.loadAsync(componentName)
 				.catch(err => console.error('[ComponentsInitiator]:', err, componentName));
 		} else {

@@ -4,7 +4,7 @@ import ComboboxSearch from './components/forms/ComboboxSearch.js';
 import NotificationsManager from './components/notifications/NotificationsManager.js';
 import DialogManager from './components/dialogs/DialogManager.js';
 import DialogButton from './components/dialogs/DialogButton.js';
-import Accordion from './components/togglers/Accordion.js';
+import Accordion from './components/toggles/Accordion.js';
 import MessageRelayService from './services/MessageRelay.js';
 
 export default [
