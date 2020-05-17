@@ -1,6 +1,6 @@
 .accordion {}
 
-.accordion__title { /* wrapper around button */
+.accordion__title { /* wrapper around button in case of h1-6 */
 	margin: 0;
 }
 
