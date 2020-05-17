@@ -186,6 +186,7 @@ export default class ContentSlider {
 		const slidesTotal = this.slidesTotal;
 		const xmlns = "http://www.w3.org/2000/svg";
 		const progressSize = 8;
+		const TAU = Math.PI * 2
 
 		this.pagination = document.createElement('div');
 		this.pagination.setAttribute('class', this.stylesClass.dots);
@@ -210,7 +211,7 @@ export default class ContentSlider {
 			progress.setAttributeNS(null, 'cx', progressSize / 2);
 			progress.setAttributeNS(null, 'cy', progressSize / 2);
 			progress.setAttributeNS(null, 'r', 2);
-			progress.setAttributeNS(null, 'stroke-dasharray', (Math.PI * 2) * 2);
+			progress.setAttributeNS(null, 'stroke-dasharray', TAU * 2);
 
 			dot.appendChild(svg);
 			svg.appendChild(progressBack);

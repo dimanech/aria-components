@@ -20,57 +20,62 @@ export default class ComponentsInitiator {
 		}
 	}
 
-	async loadAsync(componentName) {
-		const module = await import(/* webpackIgnore: true */componentName + '.js');
+	async importComponent(name) {
+		const module = await import(/* webpackIgnore: true */name + '.js');
 
 		if (typeof module.default !== 'function') {
-			console.warn('[ComponentsInitiator]: Could not init. Default export not a function ', componentName);
+			console.warn('[ComponentsInitiator]: Could not init. Default export not a function ', name);
 			return;
 		}
 
 		return module.default;
 	}
 
-	loadSync(componentName) {
-		const componentIndex = this.componentsNames.indexOf(componentName);
+	getComponent(name) {
+		const componentIndex = this.componentsNames.indexOf(name);
 
 		if (componentIndex === -1) {
-			console.warn(`[ComponentsInitiator]: Could not init. "${componentName}" component present on page, but it import not found`);
+			console.warn(`[ComponentsInitiator]: Could not init. "${name}" component present on page, but it import not found`);
 			return;
 		}
 
 		return this.loadedComponents[componentIndex][1];
 	}
 
-	async initComponent(domNode) {
-		const componentName = domNode.getAttribute('data-component');
+	async getConstructor(name) {
+		let constructor;
 
-		let componentConstructor;
-
-		if (/\//g.test(componentName)) {
+		if (/\//g.test(name)) {
 			// if component has path in the name we load it async
 			// eg. data-component="/js/components/toggles/Accordion" or relative to Initiator data-component="./toggles/Accordion"
-			componentConstructor = await this.loadAsync(componentName)
-				.catch(err => console.error('[ComponentsInitiator]:', err, componentName));
+			constructor = await this.importComponent(name)
+				.catch(err => console.error('[ComponentsInitiator]:', err, name));
 		} else {
-			componentConstructor = this.loadSync(componentName);
+			constructor = this.getComponent(name);
 		}
 
-		if (!componentConstructor) {
+		return constructor;
+	}
+
+	async initComponent(domNode) {
+		const name = domNode.getAttribute('data-component');
+
+		const constructor = await this.getConstructor(name);
+		if (!constructor) {
 			return;
 		}
 
 		let component;
 		try {
-			component = new componentConstructor(domNode, this.pageComponents);
+			component = new constructor(domNode, this.pageComponents);
 			component.init();
 		} catch (error) {
-			console.groupCollapsed(`[ComponentsInitiator]:\x1b[31m ${componentName}.js ${error.name}: ${error.message}`);
+			console.groupCollapsed(`[ComponentsInitiator]:\x1b[31m ${name}.js ${error.name}: ${error.message}`);
 			console.error(error);
 			console.groupEnd();
 		}
 
 		domNode.setAttribute('data-inited', true);
-		this.addComponentToList(componentName, component);
+		this.addComponentToList(name, component);
 	}
 }
