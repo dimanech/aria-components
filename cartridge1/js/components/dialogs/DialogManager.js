@@ -7,13 +7,13 @@ const keyCode = Object.freeze({
 
 export default class DialogManager {
 	/**
-     * DialogManager
-     *
-     * This dialog manger is responsible to open, manage dialog stack (bring down,
-     * bring up, replace) and close dialogs. It also broadcast events about status
-     * of the dialogs (close and open states).
-     * @class
-     */
+	 * DialogManager
+	 *
+	 * This dialog manger is responsible to open, manage dialog stack (bring down,
+	 * bring up, replace) and close dialogs. It also broadcast events about status
+	 * of the dialogs (close and open states).
+	 * @class
+	 */
 	constructor() {
 		this.dialogsStack = [];
 	}
@@ -28,22 +28,22 @@ export default class DialogManager {
 	}
 
 	/**
-     * openDialog
-     *
-     * If one dialog is opened it opens new one on top of previous.
-     * After the top dialog is closed focus moves to previous dialog. So it creates
-     * focus subset of main document. It is required to domNode that is focused after
-     * dialog is closed. Broadcast native 'dialog:open' after open to handle callbacks.
-     *
-     * @pages
-     * @param {String} dialogType - type of dialog. Could be panel or modal. Currently used to much Bootstrap modals.
-     * @param {String} dialogId - ID of dialog node. Eg: `myDialog`.
-     * @param {HTMLElement} [focusAfterClose] - domNode of element that focused when dialog is closed and focus
+	 * openDialog
+	 *
+	 * If one dialog is opened it opens new one on top of previous.
+	 * After the top dialog is closed focus moves to previous dialog. So it creates
+	 * focus subset of main document. It is required to domNode that is focused after
+	 * dialog is closed. Broadcast native 'dialog:open' after open to handle callbacks.
+	 *
+	 * @public
+	 * @param {String} dialogType - type of dialog. Could be panel or modal. Currently used to much Bootstrap modals.
+	 * @param {String} dialogId - ID of dialog node. Eg: `myDialog`.
+	 * @param {HTMLElement} [focusAfterClose] - domNode of element that focused when dialog is closed and focus
 	 * brings back to the page
-     * @param {HTMLElement} [focusAfterOpen] - domNode of element that should be focused when dialog is opened.
+	 * @param {HTMLElement} [focusAfterOpen] - domNode of element that should be focused when dialog is opened.
 	 * If no first focusable element will used.
-     * @returns {Boolean} - is dialog replaced
-     */
+	 * @returns {Boolean} - is dialog replaced
+	 */
 	openDialog(dialogType, dialogId, focusAfterClose, focusAfterOpen) {
 		const dialogNode = document.getElementById(dialogId);
 		if (this.isDialogInStack(dialogNode) || !dialogNode) {
@@ -66,12 +66,12 @@ export default class DialogManager {
 	}
 
 	/**
-     * Close the last one dialog in the stack
-     * It throws native 'dialog:closed' event on dialog node after close.
-     *
-     * @pages
-     * @returns {Boolean}
-     */
+	 * Close the last one dialog in the stack
+	 * It throws native 'dialog:closed' event on dialog node after close.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
 	closeDialog() {
 		const currentDialog = this._getCurrentDialog();
 		if (!currentDialog) {
@@ -95,12 +95,12 @@ export default class DialogManager {
 	}
 
 	/**
-     * Close all dialogs in the stack
-     * It calls closeDialog function for each dialog in stack.
-     *
-     * @pages
-     * @returns {Boolean}
-     */
+	 * Close all dialogs in the stack
+	 * It calls closeDialog function for each dialog in stack.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
 	closeAll() {
 		const stackLength = this.dialogsStack.length;
 
@@ -112,13 +112,13 @@ export default class DialogManager {
 	}
 
 	/**
-     * This method is designed to close last dialog for not specific button,
-     * like close modal button, backdrop click or ESC. For element that do not know
-     * if particular dialog is try to *force user to make a choice* inside the dialog.
-     *
-     * @pages
-     * @returns {Boolean}
-     */
+	 * This method is designed to close last dialog for not specific button,
+	 * like close modal button, backdrop click or ESC. For element that do not know
+	 * if particular dialog is try to *force user to make a choice* inside the dialog.
+	 *
+	 * @public
+	 * @returns {Boolean}
+	 */
 	closeDialogFromOutside() {
 		const currentDialog = this._getCurrentDialog();
 		if (!currentDialog) {
@@ -134,20 +134,20 @@ export default class DialogManager {
 	}
 
 	/**
-     * replaceDialog
-     *
-     * Same as open dialog, but replace current dialog with new one.
-     *
-     * @pages
-     * @param {String} dialogType - type of dialog. Could be panel or modal.
-     * @param {String} newDialogId - ID of dialog node in format of CSS selector.
+	 * replaceDialog
+	 *
+	 * Same as open dialog, but replace current dialog with new one.
+	 *
+	 * @public
+	 * @param {String} dialogType - type of dialog. Could be panel or modal.
+	 * @param {String} newDialogId - ID of dialog node in format of CSS selector.
 	 * Eg: `#myDialog`. Currently used to much Bootstrap modals.
-     * @param {HTMLElement} newFocusAfterClosed - domNode of element that focused when dialog is
+	 * @param {HTMLElement} newFocusAfterClosed - domNode of element that focused when dialog is
 	 * closed and focus brings back to the page
-     * @param {HTMLElement} [newFocusFirst] - domNode of element that should be focused when dialog is opened.
+	 * @param {HTMLElement} [newFocusFirst] - domNode of element that should be focused when dialog is opened.
 	 * If no first focusable element will used.
-     * @returns {Boolean} - is dialog replaced
-     */
+	 * @returns {Boolean} - is dialog replaced
+	 */
 	replaceDialog(dialogType, newDialogId, newFocusAfterClosed, newFocusFirst) {
 		if (this.isDialogInStack(document.querySelector(newDialogId))) {
 			return;
@@ -161,13 +161,13 @@ export default class DialogManager {
 	}
 
 	/**
-     * isDialogOpen
-     *
-     * Check if dialogNode showed on page as Dialog
-     * @pages
-     * @param {HTMLElement} domNode - domNode of dialog
-     * @returns {Boolean}
-     */
+	 * isDialogOpen
+	 *
+	 * Check if dialogNode showed on page as Dialog
+	 * @public
+	 * @param {HTMLElement} domNode - domNode of dialog
+	 * @returns {Boolean}
+	 */
 	isDialogInStack(domNode) {
 		return this.dialogsStack.some(dialog => (dialog.dialogNode === domNode));
 	}

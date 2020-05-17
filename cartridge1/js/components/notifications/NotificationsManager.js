@@ -20,7 +20,7 @@ export default class NotificationsManager {
 	}
 
 	/**
-	 * @pages
+	 * @public
 	 */
 	notify(event) {
 		if (!event.detail || !event.detail.message) {
@@ -46,7 +46,7 @@ export default class NotificationsManager {
 	}
 
 	/**
-	 * @pages
+	 * @public
 	 */
 	hide(id) {
 		if (!id) {
