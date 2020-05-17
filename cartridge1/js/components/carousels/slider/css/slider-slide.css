@@ -1,0 +1,18 @@
+.slider._animation-slide._initialized .slider__slide {
+	opacity: 0;
+	transition: ease-in-out 0.7s;
+	transition-property: opacity, visibility, transform;
+}
+
+.slider._animation-slide._initialized .slider__slide._current {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.slider._animation-slide .slider__slide._prev {
+	transform: translateX(-100%);
+}
+
+.slider._animation-slide .slider__slide._next {
+	transform: translateX(100%);
+}

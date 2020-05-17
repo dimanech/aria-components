@@ -1,28 +1,5 @@
-body {
-	margin: 50px 100px;
-}
-
-@media screen and (max-width: 1024px) {
-	body {
-		margin: 20px;
-	}
-}
-
-:focus,
-button:focus {
-	box-shadow: 0 0 0 1px hsl(200, 100%, 50%), 0 0 0 4px hsla(200, 100%, 79%, 0.5);
-}
-
-button::-moz-focus-inner {
-	border: none;
-	padding: 0;
-}
-
-button:-moz-focusring {
-	outline: none !important;
-}
-
-/* Slider */
+@import "slider-slide.css";
+@import "slider-fade.css";
 
 .slider {
 	background-color: #ccc;
@@ -68,26 +45,13 @@ button:-moz-focusring {
 }
 
 .slider._initialized .slider__slide {
-	opacity: 0;
-	transition: ease-in-out 0.7s;
-	transition-property: opacity, visibility, transform;
 	visibility: hidden;
 	z-index: 0;
 }
 
 .slider._initialized .slider__slide._current {
-	opacity: 1;
-	transform: translateX(0);
 	visibility: visible;
 	z-index: 1;
-}
-
-.slider__slide._prev {
-	transform: translateX(-100%);
-}
-
-.slider__slide._next {
-	transform: translateX(100%);
 }
 
 /* Buttons */
@@ -139,19 +103,22 @@ button:-moz-focusring {
 
 .slider__autoplay-toggle .pause,
 .slider__autoplay-toggle .play {
-	fill: transparent;
+	fill: #423F3F;
+	stroke: #423F3F;
+	display: block;
+	opacity: 1;
+	transition: opacity ease 0.2s;
 }
 
-.slider__autoplay-toggle[aria-pressed=false] .pause,
-.slider__autoplay-toggle[aria-pressed=true] .play {
-	fill: black;
-	stroke: black;
+.slider__autoplay-toggle[aria-pressed=true] .pause,
+.slider__autoplay-toggle[aria-pressed=false] .play {
+	opacity: 0;
 }
 
 /* pagination */
 
 .slider__pagination {
-	bottom: 0;
+	bottom: 5px;
 	display: none;
 	left: 50%;
 	position: absolute;
@@ -164,43 +131,59 @@ button:-moz-focusring {
 }
 
 .dots {
-	margin: 3px 0;
+	margin: 6px 0 6px 16px;
+	display: flex;
 }
 
 .dot {
-	fill: transparent;
-	stroke: transparent;
+	display: block;
+	width: 8px;
+	height: 8px;
+	border-radius: 8px;
+	margin-right: 16px;
+	position: relative;
+	color: transparent;
+	background-color: #423F3F;
+	transition: ease 0.4s;
+	transition-property: transform, background;
+}
+
+.dot._current {
+	background-color: transparent;
+	transform: scale(1.2);
 }
 
 .slider._autoplay .dot._current,
 .slider._paused .dot._current {
 	animation: progress linear;
-	stroke: deepskyblue;
 }
 
 .slider._paused .dot._current {
 	animation-play-state: paused;
 }
 
-.dot__point {
-	fill: lightgray;
-	stroke: transparent;
-}
-
-.dot__circle {
+.dot svg {
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	z-index: 2;
 	stroke-linecap: round;
 	stroke-width: 1;
+	fill: transparent;
 }
 
-.dot._current .dot__point {
-	fill: black;
+.dot._current .dot__progress {
+	stroke: #423F3F;
+}
+
+.dot._current .dot__progress-back {
+	stroke: #ccc;
 }
 
 @keyframes progress {
 	from {
 		stroke-dashoffset: 12.566;
 	}
-
 	to {
 		stroke-dashoffset: 1;
 	}
@@ -237,7 +220,6 @@ button:-moz-focusring {
 .box._v-5 {
 	background: hsl(0, 0%, 67%);
 }
-
 
 .box a {
 	text-decoration: none;

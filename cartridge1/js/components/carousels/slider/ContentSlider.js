@@ -26,8 +26,8 @@ export default class ContentSlider {
 			current: '_current',
 			dots: 'dots',
 			dot: 'dot',
-			dotPoint: 'dot__point',
-			dotCircle: 'dot__circle'
+			dotProgress: 'dot__progress',
+			dotProgressBack: 'dot__progress-back'
 		}
 		// state
 		this.currentSlideIndex = 0;
@@ -185,33 +185,37 @@ export default class ContentSlider {
 	createPaginationElements() {
 		const slidesTotal = this.slidesTotal;
 		const xmlns = "http://www.w3.org/2000/svg";
-		this.pagination = document.createElementNS(xmlns, 'svg');
-		this.pagination.setAttributeNS(null, 'class', this.stylesClass.dots);
-		this.pagination.setAttributeNS(null, 'height', 25);
-		this.pagination.setAttributeNS(null, 'width', 25 * slidesTotal);
-		this.pagination.setAttributeNS(null, 'viewBox', `0 0 ${10 * slidesTotal} 5`);
+		const progressSize = 8;
+
+		this.pagination = document.createElement('div');
+		this.pagination.setAttribute('class', this.stylesClass.dots);
 
 		for (let i = 0; i < slidesTotal; i++) {
-			const dot = document.createElementNS(xmlns, 'circle');
-			dot.setAttributeNS(null, 'class', this.stylesClass.dotPoint);
-			dot.setAttributeNS(null, 'cx', (8 * i) + 5);
-			dot.setAttributeNS(null, 'cy', 2);
-			dot.setAttributeNS(null, 'r', 1);
+			const dot = document.createElement('div');
+			dot.setAttribute('class', this.stylesClass.dot);
+
+			const svg = document.createElementNS(xmlns, 'svg');
+			svg.setAttributeNS(null, 'height', 18);
+			svg.setAttributeNS(null, 'width', 18);
+			svg.setAttributeNS(null, 'viewBox', `0 0 ${progressSize} ${progressSize}`);
+
+			const progressBack = document.createElementNS(xmlns, 'circle');
+			progressBack.setAttributeNS(null, 'class', this.stylesClass.dotProgressBack);
+			progressBack.setAttributeNS(null, 'cx', progressSize / 2);
+			progressBack.setAttributeNS(null, 'cy', progressSize / 2);
+			progressBack.setAttributeNS(null, 'r', 2);
 
 			const progress = document.createElementNS(xmlns, 'circle');
-			progress.setAttributeNS(null, 'class', this.stylesClass.dotCircle);
-			progress.setAttributeNS(null, 'cx', (8 * i) + 5);
-			progress.setAttributeNS(null, 'cy', 2);
+			progress.setAttributeNS(null, 'class', this.stylesClass.dotProgress);
+			progress.setAttributeNS(null, 'cx', progressSize / 2);
+			progress.setAttributeNS(null, 'cy', progressSize / 2);
 			progress.setAttributeNS(null, 'r', 2);
 			progress.setAttributeNS(null, 'stroke-dasharray', (Math.PI * 2) * 2);
 
-			const group = document.createElementNS(xmlns, 'g');
-			group.setAttributeNS(null, 'class', this.stylesClass.dot);
-
-			group.appendChild(dot);
-			group.appendChild(progress);
-
-			this.pagination.appendChild(group);
+			dot.appendChild(svg);
+			svg.appendChild(progressBack);
+			svg.appendChild(progress);
+			this.pagination.appendChild(dot);
 		}
 
 		this.paginationContent.appendChild(this.pagination);
