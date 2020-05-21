@@ -1,12 +1,12 @@
 // Not production ready
 // TODO: add slide indexes
 
-export default class ContentSlider {
-	keyCode = Object.freeze({
-		LEFT: 37,
-		RIGHT: 39,
-	});
+const keyCode = Object.freeze({
+	LEFT: 37,
+	RIGHT: 39,
+});
 
+export default class ContentSlider {
 	/*
 	 * ContentSlider
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#carousel
@@ -149,11 +149,11 @@ export default class ContentSlider {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.LEFT:
+			case keyCode.LEFT:
 				this.goToPrevSlide();
 				preventEventActions = true;
 				break;
-			case this.keyCode.RIGHT:
+			case keyCode.RIGHT:
 				this.goToNextSlide();
 				preventEventActions = true;
 				return;
