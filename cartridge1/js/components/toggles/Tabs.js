@@ -1,15 +1,15 @@
-export default class Tabs {
-	keyCode = Object.freeze({
-		RETURN: 13,
-		SPACE: 32,
-		END: 35,
-		HOME: 36,
-		LEFT: 37,
-		UP: 38,
-		RIGHT: 39,
-		DOWN: 40
-	});
+const keyCode = Object.freeze({
+	RETURN: 13,
+	SPACE: 32,
+	END: 35,
+	HOME: 36,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40
+});
 
+export default class Tabs {
 	/*
 	 * Tabs
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#tabpanel
@@ -104,27 +104,27 @@ export default class Tabs {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.SPACE:
+			case keyCode.SPACE:
 				this.handleClick(event);
 				break;
-			case this.keyCode.RETURN:
+			case keyCode.RETURN:
 				this.handleClick(event);
 				break;
-			case this.keyCode.RIGHT:
-			case this.keyCode.DOWN:
+			case keyCode.RIGHT:
+			case keyCode.DOWN:
 				this.focusButtonByIndex(this.getButtonIndex(event.target) + 1);
 				preventEventActions = true;
 				break;
-			case this.keyCode.LEFT:
-			case this.keyCode.UP:
+			case keyCode.LEFT:
+			case keyCode.UP:
 				this.focusButtonByIndex(this.getButtonIndex(event.target) - 1);
 				preventEventActions = true;
 				break;
-			case this.keyCode.HOME:
+			case keyCode.HOME:
 				this.focusButtonByIndex(0);
 				preventEventActions = true;
 				break;
-			case this.keyCode.END:
+			case keyCode.END:
 				this.focusButtonByIndex(-1);
 				preventEventActions = true;
 				break;

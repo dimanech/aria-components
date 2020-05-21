@@ -42,7 +42,13 @@
 
 	<div
 		class="b-highlighter"
-		data-component="./a11y/FocusHighlighter/FocusHighlighter"
+		data-component="FocusHighlighter"
 	></div>
+
+	<script type="module">
+		import FocusHighlighter from './FocusHighlighter.js';
+
+		document.querySelectorAll('[data-component="FocusHighlighter"]').forEach(highlighter => new FocusHighlighter(highlighter).init());
+	</script>
 </body>
 </html>

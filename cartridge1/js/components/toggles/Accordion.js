@@ -1,15 +1,15 @@
 // TODO: disable active button in case if not allow multiple
 
-export default class Accordion {
-	keyCode = Object.freeze({
-		RETURN: 13,
-		SPACE: 32,
-		END: 35,
-		HOME: 36,
-		UP: 38,
-		DOWN: 40
-	});
+const keyCode = Object.freeze({
+	RETURN: 13,
+	SPACE: 32,
+	END: 35,
+	HOME: 36,
+	UP: 38,
+	DOWN: 40
+});
 
+export default class Accordion {
 	/*
 	 * Accordion
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#accordion
@@ -103,24 +103,24 @@ export default class Accordion {
 		let preventEventActions = false;
 
 		switch (event.keyCode) {
-			case this.keyCode.SPACE:
-			case this.keyCode.RETURN:
+			case keyCode.SPACE:
+			case keyCode.RETURN:
 				this.handleClick(event);
 				preventEventActions = true;
 				break;
-			case this.keyCode.DOWN:
+			case keyCode.DOWN:
 				this.focusButtonByIndex(this.getButtonIndex(event.target) + 1);
 				preventEventActions = true;
 				break;
-			case this.keyCode.UP:
+			case keyCode.UP:
 				this.focusButtonByIndex(this.getButtonIndex(event.target) - 1);
 				preventEventActions = true;
 				break;
-			case this.keyCode.HOME:
+			case keyCode.HOME:
 				this.focusButtonByIndex(0);
 				preventEventActions = true;
 				break;
-			case this.keyCode.END:
+			case keyCode.END:
 				this.focusButtonByIndex(-1);
 				preventEventActions = true;
 				break;
@@ -134,7 +134,7 @@ export default class Accordion {
 
 	handleKeyup(event) {
 		const key = event.keyCode;
-		if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
+		if (key === keyCode.SPACE || key === keyCode.RETURN) {
 			// Firefox synthetically fires click event on button element after keyup
 			event.preventDefault();
 		}

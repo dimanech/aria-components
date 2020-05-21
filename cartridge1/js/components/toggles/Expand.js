@@ -1,9 +1,9 @@
-export default class Expand {
-	keyCode = Object.freeze({
-		RETURN: 13,
-		SPACE: 32
-	});
+const keyCode = Object.freeze({
+	RETURN: 13,
+	SPACE: 32
+});
 
+export default class Expand {
 	/**
 	 * Expand (Disclosure / Summary)
 	 * This is expand button implementation that could be used for several different
@@ -75,7 +75,7 @@ export default class Expand {
 
 	handleKeydown(event) {
 		const key = event.keyCode;
-		if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
+		if (key === keyCode.SPACE || key === keyCode.RETURN) {
 			event.preventDefault();
 			this.toggle(!this.isOpen);
 		}
@@ -83,7 +83,7 @@ export default class Expand {
 
 	handleKeyup(event) {
 		const key = event.keyCode;
-		if (key === this.keyCode.SPACE || key === this.keyCode.RETURN) {
+		if (key === keyCode.SPACE || key === keyCode.RETURN) {
 			// Firefox synthetically fires click event on button element after keyup
 			event.preventDefault();
 		}
