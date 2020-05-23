@@ -1,5 +1,7 @@
 @import "slider-slide.css";
 @import "slider-fade.css";
+@import "slider-clip.css";
+@import "slider-parallax.css";
 
 .slider {
 	background-color: #ccc;
@@ -224,3 +226,10 @@
 .box a {
 	text-decoration: none;
 }
+
+.box img {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+}
+

@@ -1,0 +1,22 @@
+.slider._animation-clip._initialized .slider__slide {
+	visibility: hidden;
+	transition: ease-in-out 0.8s;
+	transition-property: visibility, clip-path, transform, z-index;
+}
+
+.slider._animation-clip._initialized .slider__slide._current {
+	visibility: visible;
+	transform: translateX(0);
+	clip-path: inset(0% 0% 0% 0%);
+	z-index: 1;
+}
+
+.slider._animation-clip .slider__slide._prev {
+	transform: translateX(-50%);
+	clip-path: inset(0% 0% 0% -100%);
+}
+
+.slider._animation-clip .slider__slide._next {
+	transform: translateX(50%);
+	clip-path: inset(0% 0% 0% 100%);
+}

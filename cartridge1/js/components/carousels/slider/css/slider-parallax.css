@@ -1,0 +1,34 @@
+.slider._animation-parallax._initialized .slider__slide {
+	transition: cubic-bezier(.56,.03,.47,.98) 0.8s;
+	transition-property: transform, visibility;
+	overflow: hidden;
+}
+
+.slider._animation-parallax .slider__slide._current {
+	transform: translateX(0);
+}
+
+.slider._animation-parallax .slider__slide._prev {
+	transform: translateX(-100%);
+}
+
+.slider._animation-parallax .slider__slide._next {
+	transform: translateX(100%);
+}
+
+.slider._animation-parallax._initialized .box {
+	transition: cubic-bezier(.56,.03,.47,.98) 0.8s;
+	transition-property: transform, visibility;
+}
+
+.slider._animation-parallax .slider__slide._current .box {
+	transform: translateX(0);
+}
+
+.slider._animation-parallax .slider__slide._prev .box {
+	transform: translateX(50%);
+}
+
+.slider._animation-parallax .slider__slide._next .box {
+	transform: translateX(-50%);
+}

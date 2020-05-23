@@ -1,6 +1,6 @@
 .slider._animation-fade._initialized .slider__slide {
 	opacity: 0;
-	transition: ease-in-out 0.7s;
+	transition: ease-in 0.7s;
 	transition-property: opacity, visibility;
 }
 

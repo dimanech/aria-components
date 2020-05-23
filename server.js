@@ -8,7 +8,8 @@ const port = 3000;
 const http2 = require('http2');
 const certs = {
 	key: fs.readFileSync(__dirname +  '/.certs/localhost.key', 'utf8'),
-	cert: fs.readFileSync(__dirname + '/.certs/localhost.crt', 'utf8')
+	cert: fs.readFileSync(__dirname + '/.certs/localhost.crt', 'utf8'),
+	allowHTTP1: true
 };
 
 const app = connect('127.0.0.1');
