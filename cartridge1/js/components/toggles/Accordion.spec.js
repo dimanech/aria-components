@@ -2,18 +2,20 @@ describe('Accordion', async () => {
 	let page;
 	const allCoverage = [];
 
-	before(async () => {
+	beforeEach(async () => {
 		page = await global.browser.newPage();
-		// await page.emulate(iPhone);
 		await page.goto("http://127.0.0.1:3000/js/components/toggles/accordion.html", { waitUntil: 'networkidle2'});
 		await page.setViewport({ width: 1920, height: 1080 });
 		await page.coverage.startJSCoverage();
 	});
 
-	after(async () => {
-		const jsCoverage = await page.coverage.stopJSCoverage();
-		global.pti.write([...jsCoverage]);
+	afterEach(async () => {
+		allCoverage.concat(await Promise.all([page.coverage.stopJSCoverage()]));
 		await page.close();
+	});
+
+	after(() => {
+		global.pti.write(allCoverage);
 	});
 
 	describe('Structure', function () {
@@ -53,7 +55,7 @@ describe('Accordion', async () => {
 			}
 		}
 
-		before(async () => {
+		beforeEach(async () => {
 			const buttons = await page.$$(buttonsSelector);
 			firstButtonHandle = buttons[0];
 			secondButtonHandle = buttons[1];
@@ -80,6 +82,26 @@ describe('Accordion', async () => {
 			global.assert.deepEqual(snapshot.children, reference);
 		});
 
+		it('should open linked panel on Enter keyup', async function () {
+			await assertClosed();
+			await page.focus(buttonsSelector);
+			await page.keyboard.press('Enter');
+			await assertOpen();
+		});
+
+		it('should open linked panel on Space keyup', async function () {
+			await assertClosed();
+			await page.focus(buttonsSelector);
+			await page.keyboard.press('Space');
+			await assertOpen();
+		});
+
+		it('should open linked panel on tap', async function () {
+			await assertClosed();
+			await page.tap(buttonsSelector);
+			await assertOpen();
+		});
+
 		it('should do nothing on click to opened panel', async function () {
 			const initialState = await getState();
 			await firstButtonHandle.click();
@@ -91,6 +113,7 @@ describe('Accordion', async () => {
 		it('active control should be disabled')
 
 		it('panel should be closed on click to other control', async function () {
+			await firstButtonHandle.click();
 			await assertOpen();
 			await secondButtonHandle.click();
 			await assertClosed();
@@ -124,30 +147,31 @@ describe('Accordion', async () => {
 	describe('Toggle height', function () {
 		const buttonSelector = '.accordion__control';
 		let firstButtonHandle;
+		let secondButtonHandle;
 		let firstButtonControlledElementID;
 
 		const getHeight = async () => page.$eval(firstButtonControlledElementID, node => node.style.height);
 
-		before(async () => {
+		beforeEach(async () => {
 			const controls = await page.$$(buttonSelector);
 			firstButtonHandle = controls[0];
+			secondButtonHandle = controls[1];
 			firstButtonControlledElementID = '#' + await firstButtonHandle.evaluate(node => node.getAttribute('aria-controls'));
 		});
 
-		it('height should be "auto" when initialized', async function () {
-			global.assert.strictEqual(await getHeight(), 'auto');
+		it('height should be "0px" when initialized', async function () {
+			global.assert.strictEqual(await getHeight(), '0px');
 		});
 
-		it('height should be "200" when opened', async function () {
+		it('height should be "50px" when opened', async function () {
 			await firstButtonHandle.click();
-			const snapshot = await page.accessibility.snapshot();
-			console.log(snapshot)
-			global.assert.strictEqual(await getHeight(), '200');
+			global.assert.strictEqual(await getHeight(), '50px');
 		});
 
 		it('height should be "0" when closed', async function () {
 			await firstButtonHandle.click();
-			global.assert.strictEqual(await getHeight(), '0');
+			await secondButtonHandle.click();
+			global.assert.strictEqual(await getHeight(), '0px');
 		});
 
 		it('height should be cleared after destroy', async function () {

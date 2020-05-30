@@ -5,9 +5,6 @@ const pti = require('puppeteer-to-istanbul');
 const width = 1920;
 const height = 1080;
 
-//const devices = require('puppeteer/DeviceDescriptors');
-//const iPhone = devices['iPhone 6'];
-
 before(async () => {
 	require('./server.js');
 
@@ -22,3 +19,8 @@ after(() => {
 	global.browser.close();
 	//process.exit(0);
 });
+
+
+//const devices = require('puppeteer/DeviceDescriptors');
+//const iPhone = devices['iPhone 6'];
+// await page.emulate(iPhone);
