@@ -20,5 +20,5 @@ before(async () => {
 
 after(() => {
 	global.browser.close();
-	process.exit(0);
+	//process.exit(0);
 });

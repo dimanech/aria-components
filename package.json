@@ -24,7 +24,7 @@
   "scripts": {
     "lint": "eslint ./cartridge1",
     "serve": "node server.js",
-    "test": "nyc mocha tests-setup.js ./cartridge1/**/*.spec.js",
+    "test": "mocha tests-setup.js ./cartridge1/**/*.spec.js && nyc report --reporter=text",
     "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
   },
   "nyc": {
