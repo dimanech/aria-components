@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Accordion example</title>
+	<link rel="stylesheet" href="css/global.css"/>
+</head>
+<body>
+	<link rel="stylesheet" href="css/accordion.css"/>
+
+	<div class="accordion" data-component="./toggles/Accordion">
+		<h2 class="accordion__title">
+			<button class="accordion__control" aria-controls="section-1" id="section-1-control">
+				Section 1 <span class="icon-chevron"></span>
+			</button>
+		</h2>
+		<section class="accordion__content" id="section-1" aria-hidden="true" aria-labelledby="section-1-control">
+			<div class="accordion__content-inner" data-elem-acc-inner>
+				<p><a href="#other">Focusable content</a></p>
+			</div>
+		</section>
+
+		<h2 class="accordion__title">
+			<button class="accordion__control" aria-controls="section-2" id="section-2-control">
+				Section 2 <span class="icon-chevron"></span>
+			</button>
+		</h2>
+		<section class="accordion__content" id="section-2" aria-hidden="true" aria-labelledby="section-2-control">
+			<div class="accordion__content-inner" data-elem-acc-inner>
+				<p>Plain content</p>
+			</div>
+		</section>
+
+		<h2 class="accordion__title">
+			<button class="accordion__control" aria-controls="section-3" id="section-3-control">
+				Section 3 <span class="icon-chevron"></span>
+			</button>
+		</h2>
+		<section class="accordion__content" id="section-3" aria-hidden="true" aria-labelledby="section-3-control">
+			<div class="accordion__content-inner" data-elem-acc-inner>
+				<p>Other content</p>
+			</div>
+		</section>
+	</div>
+
+	<script type="module">
+		import Accordion from './Accordion.js';
+		document.querySelectorAll('[data-component="./toggles/Accordion"]').forEach(accordionGroup => new Accordion(accordionGroup).init());
+	</script>
+</body>
+</html>

@@ -11,14 +11,24 @@
     "babel-eslint": "^10.1.0",
     "body-parser": "^1.19.0",
     "connect": "^3.7.0",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
+    "mocha": "^7.2.0",
+    "nyc": "^15.0.1",
+    "puppeteer": "^3.1.0",
     "serve-static": "^1.14.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
   "scripts": {
-    "build": "webpack"
+    "serve": "node server.js",
+    "test": "mocha tests-bootstraping.js ./cartridge1/**/*.spec.js",
+    "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
   },
+	"nyc": {
+		"include": "cartridge1/**/*.js",
+		"exclude": "cartridge1/**/*.spec.js"
+	},
   "author": "D.Nechepurenko",
   "license": "MIT"
 }

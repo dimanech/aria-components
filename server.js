@@ -5,12 +5,12 @@ const connect = require('connect');
 const serveStatic = require('serve-static');
 const bodyParser = require('body-parser');
 const port = 3000;
-const http2 = require('http2');
-const certs = {
-	key: fs.readFileSync(__dirname +  '/.certs/localhost.key', 'utf8'),
-	cert: fs.readFileSync(__dirname + '/.certs/localhost.crt', 'utf8'),
-	allowHTTP1: true
-};
+//const http2 = require('http2');
+//const certs = {
+//	key: fs.readFileSync(__dirname +  '/.certs/localhost.key', 'utf8'),
+//	cert: fs.readFileSync(__dirname + '/.certs/localhost.crt', 'utf8'),
+//	allowHTTP1: true
+//};
 
 const app = connect('127.0.0.1');
 
@@ -84,7 +84,7 @@ app.use('/endpoint', function(req, res) {
 	res.end(isTextType ? response : JSON.stringify(response));
 });
 
-app.listen();
+app.listen(port);
 // to check service worker 1) comment http2.createServer 2) change to app.listen(port);
-http2.createSecureServer(certs, app).listen(process.env.PORT || port);
+//http2.createSecureServer(certs, app).listen(process.env.PORT || port);
 console.log('https://127.0.0.1:' + (process.env.PORT || port));
