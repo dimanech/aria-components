@@ -46,7 +46,8 @@
 
 	<script type="module">
 		import Accordion from './Accordion.js';
-		document.querySelectorAll('[data-component="./toggles/Accordion"]').forEach(accordionGroup => new Accordion(accordionGroup).init());
+		window.testedComponent = new Accordion(document.querySelector('[data-component="./toggles/Accordion"]'));
+		window.testedComponent.init();
 	</script>
 </body>
 </html>

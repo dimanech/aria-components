@@ -16,19 +16,20 @@
     "mocha": "^7.2.0",
     "nyc": "^15.0.1",
     "puppeteer": "^3.1.0",
+    "puppeteer-to-istanbul": "^1.3.1",
     "serve-static": "^1.14.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
   "scripts": {
+    "lint": "eslint ./cartridge1",
     "serve": "node server.js",
-    "test": "mocha tests-bootstraping.js ./cartridge1/**/*.spec.js",
+    "test": "nyc mocha tests-setup.js ./cartridge1/**/*.spec.js",
     "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
   },
-	"nyc": {
-		"include": "cartridge1/**/*.js",
-		"exclude": "cartridge1/**/*.spec.js"
-	},
+  "nyc": {
+    "exclude": "*.js"
+  },
   "author": "D.Nechepurenko",
   "license": "MIT"
 }
