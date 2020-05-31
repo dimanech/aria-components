@@ -17,10 +17,10 @@ before(async () => {
 
 after(() => {
 	global.browser.close();
-	//process.exit(0);
+	process.exit(0);
 });
 
-
+// https://pptr.dev/#?product=Puppeteer&version=v3.1.0&show=api-accessibilitysnapshotoptions
 //const devices = require('puppeteer/DeviceDescriptors');
 //const iPhone = devices['iPhone 6'];
 // await page.emulate(iPhone);

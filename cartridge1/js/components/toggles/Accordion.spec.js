@@ -1,26 +1,24 @@
 describe('Accordion', async () => {
 	let page;
-	const allCoverage = [];
+
+	before(async () => {
+		page = await global.browser.newPage();
+		await page.goto("http://127.0.0.1:3000/js/components/toggles/accordion.html", { waitUntil: ["networkidle2", "domcontentloaded"]});
+		await page.setViewport({ width: 1920, height: 1080 });
+		await page.coverage.startJSCoverage({resetOnNavigation: false});
+	})
 
 	beforeEach(async () => {
-		page = await global.browser.newPage();
-		await page.goto("http://127.0.0.1:3000/js/components/toggles/accordion.html", { waitUntil: 'networkidle2'});
-		await page.setViewport({ width: 1920, height: 1080 });
-		await page.coverage.startJSCoverage();
+		await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
 	});
 
-	afterEach(async () => {
-		allCoverage.concat(await Promise.all([page.coverage.stopJSCoverage()]));
-		await page.close();
-	});
-
-	after(() => {
-		global.pti.write(allCoverage);
+	after(async () => {
+		const jsCoverage = await page.coverage.stopJSCoverage();
+		global.pti.write([...jsCoverage]);
 	});
 
 	describe('Structure', function () {
 		it('should have proper roles', async function () {
-			// https://pptr.dev/#?product=Puppeteer&version=v3.1.0&show=api-accessibilitysnapshotoptions
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
 				{ role: 'button', name: 'Section 1' },
