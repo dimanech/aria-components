@@ -1,4 +1,5 @@
 // TODO: disable active button in case if not allow multiple
+// TODO: allow multiple work as allow toggle
 
 const keyCode = Object.freeze({
 	RETURN: 13,

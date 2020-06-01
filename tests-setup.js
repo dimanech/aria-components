@@ -11,7 +11,13 @@ before(async () => {
 	global.assert = assert;
 	global.browser = await puppeteer.launch({
 		//headless: false,
-		args: [`--window-size=${width},${height}`]
+		args: [
+			`--window-size=${width},${height}`,
+			'--no-sandbox',
+			'--disable-setuid-sandbox',
+			'--disable-accelerated-2d-canvas',
+			'--disable-gpu'
+		]
 	});
 	global.pti = pti;
 });
@@ -25,3 +31,4 @@ after(() => {
 //const devices = require('puppeteer/DeviceDescriptors');
 //const iPhone = devices['iPhone 6'];
 // await page.emulate(iPhone);
+// https://github.com/chaijs/chai-http/issues/178 shutdown server

@@ -9,7 +9,7 @@ describe('Accordion', async () => {
 	})
 
 	beforeEach(async () => {
-		await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
+		await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
 	});
 
 	after(async () => {
@@ -17,7 +17,7 @@ describe('Accordion', async () => {
 		global.pti.write([...jsCoverage]);
 	});
 
-	describe('Structure', function () {
+	describe('Validate structure', function () {
 		it('should have proper roles', async function () {
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
@@ -32,7 +32,7 @@ describe('Accordion', async () => {
 		});
 	})
 
-	describe('Navigation', function () {
+	describe('Navigate panels', function () {
 		const referenceSnapshot = [
 			{ role: 'link', name: 'focusable before', focused: true },
 			{ role: 'button', name: 'Section 1', focused: true },
@@ -227,13 +227,87 @@ describe('Accordion', async () => {
 		});
 	})
 
-	describe('Allow multiple', function () {
+	describe('Allow multiple', async function () {
+		beforeEach(async () => {
+			await page.evaluate(() => window.testedComponent.options.allowMultiple = true);
+		});
+
+		it('should allow several opened panels simultaneously', async function () {
+			await page.focus('#section-1-control');
+			await page.keyboard.press('ArrowDown');
+			await page.keyboard.press('Enter');
+			await page.keyboard.press('ArrowDown');
+			await page.keyboard.press('Space');
+
+			const snapshot = await page.accessibility.snapshot();
+			global.assert.strictEqual(snapshot.children[2].expanded, true);
+			global.assert.strictEqual(snapshot.children[4].expanded, true);
+		});
+
+		it.skip('should not close already opened panel', async function () {
+			// TODO: bug
+			let snapshot;
+
+			await page.click('#section-1-control');
+			snapshot = await page.accessibility.snapshot();
+			console.log('result', snapshot.children[1])
+			global.assert.strictEqual(snapshot.children[1].expanded, true);
+
+			await page.click('#section-1-control');
+			snapshot = await page.accessibility.snapshot();
+			console.log('result', snapshot.children[1])
+			global.assert.strictEqual(snapshot.children[1].expanded, true);
+		});
 	})
 
 	describe('Allow toggle', function () {
+		beforeEach(async () => {
+			await page.evaluate(() => window.testedComponent.options.allowToggle = true);
+		});
+
+		it('should close already opened panel', async function () {
+			let snapshot;
+
+			await page.click('#section-1-control');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.strictEqual(snapshot.children[1].expanded, true);
+
+			await page.click('#section-1-control');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.strictEqual(snapshot.children[1].expanded, undefined);
+		});
 	})
 
-	describe('Toggle height', function () {
+	describe('Allow toggle and Allow multiple', function () {
+		beforeEach(async () => {
+			await page.evaluate(() => {
+				window.testedComponent.options.allowToggle = true;
+				window.testedComponent.options.allowMultiple = true;
+			});
+		});
+
+		it('should close already opened panel', async function () {
+			let snapshot;
+
+			await page.click('#section-1-control');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.strictEqual(snapshot.children[1].expanded, true);
+
+			await page.click('#section-1-control');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.strictEqual(snapshot.children[1].expanded, undefined);
+		});
+
+		it('should allow several opened panels simultaneously', async function () {
+			await page.click('#section-1-control');
+			await page.click('#section-2-control');
+			const snapshot = await page.accessibility.snapshot();
+			global.assert.strictEqual(snapshot.children[1].expanded, true);
+			global.assert.strictEqual(snapshot.children[3].expanded, true);
+		});
+	})
+
+	describe('Panel height animation', function () {
 		const buttonSelector = '.accordion__control';
 		let firstButtonHandle;
 		let secondButtonHandle;
