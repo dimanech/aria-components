@@ -5,24 +5,25 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Accordion example</title>
 	<link rel="stylesheet" href="css/global.css"/>
+	<link rel="stylesheet" href="css/accordion.css"/>
 </head>
 <body>
-	<link rel="stylesheet" href="css/accordion.css"/>
+	<p><a href="#focusable" id="focus-before">focusable before</a></p>
 
 	<div class="accordion" data-component="./toggles/Accordion">
 		<h2 class="accordion__title">
-			<button class="accordion__control" aria-controls="section-1" id="section-1-control">
+			<button class="accordion__control" aria-controls="section-1" id="section-1-control" type="button">
 				Section 1 <span class="icon-chevron"></span>
 			</button>
 		</h2>
 		<section class="accordion__content" id="section-1" aria-hidden="true" aria-labelledby="section-1-control">
 			<div class="accordion__content-inner" data-elem-acc-inner>
-				<p><a href="#other">Focusable content</a></p>
+				<p><a href="#focusable">Focusable content</a></p>
 			</div>
 		</section>
 
 		<h2 class="accordion__title">
-			<button class="accordion__control" aria-controls="section-2" id="section-2-control">
+			<button class="accordion__control" aria-controls="section-2" id="section-2-control" type="button">
 				Section 2 <span class="icon-chevron"></span>
 			</button>
 		</h2>
@@ -33,7 +34,7 @@
 		</section>
 
 		<h2 class="accordion__title">
-			<button class="accordion__control" aria-controls="section-3" id="section-3-control">
+			<button class="accordion__control" aria-controls="section-3" id="section-3-control" type="button">
 				Section 3 <span class="icon-chevron"></span>
 			</button>
 		</h2>
@@ -43,6 +44,8 @@
 			</div>
 		</section>
 	</div>
+
+	<p><a href="#">focusable after</a></p>
 
 	<script type="module">
 		import Accordion from './Accordion.js';

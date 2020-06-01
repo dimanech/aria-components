@@ -21,12 +21,93 @@ describe('Accordion', async () => {
 		it('should have proper roles', async function () {
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
+				{ role: 'link', name: 'focusable before' },
 				{ role: 'button', name: 'Section 1' },
 				{ role: 'button', name: 'Section 2' },
-				{ role: 'button', name: 'Section 3' }
+				{ role: 'button', name: 'Section 3' },
+				{ role: 'link', name: 'focusable after' }
 			];
 
 			global.assert.deepEqual(snapshot.children, reference);
+		});
+	})
+
+	describe('Navigation', function () {
+		const referenceSnapshot = [
+			{ role: 'link', name: 'focusable before', focused: true },
+			{ role: 'button', name: 'Section 1', focused: true },
+			{ role: 'button', name: 'Section 2', focused: true },
+			{ role: 'button', name: 'Section 3', focused: true },
+			{ role: 'link', name: 'focusable after', focused: true }
+		];
+
+		it('should have ability to step in/out from accordion group', async function () {
+			let snapshot;
+			for (let step = 0; step <= referenceSnapshot.length; step++) {
+				await page.keyboard.press('Tab');
+				snapshot = await page.accessibility.snapshot();
+				global.assert.deepEqual(snapshot.children[step], referenceSnapshot[step]);
+			}
+		});
+
+		it('should go to next/prev panel controls with arrows', async function () {
+			let snapshot;
+
+			await page.focus('#section-1-control');
+
+			await page.keyboard.press('ArrowDown');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[2], referenceSnapshot[2]);
+
+			await page.keyboard.press('ArrowDown');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[3], referenceSnapshot[3]);
+
+			await page.keyboard.press('ArrowUp');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[2], referenceSnapshot[2]);
+
+			await page.keyboard.press('ArrowUp');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[1], referenceSnapshot[1]);
+		});
+
+		it('should cycle over panel controls', async function () {
+			let snapshot;
+
+			await page.focus('#section-3-control');
+			await page.keyboard.press('ArrowDown');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[1], referenceSnapshot[1]);
+
+			await page.focus('#section-1-control');
+			await page.keyboard.press('ArrowUp');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[3], referenceSnapshot[3]);
+		});
+
+		it('should quick navigate to first and last control with Home/End', async function () {
+			let snapshot;
+
+			await page.focus('#section-2-control');
+			await page.keyboard.press('Home');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[1], referenceSnapshot[1]);
+
+			await page.focus('#section-2-control');
+			await page.keyboard.press('End');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[3], referenceSnapshot[3]);
+		});
+
+		it('should go to the panel content focusable elements', async function () {
+			const focusableContent = { role: 'link', name: 'Focusable content', focused: true };
+			let snapshot;
+			await page.focus('#section-1-control');
+			await page.keyboard.press('Space');
+			await page.keyboard.press('Tab');
+			snapshot = await page.accessibility.snapshot();
+			global.assert.deepEqual(snapshot.children[2], focusableContent);
 		});
 	})
 
@@ -67,6 +148,7 @@ describe('Accordion', async () => {
 
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
+				{ role: 'link', name: 'focusable before' },
 				{
 					role: 'button',
 					name: 'Section 1',
@@ -75,7 +157,8 @@ describe('Accordion', async () => {
 				},
 				{ role: 'link', name: 'Focusable content' },
 				{ role: 'button', name: 'Section 2' },
-				{ role: 'button', name: 'Section 3' }
+				{ role: 'button', name: 'Section 3' },
+				{ role: 'link', name: 'focusable after' }
 			];
 			global.assert.deepEqual(snapshot.children, reference);
 		});
@@ -118,6 +201,7 @@ describe('Accordion', async () => {
 
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
+				{ role: 'link', name: 'focusable before' },
 				{ role: 'button', name: 'Section 1' },
 				{
 					role: 'button',
@@ -126,7 +210,8 @@ describe('Accordion', async () => {
 					focused: true
 				},
 				{ role: 'text', name: 'Plain content' },
-				{ role: 'button', name: 'Section 3' }
+				{ role: 'button', name: 'Section 3' },
+				{ role: 'link', name: 'focusable after' }
 			];
 			global.assert.deepEqual(snapshot.children, reference);
 		});
@@ -140,6 +225,12 @@ describe('Accordion', async () => {
 			const state = await getState();
 			global.assert.deepEqual(initialState, state);
 		});
+	})
+
+	describe('Allow multiple', function () {
+	})
+
+	describe('Allow toggle', function () {
 	})
 
 	describe('Toggle height', function () {

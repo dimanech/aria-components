@@ -10,6 +10,7 @@ before(async () => {
 
 	global.assert = assert;
 	global.browser = await puppeteer.launch({
+		//headless: false,
 		args: [`--window-size=${width},${height}`]
 	});
 	global.pti = pti;
@@ -17,7 +18,7 @@ before(async () => {
 
 after(() => {
 	global.browser.close();
-	process.exit(0);
+	//process.exit(0);
 });
 
 // https://pptr.dev/#?product=Puppeteer&version=v3.1.0&show=api-accessibilitysnapshotoptions

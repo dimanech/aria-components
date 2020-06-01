@@ -31,14 +31,14 @@
 }
 
 .accordion__content {
-	/*display: none;*/
+	visibility: hidden; /* should hide inner focusable elements */
 	border-bottom: 1px solid transparent;
 	overflow: hidden; /* we use height to hide content */
 	transition: height 0.23s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .accordion__content[aria-hidden=false] {
-	/*display: block;*/
+	visibility: visible;
 	border-color: #ccc;
 }
 
