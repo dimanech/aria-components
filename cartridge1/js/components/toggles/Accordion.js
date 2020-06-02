@@ -1,5 +1,4 @@
-// TODO: disable active button in case if not allow multiple
-// TODO: allow multiple work as allow toggle
+// TODO: rename around 2 concepts Header and Panel
 
 const keyCode = Object.freeze({
 	RETURN: 13,
@@ -13,6 +12,13 @@ const keyCode = Object.freeze({
 export default class Accordion {
 	/*
 	 * Accordion
+	 *
+	 * An accordion is a vertically stacked set of interactive headings that each
+	 * contain a title, content snippet, or thumbnail representing a section of content.
+	 * The headings function as controls that enable users to reveal or hide their
+	 * associated sections of content. Accordions are commonly used to reduce the
+	 * need to scroll when presenting multiple sections of content on a single page.
+	 *
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#accordion
 	 *
 	 * Configuration:
@@ -27,19 +33,19 @@ export default class Accordion {
 		this.buttons = Array.from(this.group.querySelectorAll('[aria-controls]'));
 		// options
 		this.options = {
-			allowToggle: config?.allowToggle || this.isAttributeSet(this.group.getAttribute('data-allow-toggle')),
-			allowMultiple: config?.allowMultiple || this.isAttributeSet(this.group.getAttribute('data-allow-multiple'))
+			allowToggle: config?.allowToggle || Accordion.isAttributeSet(this.group.getAttribute('data-allow-toggle')),
+			allowMultiple: config?.allowMultiple || Accordion.isAttributeSet(this.group.getAttribute('data-allow-multiple'))
 		}
 	}
 
 	init() {
 		this.addEventListeners();
-		this.initSectionHeight();
+		this.initSections();
 	}
 
 	destroy() {
 		this.removeEventListeners();
-		this.destroySectionHeight();
+		this.destroySection();
 	}
 
 	addEventListeners() {
@@ -62,35 +68,43 @@ export default class Accordion {
 		});
 	}
 
-	handleClick(event) {
-		event.preventDefault();
-		this.activateSection(event.target);
+	initSections() {
+		this.buttons.forEach(button => this.toggleSection(false, button));
 	}
 
-	initSectionHeight() {
-		this.buttons.forEach(button => Accordion.toggleSection(false, button));
-	}
-
-	destroySectionHeight() {
-		this.buttons.forEach(button => Accordion.toggleSection(null, button));
+	destroySection() {
+		this.buttons.forEach(button => this.toggleSection(null, button));
 	}
 
 	activateSection(button) {
 		const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
-		if (!this.options.allowMultiple) {
-			this.buttons.forEach(button => Accordion.toggleSection(false, button));
+		// Close other
+		if (!this.options.allowMultiple) { // do not close other sections if allowMultiple
+			this.buttons.forEach(section => {
+				if (section === button) {
+					return;
+				}
+				this.toggleSection(false, section)
+			});
 		}
 
-		if ((this.options.allowToggle || this.options.allowMultiple) && isExpanded) {
-			Accordion.toggleSection(false, button);
-		} else {
-			Accordion.toggleSection(true, button);
+		// Toggle current
+		if (this.options.allowToggle && isExpanded) { // if open and allowToggle we could close section
+			this.toggleSection(false, button);
+			return;
+		}
+
+		if (!isExpanded) {
+			this.toggleSection(true, button);
 		}
 	}
 
-	static toggleSection(isOpen, button) {
-		button.setAttribute('aria-expanded', !!isOpen);
+	toggleSection(isOpen, button) {
+		button.setAttribute('aria-expanded', isOpen);
+		if ((this.options.allowToggle + this.options.allowMultiple) <= 0) { // if neither both or one is not enabled
+			button.setAttribute('aria-disabled', isOpen);
+		}
 
 		const controlledSection = document.getElementById(button.getAttribute('aria-controls'));
 		if (!controlledSection) {
@@ -98,6 +112,11 @@ export default class Accordion {
 		}
 		controlledSection.setAttribute('aria-hidden', !isOpen);
 		Accordion.animateHeight(isOpen, controlledSection);
+	}
+
+	handleClick(event) {
+		event.preventDefault();
+		this.activateSection(event.target);
 	}
 
 	handleKeydown(event) {
@@ -177,7 +196,7 @@ export default class Accordion {
 		}
 	}
 
-	isAttributeSet(attr) {
+	static isAttributeSet(attr) {
 		return attr === '' || attr === 'true';
 	}
 }

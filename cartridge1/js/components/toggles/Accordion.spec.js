@@ -32,6 +32,9 @@ describe('Accordion', async () => {
 
 			assert.deepStrictEqual(snapshot.children, reference);
 		});
+
+		it('aria-controls on button element');
+		it('aria-expanded on button element');
 	})
 
 	describe('Navigate panels', function () {
@@ -111,13 +114,15 @@ describe('Accordion', async () => {
 			snapshot = await page.accessibility.snapshot();
 			assert.deepStrictEqual(snapshot.children[2], focusableContent);
 		});
+
+		it('SHIFT+TAB moves focus between headers and displayed inputs')
 	})
 
 	describe('Toggle panel', function () {
 		const buttonsSelector = '.accordion__control';
 		const firstPanelSelector = '#section-1';
 		const firstControlSelector = '#section-1-control';
-		const secondControlSelector = '#section-2-control';
+		const thirdControlSelector = '#section-3-control';
 
 		const assertOpen = async function () {
 			assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'true');
@@ -148,7 +153,8 @@ describe('Accordion', async () => {
 					role: 'button',
 					name: 'Section 1',
 					expanded: true,
-					focused: true
+					focused: true,
+					disabled: true
 				},
 				{ role: 'link', name: 'Focusable content' },
 				{ role: 'button', name: 'Section 2' },
@@ -188,32 +194,36 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(initialState, state);
 		});
 
-		it('active control should be disabled')
+		it('aria-disabled set on expanded sections', async function() {
+			await page.click(firstControlSelector);
+			assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-disabled')), 'true');
+		});
 
 		it('panel should be closed on click to other control', async function () {
 			await page.click(firstControlSelector);
 			await assertOpen();
-			await page.click(secondControlSelector);
+			await page.click(thirdControlSelector);
 			await assertClosed();
 
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
 				{ role: 'link', name: 'focusable before' },
 				{ role: 'button', name: 'Section 1' },
+				{ role: 'button', name: 'Section 2' },
 				{
 					role: 'button',
-					name: 'Section 2',
+					name: 'Section 3',
 					expanded: true,
-					focused: true
+					focused: true,
+					disabled: true
 				},
-				{ role: 'text', name: 'Plain content' },
-				{ role: 'button', name: 'Section 3' },
+				{ role: 'text', name: 'Other content' },
 				{ role: 'link', name: 'focusable after' }
 			];
 			assert.deepStrictEqual(snapshot.children, reference);
 		});
 
-		it('should do nothing when destroyed', async function () {
+		it.skip('should do nothing when destroyed', async function () {
 			const initialState = await getState();
 
 			await page.evaluate(() => window.testedComponent.destroy());
@@ -243,18 +253,15 @@ describe('Accordion', async () => {
 			assert.strictEqual(snapshot.children[4].expanded, true);
 		});
 
-		it.skip('should not close already opened panel', async function () {
-			// TODO: bug
+		it('should not close already opened panel', async function () {
 			let snapshot;
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
-			console.log('result', snapshot.children[1])
 			assert.strictEqual(snapshot.children[1].expanded, true);
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
-			console.log('result', snapshot.children[1])
 			assert.strictEqual(snapshot.children[1].expanded, true);
 		});
 	})
@@ -277,6 +284,11 @@ describe('Accordion', async () => {
 			snapshot = await page.accessibility.snapshot();
 			assert.strictEqual(snapshot.children[1].expanded, undefined);
 		});
+
+		it('should not disable opened panel', async function () {
+			await page.click('#section-1-control');
+			assert.strictEqual(await page.$eval('#section-1-control', node => node.getAttribute('aria-disabled')), 'false');
+		})
 	})
 
 	describe('Allow toggle and Allow multiple', function () {
@@ -305,6 +317,11 @@ describe('Accordion', async () => {
 			const snapshot = await page.accessibility.snapshot();
 			assert.strictEqual(snapshot.children[1].expanded, true);
 			assert.strictEqual(snapshot.children[3].expanded, true);
+		});
+
+		it('should not disable opened panel', async function () {
+			await page.click('#section-1-control');
+			assert.strictEqual(await page.$eval('#section-1-control', node => node.getAttribute('aria-disabled')), 'false');
 		});
 	})
 

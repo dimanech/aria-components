@@ -25,6 +25,11 @@
 	border-color: #ccc;
 }
 
+.accordion__control[aria-disabled=true] {
+	color: #777;
+	cursor: default;
+}
+
 .accordion__control span {
 	margin-left: auto;
 	margin-right: 10px;
