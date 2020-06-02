@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 describe('Accordion', async () => {
 	let page;
 
@@ -28,7 +30,7 @@ describe('Accordion', async () => {
 				{ role: 'link', name: 'focusable after' }
 			];
 
-			global.assert.deepEqual(snapshot.children, reference);
+			assert.deepStrictEqual(snapshot.children, reference);
 		});
 	})
 
@@ -46,7 +48,7 @@ describe('Accordion', async () => {
 			for (let step = 0; step <= referenceSnapshot.length; step++) {
 				await page.keyboard.press('Tab');
 				snapshot = await page.accessibility.snapshot();
-				global.assert.deepEqual(snapshot.children[step], referenceSnapshot[step]);
+				assert.deepStrictEqual(snapshot.children[step], referenceSnapshot[step]);
 			}
 		});
 
@@ -57,19 +59,19 @@ describe('Accordion', async () => {
 
 			await page.keyboard.press('ArrowDown');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[2], referenceSnapshot[2]);
+			assert.deepStrictEqual(snapshot.children[2], referenceSnapshot[2]);
 
 			await page.keyboard.press('ArrowDown');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[3], referenceSnapshot[3]);
+			assert.deepStrictEqual(snapshot.children[3], referenceSnapshot[3]);
 
 			await page.keyboard.press('ArrowUp');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[2], referenceSnapshot[2]);
+			assert.deepStrictEqual(snapshot.children[2], referenceSnapshot[2]);
 
 			await page.keyboard.press('ArrowUp');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[1], referenceSnapshot[1]);
+			assert.deepStrictEqual(snapshot.children[1], referenceSnapshot[1]);
 		});
 
 		it('should cycle over panel controls', async function () {
@@ -78,12 +80,12 @@ describe('Accordion', async () => {
 			await page.focus('#section-3-control');
 			await page.keyboard.press('ArrowDown');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[1], referenceSnapshot[1]);
+			assert.deepStrictEqual(snapshot.children[1], referenceSnapshot[1]);
 
 			await page.focus('#section-1-control');
 			await page.keyboard.press('ArrowUp');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[3], referenceSnapshot[3]);
+			assert.deepStrictEqual(snapshot.children[3], referenceSnapshot[3]);
 		});
 
 		it('should quick navigate to first and last control with Home/End', async function () {
@@ -92,12 +94,12 @@ describe('Accordion', async () => {
 			await page.focus('#section-2-control');
 			await page.keyboard.press('Home');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[1], referenceSnapshot[1]);
+			assert.deepStrictEqual(snapshot.children[1], referenceSnapshot[1]);
 
 			await page.focus('#section-2-control');
 			await page.keyboard.press('End');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[3], referenceSnapshot[3]);
+			assert.deepStrictEqual(snapshot.children[3], referenceSnapshot[3]);
 		});
 
 		it('should go to the panel content focusable elements', async function () {
@@ -107,7 +109,7 @@ describe('Accordion', async () => {
 			await page.keyboard.press('Space');
 			await page.keyboard.press('Tab');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.deepEqual(snapshot.children[2], focusableContent);
+			assert.deepStrictEqual(snapshot.children[2], focusableContent);
 		});
 	})
 
@@ -118,13 +120,13 @@ describe('Accordion', async () => {
 		const secondControlSelector = '#section-2-control';
 
 		const assertOpen = async function () {
-			global.assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'true');
-			global.assert.strictEqual(await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')), 'false');
+			assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'true');
+			assert.strictEqual(await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')), 'false');
 		}
 
 		const assertClosed = async function () {
-			global.assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'false');
-			global.assert.strictEqual(await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')), 'true');
+			assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'false');
+			assert.strictEqual(await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')), 'true');
 		}
 
 		const getState = async function () {
@@ -153,7 +155,7 @@ describe('Accordion', async () => {
 				{ role: 'button', name: 'Section 3' },
 				{ role: 'link', name: 'focusable after' }
 			];
-			global.assert.deepEqual(snapshot.children, reference);
+			assert.deepStrictEqual(snapshot.children, reference);
 		});
 
 		it('should open linked panel on Enter keyup', async function () {
@@ -183,7 +185,7 @@ describe('Accordion', async () => {
 			await page.click(firstControlSelector);
 			const state = await getState();
 
-			global.assert.deepEqual(initialState, state);
+			assert.deepStrictEqual(initialState, state);
 		});
 
 		it('active control should be disabled')
@@ -208,7 +210,7 @@ describe('Accordion', async () => {
 				{ role: 'button', name: 'Section 3' },
 				{ role: 'link', name: 'focusable after' }
 			];
-			global.assert.deepEqual(snapshot.children, reference);
+			assert.deepStrictEqual(snapshot.children, reference);
 		});
 
 		it('should do nothing when destroyed', async function () {
@@ -218,7 +220,7 @@ describe('Accordion', async () => {
 			await page.click(firstControlSelector);
 
 			const state = await getState();
-			global.assert.deepEqual(initialState, state);
+			assert.deepStrictEqual(initialState, state);
 		});
 	})
 
@@ -237,8 +239,8 @@ describe('Accordion', async () => {
 			await page.keyboard.press('Space');
 
 			const snapshot = await page.accessibility.snapshot();
-			global.assert.strictEqual(snapshot.children[2].expanded, true);
-			global.assert.strictEqual(snapshot.children[4].expanded, true);
+			assert.strictEqual(snapshot.children[2].expanded, true);
+			assert.strictEqual(snapshot.children[4].expanded, true);
 		});
 
 		it.skip('should not close already opened panel', async function () {
@@ -248,12 +250,12 @@ describe('Accordion', async () => {
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
 			console.log('result', snapshot.children[1])
-			global.assert.strictEqual(snapshot.children[1].expanded, true);
+			assert.strictEqual(snapshot.children[1].expanded, true);
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
 			console.log('result', snapshot.children[1])
-			global.assert.strictEqual(snapshot.children[1].expanded, true);
+			assert.strictEqual(snapshot.children[1].expanded, true);
 		});
 	})
 
@@ -269,11 +271,11 @@ describe('Accordion', async () => {
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.strictEqual(snapshot.children[1].expanded, true);
+			assert.strictEqual(snapshot.children[1].expanded, true);
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.strictEqual(snapshot.children[1].expanded, undefined);
+			assert.strictEqual(snapshot.children[1].expanded, undefined);
 		});
 	})
 
@@ -290,19 +292,19 @@ describe('Accordion', async () => {
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.strictEqual(snapshot.children[1].expanded, true);
+			assert.strictEqual(snapshot.children[1].expanded, true);
 
 			await page.click('#section-1-control');
 			snapshot = await page.accessibility.snapshot();
-			global.assert.strictEqual(snapshot.children[1].expanded, undefined);
+			assert.strictEqual(snapshot.children[1].expanded, undefined);
 		});
 
 		it('should allow several opened panels simultaneously', async function () {
 			await page.click('#section-1-control');
 			await page.click('#section-2-control');
 			const snapshot = await page.accessibility.snapshot();
-			global.assert.strictEqual(snapshot.children[1].expanded, true);
-			global.assert.strictEqual(snapshot.children[3].expanded, true);
+			assert.strictEqual(snapshot.children[1].expanded, true);
+			assert.strictEqual(snapshot.children[3].expanded, true);
 		});
 	})
 
@@ -322,23 +324,23 @@ describe('Accordion', async () => {
 		});
 
 		it('height should be "0px" when initialized', async function () {
-			global.assert.strictEqual(await getHeight(), '0px');
+			assert.strictEqual(await getHeight(), '0px');
 		});
 
 		it('height should be "50px" when opened', async function () {
 			await firstButtonHandle.click();
-			global.assert.strictEqual(await getHeight(), '50px');
+			assert.strictEqual(await getHeight(), '50px');
 		});
 
 		it('height should be "0" when closed', async function () {
 			await firstButtonHandle.click();
 			await secondButtonHandle.click();
-			global.assert.strictEqual(await getHeight(), '0px');
+			assert.strictEqual(await getHeight(), '0px');
 		});
 
 		it('height should be cleared after destroy', async function () {
 			await page.evaluate(() => window.testedComponent.destroy());
-			global.assert.strictEqual(await getHeight(), 'auto');
+			assert.strictEqual(await getHeight(), 'auto');
 		});
 	})
 });
