@@ -112,38 +112,31 @@ describe('Accordion', async () => {
 	})
 
 	describe('Toggle panel', function () {
-		let firstButtonHandle;
-		let secondButtonHandle;
 		const buttonsSelector = '.accordion__control';
-		let firstPanelSelector;
+		const firstPanelSelector = '#section-1';
+		const firstControlSelector = '#section-1-control';
+		const secondControlSelector = '#section-2-control';
 
 		const assertOpen = async function () {
+			global.assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'true');
 			global.assert.strictEqual(await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')), 'false');
-			global.assert.strictEqual(await page.$eval(buttonsSelector, node => node.getAttribute('aria-expanded')), 'true');
 		}
 
 		const assertClosed = async function () {
+			global.assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')), 'false');
 			global.assert.strictEqual(await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')), 'true');
-			global.assert.strictEqual(await page.$eval(buttonsSelector, node => node.getAttribute('aria-expanded')), 'false');
 		}
 
 		const getState = async function () {
 			return {
-				panel: page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden')),
-				control: page.$eval(buttonsSelector, node => node.getAttribute('aria-expanded'))
+				controlExpanded: await page.$eval(firstControlSelector, node => node.getAttribute('aria-expanded')),
+				panelHidden: await page.$eval(firstPanelSelector, node => node.getAttribute('aria-hidden'))
 			}
 		}
 
-		beforeEach(async () => {
-			const buttons = await page.$$(buttonsSelector);
-			firstButtonHandle = buttons[0];
-			secondButtonHandle = buttons[1];
-			firstPanelSelector = '#' + await firstButtonHandle.evaluate(node => node.getAttribute('aria-controls'));
-		});
-
 		it('should open linked panel on click', async function () {
 			await assertClosed();
-			await firstButtonHandle.click();
+			await page.click(firstControlSelector);
 			await assertOpen();
 
 			const snapshot = await page.accessibility.snapshot();
@@ -184,8 +177,10 @@ describe('Accordion', async () => {
 		});
 
 		it('should do nothing on click to opened panel', async function () {
+			await page.click(firstControlSelector);
 			const initialState = await getState();
-			await firstButtonHandle.click();
+
+			await page.click(firstControlSelector);
 			const state = await getState();
 
 			global.assert.deepEqual(initialState, state);
@@ -194,9 +189,9 @@ describe('Accordion', async () => {
 		it('active control should be disabled')
 
 		it('panel should be closed on click to other control', async function () {
-			await firstButtonHandle.click();
+			await page.click(firstControlSelector);
 			await assertOpen();
-			await secondButtonHandle.click();
+			await page.click(secondControlSelector);
 			await assertClosed();
 
 			const snapshot = await page.accessibility.snapshot();
@@ -220,7 +215,7 @@ describe('Accordion', async () => {
 			const initialState = await getState();
 
 			await page.evaluate(() => window.testedComponent.destroy());
-			await firstButtonHandle.click();
+			await page.click(firstControlSelector);
 
 			const state = await getState();
 			global.assert.deepEqual(initialState, state);
@@ -229,7 +224,9 @@ describe('Accordion', async () => {
 
 	describe('Allow multiple', async function () {
 		beforeEach(async () => {
-			await page.evaluate(() => window.testedComponent.options.allowMultiple = true);
+			await page.evaluate(() => {
+				window.testedComponent.options.allowMultiple = true;
+			});
 		});
 
 		it('should allow several opened panels simultaneously', async function () {
@@ -262,7 +259,9 @@ describe('Accordion', async () => {
 
 	describe('Allow toggle', function () {
 		beforeEach(async () => {
-			await page.evaluate(() => window.testedComponent.options.allowToggle = true);
+			await page.evaluate(() => {
+				window.testedComponent.options.allowToggle = true;
+			});
 		});
 
 		it('should close already opened panel', async function () {
