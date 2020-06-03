@@ -30,7 +30,6 @@ jobs:
         run: |
           npm run lint
           npm run test
-          make test-coverage
         env:
           CI: true
       - name: Coveralls
