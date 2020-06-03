@@ -3,7 +3,10 @@ name: tests-master
 on:
   push:
     branches:
-      - master
+    - master
+  pull_request:
+    branches:
+    - master
 
 jobs:
   tests:
@@ -19,12 +22,19 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+      - name: npm install
+        run: npm install
+        env:
+          CI: true
+      - name: lint and test
+        run: |
+          npm run lint
+          npm run test
+        env:
+          CI: true
 
   finish:
-    needs: test
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
