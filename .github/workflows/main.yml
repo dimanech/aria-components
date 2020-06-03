@@ -38,10 +38,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v3
-        with:
-          configPath: ./lighthouserc.json
-          budgetPath: ./budget.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+      uses: treosh/lighthouse-ci-action@v3
+      with:
+        configPath: ./lighthouserc.json
+        budgetPath: ./budget.json
+        uploadArtifacts: true
+        temporaryPublicStorage: true
