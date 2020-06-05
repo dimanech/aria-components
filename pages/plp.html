@@ -122,6 +122,7 @@
 	<h2>Example of component from another cartridge</h2>
 	<form action="" data-component="Form">
 		<div class="field" data-elem-field>
+			<label for="address">Address</label>
 			<input
 				type="text"
 				id="address"
@@ -137,12 +138,15 @@
 			></div>
 		</div>
 		<div class="field" data-elem-field>
-			<input
-				type="text"
-				class="postal-code-info"
-				aria-describedby="postal-code-error"
-				required
-			/>
+			<label for="address">
+				Postal code
+				<input
+					type="text"
+					class="postal-code-info"
+					aria-describedby="postal-code-error"
+					required
+				/>
+			</label>
 			<div
 				class="field__error"
 				data-elem-form-error
@@ -151,14 +155,15 @@
 				hidden
 			></div>
 		</div>
-		<div class="field" data-elem-field>
+		<label class="field" data-elem-field>
+			Address autocomplete
 			<!-- Add component from different cartridge without explicit dependencies -->
 			<input
 				data-component="/js/components/forms/GoogleAddresses"
 				data-config='{"formElements": {"address": "#address", "country": ".postal-code-info"}}'
 				type="text"
 			/>
-		</div>
+		</label>
 		<button type="submit">Submit</button>
 	</form>
 
