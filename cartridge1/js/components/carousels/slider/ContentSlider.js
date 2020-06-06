@@ -31,6 +31,7 @@ export default class ContentSlider {
 		}
 		// state
 		this.currentSlideIndex = 0;
+		this.blockedByAnimations = false;
 		this.slidesModel = [];
 	}
 
@@ -95,7 +96,7 @@ export default class ContentSlider {
 		this.slidesModel = this.getSlidesModel(newSlideIndex);
 
 		this.toggleAnimationMode(true);
-		this.waitForTransitionEnd(newSlideIndex, () => this.toggleAnimationMode(false));
+		this.waitForTransitionEnd(() => this.toggleAnimationMode(false));
 
 		this.applySlidesModel();
 		this.setActivePagination(newSlideIndex);
@@ -166,12 +167,17 @@ export default class ContentSlider {
 		}
 	}
 
-	waitForTransitionEnd(index, callback) {
-		const onEnd = () => {
+	waitForTransitionEnd(callback) {
+		const onEnd = (event) => {
+			if (event && event.propertyName !== 'transform') {
+				return;
+			}
 			clearTimeout(this.transitionFallbackTimer);
+			this.sliderContent.removeEventListener('transitionend', onEnd);
 			callback();
 		}
-		this.transitionFallbackTimer = setTimeout(onEnd, 400);
+		this.sliderContent.addEventListener('transitionend', onEnd);
+		this.transitionFallbackTimer = setTimeout(onEnd, 800);
 	}
 
 	//#region Pagination

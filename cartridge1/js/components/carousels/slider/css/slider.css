@@ -48,6 +48,11 @@
 
 .slider._initialized .slider__slide {
 	visibility: hidden;
+	z-index: -1;
+}
+
+.slider._initialized .slider__slide._prev,
+.slider._initialized .slider__slide._next {
 	z-index: 0;
 }
 
@@ -71,7 +76,6 @@
 	top: 50%;
 	user-select: none;
 	width: 40px;
-
 	z-index: 2;
 }
 
