@@ -109,9 +109,9 @@ export default class ContentSlider {
 
 	applySlidesModel() {
 		const allClasses = [this.stylesClass.prev, this.stylesClass.next, this.stylesClass.current];
-		let n = 0;
+		let n = this.slidesTotal;
 
-		while (n < this.slidesTotal) { // NB: sparsed array
+		while (n--) {
 			const slideElement = this.slides[n];
 			const slideClass = this.slidesModel[n];
 
@@ -119,8 +119,6 @@ export default class ContentSlider {
 			if (slideClass) {
 				slideElement.classList.add(slideClass);
 			}
-
-			n++;
 		}
 	}
 
@@ -130,6 +128,7 @@ export default class ContentSlider {
 		const prevIndex = this.normalizeIndex(requestedIndex - 1);
 		const currentIndex = this.normalizeIndex(requestedIndex);
 
+		model.fill('');
 		model[currentIndex] = this.stylesClass.current;
 		model[nextIndex] = this.stylesClass.next;
 		model[prevIndex] = this.stylesClass.prev;
@@ -175,7 +174,7 @@ export default class ContentSlider {
 		this.transitionFallbackTimer = setTimeout(onEnd, 400);
 	}
 
-	// Pagination
+	//#region Pagination
 
 	initPagination() {
 		this.createPaginationElements();
@@ -227,18 +226,20 @@ export default class ContentSlider {
 		this.dots[index].classList.add(this.stylesClass.current);
 	}
 
-	startTipAnimation(duration) {
+	startDotAnimation(duration) {
 		this.dots[this.currentSlideIndex].style.animationDuration = `${duration || 0}ms`;
 		this.dots[this.currentSlideIndex].style.animationPlayState = 'running';
 	}
 
-	pauseTipAnimation() {
+	pauseDotAnimation() {
 		this.dots[this.currentSlideIndex].style.animationPlayState = 'paused';
 	}
 
-	removeTipAnimation() {
+	removeDotAnimation() {
 		this.dots[this.currentSlideIndex].style.animationName = '';
 	}
+
+	//#endregion
 
 	// Destroy
 

@@ -83,7 +83,7 @@ export default class ContentSliderAutoplay extends ContentSlider {
 		}
 		this.nextSlideTimer = window.setTimeout(this.cycle.bind(this), this.remainingTime);
 
-		this.startTipAnimation(this.remainingTime);
+		this.startDotAnimation(this.remainingTime);
 		this.togglePlayButtonState();
 		this.slider.classList.add(this.stylesClass.autoplay);
 	}
@@ -97,7 +97,7 @@ export default class ContentSliderAutoplay extends ContentSlider {
 
 		this.remainingTime -= (Date.now() - this.creationTime);
 
-		this.pauseTipAnimation();
+		this.pauseDotAnimation();
 		this.togglePlayButtonState();
 		this.slider.classList.remove(this.stylesClass.autoplay);
 	}
@@ -110,7 +110,7 @@ export default class ContentSliderAutoplay extends ContentSlider {
 
 		this.remainingTime = undefined;
 
-		this.removeTipAnimation();
+		this.removeDotAnimation();
 		this.slider.classList.remove(this.stylesClass.autoplay);
 	}
 

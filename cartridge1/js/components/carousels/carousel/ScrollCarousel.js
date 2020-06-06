@@ -238,7 +238,7 @@ export default class ScrollCarousel {
 			return
 		}
 		this.carousel.removeChild(this.pagination);
-		delete this.pagination;
+		this.pagination = null;
 	}
 
 	// Destroy
