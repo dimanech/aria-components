@@ -1,5 +1,3 @@
-// TODO: rename around 2 concepts Header and Panel
-
 const keyCode = Object.freeze({
 	RETURN: 13,
 	SPACE: 32,

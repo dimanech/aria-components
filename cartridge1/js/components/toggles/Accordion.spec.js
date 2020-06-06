@@ -6,7 +6,7 @@ describe('Accordion', async () => {
 	before(async () => {
 		page = await global.browser.newPage();
 		await page.goto("http://127.0.0.1:3000/js/components/toggles/accordion.html", { waitUntil: ["networkidle2", "domcontentloaded"]});
-		await page.setViewport({ width: 1920, height: 1080 });
+		await page.setViewport({ width: 1024, height: 768 });
 		await page.coverage.startJSCoverage({resetOnNavigation: false});
 	})
 
@@ -20,6 +20,8 @@ describe('Accordion', async () => {
 	});
 
 	describe('Validate structure', function () {
+		const buttonSelector = '.accordion__control';
+
 		it('should have proper roles', async function () {
 			const snapshot = await page.accessibility.snapshot();
 			const reference = [
@@ -33,8 +35,15 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(snapshot.children, reference);
 		});
 
-		it('aria-controls on button element');
-		it('aria-expanded on button element');
+		it('should have "aria-controls" attribute on button element', async function () {
+			const hasAttribute = await page.$$eval(buttonSelector, buttons => buttons.map(button => button.hasAttribute('aria-controls')));
+			assert.strictEqual(hasAttribute.indexOf(false) === -1, true);
+		});
+
+		it('should have "aria-expanded" attribute on button element', async function () {
+			const hasAttribute = await page.$$eval(buttonSelector, buttons => buttons.map(button => button.hasAttribute('aria-expanded')));
+			assert.strictEqual(hasAttribute.indexOf(false) === -1, true);
+		});
 	})
 
 	describe('Navigate panels', function () {
@@ -46,7 +55,7 @@ describe('Accordion', async () => {
 			{ role: 'link', name: 'focusable after', focused: true }
 		];
 
-		it('should have ability to step in/out from accordion group', async function () {
+		it('should have ability to step in/out from accordion group (Tab / Shift+Tab)', async function () {
 			let snapshot;
 			for (let step = 0; step <= referenceSnapshot.length; step++) {
 				await page.keyboard.press('Tab');
@@ -55,7 +64,7 @@ describe('Accordion', async () => {
 			}
 		});
 
-		it('should go to next/prev panel controls with arrows', async function () {
+		it('should go to next/prev panel controls with Arrow up, Arrow down', async function () {
 			let snapshot;
 
 			await page.focus('#section-1-control');
@@ -77,7 +86,7 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(snapshot.children[1], referenceSnapshot[1]);
 		});
 
-		it('should cycle over panel controls', async function () {
+		it('should cycle navigate over panel controls with Arrow up, Arrow down', async function () {
 			let snapshot;
 
 			await page.focus('#section-3-control');
@@ -105,7 +114,7 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(snapshot.children[3], referenceSnapshot[3]);
 		});
 
-		it('should go to the panel content focusable elements', async function () {
+		it('should have ability focus panel content with Tab', async function () {
 			const focusableContent = { role: 'link', name: 'Focusable content', focused: true };
 			let snapshot;
 			await page.focus('#section-1-control');
@@ -115,7 +124,22 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(snapshot.children[2], focusableContent);
 		});
 
-		it('SHIFT+TAB moves focus between headers and displayed inputs')
+		it('should have ability to move focus between headers and content focusable elements with Tab, Shift+Tab', async function () {
+			let snapshot;
+
+			await page.focus('#section-1-control');
+			await page.keyboard.press('Space');
+
+			await page.keyboard.press('Tab');
+			snapshot = await page.accessibility.snapshot();
+			assert.strictEqual(snapshot.children[2].focused, true);
+
+			await page.keyboard.down('Shift');
+			await page.keyboard.press('Tab');
+
+			snapshot = await page.accessibility.snapshot();
+			assert.strictEqual(snapshot.children[1].focused, true);
+		})
 	})
 
 	describe('Toggle panel', function () {
@@ -141,7 +165,7 @@ describe('Accordion', async () => {
 			}
 		}
 
-		it('should open linked panel on click', async function () {
+		it('should open linked panel by mouse click', async function () {
 			await assertClosed();
 			await page.click(firstControlSelector);
 			await assertOpen();
@@ -164,21 +188,21 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(snapshot.children, reference);
 		});
 
-		it('should open linked panel on Enter keyup', async function () {
+		it('should open linked panel by Enter keyup', async function () {
 			await assertClosed();
 			await page.focus(buttonsSelector);
 			await page.keyboard.press('Enter');
 			await assertOpen();
 		});
 
-		it('should open linked panel on Space keyup', async function () {
+		it('should open linked panel by Space keyup', async function () {
 			await assertClosed();
 			await page.focus(buttonsSelector);
 			await page.keyboard.press('Space');
 			await assertOpen();
 		});
 
-		it('should open linked panel on tap', async function () {
+		it('should open linked panel by tap', async function () {
 			await assertClosed();
 			await page.tap(buttonsSelector);
 			await assertOpen();
@@ -194,12 +218,12 @@ describe('Accordion', async () => {
 			assert.deepStrictEqual(initialState, state);
 		});
 
-		it('aria-disabled set on expanded sections', async function() {
+		it('should have "aria-disabled=true" attribute set on expanded header', async function() {
 			await page.click(firstControlSelector);
 			assert.strictEqual(await page.$eval(firstControlSelector, node => node.getAttribute('aria-disabled')), 'true');
 		});
 
-		it('panel should be closed on click to other control', async function () {
+		it('panel should be closed on click to other header', async function () {
 			await page.click(firstControlSelector);
 			await assertOpen();
 			await page.click(thirdControlSelector);
@@ -285,7 +309,7 @@ describe('Accordion', async () => {
 			assert.strictEqual(snapshot.children[1].expanded, undefined);
 		});
 
-		it('should not disable opened panel', async function () {
+		it('should not set "aria-disabled" attribute on expanded header', async function () {
 			await page.click('#section-1-control');
 			assert.strictEqual(await page.$eval('#section-1-control', node => node.getAttribute('aria-disabled')), 'false');
 		})
@@ -319,39 +343,31 @@ describe('Accordion', async () => {
 			assert.strictEqual(snapshot.children[3].expanded, true);
 		});
 
-		it('should not disable opened panel', async function () {
+		it('should not set "aria-disabled" attribute on expanded header', async function () {
 			await page.click('#section-1-control');
 			assert.strictEqual(await page.$eval('#section-1-control', node => node.getAttribute('aria-disabled')), 'false');
 		});
 	})
 
 	describe('Panel height animation', function () {
-		const buttonSelector = '.accordion__control';
-		let firstButtonHandle;
-		let secondButtonHandle;
-		let firstButtonControlledElementID;
+		const firstPanelSelector = '#section-1';
+		const firstControlSelector = '#section-1-control';
+		const secondControlSelector = '#section-2-control';
 
-		const getHeight = async () => page.$eval(firstButtonControlledElementID, node => node.style.height);
-
-		beforeEach(async () => {
-			const controls = await page.$$(buttonSelector);
-			firstButtonHandle = controls[0];
-			secondButtonHandle = controls[1];
-			firstButtonControlledElementID = '#' + await firstButtonHandle.evaluate(node => node.getAttribute('aria-controls'));
-		});
+		const getHeight = async () => page.$eval(firstPanelSelector, node => node.style.height);
 
 		it('height should be "0px" when initialized', async function () {
 			assert.strictEqual(await getHeight(), '0px');
 		});
 
 		it('height should be "50px" when opened', async function () {
-			await firstButtonHandle.click();
+			await page.click(firstControlSelector);
 			assert.strictEqual(await getHeight(), '50px');
 		});
 
 		it('height should be "0" when closed', async function () {
-			await firstButtonHandle.click();
-			await secondButtonHandle.click();
+			await page.click(firstControlSelector);
+			await page.click(secondControlSelector);
 			assert.strictEqual(await getHeight(), '0px');
 		});
 
