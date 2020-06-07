@@ -1,6 +1,7 @@
 import ContentSlider from './ContentSlider.js';
 
 // TODO: pause on hover?
+// TODO: disable autoplay if duration is 0 or not provided
 
 export default class ContentSliderAutoplay extends ContentSlider {
 	constructor(domNode) {

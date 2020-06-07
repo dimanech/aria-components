@@ -3,7 +3,7 @@
 	<meta charset="UTF-8">
 	<meta
 		name="viewport"
-		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		content="width=device-width, initial-scale=1.0"
 	>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>CSS classes content slider</title>
@@ -21,11 +21,13 @@
 		data-autoplay="8000"
 		role="region"
 		aria-roledescription="carousel"
+		aria-label="Basis content slider"
 	>
 		<button
 			class="slider__ctrl _prev"
 			data-elem-prev-button
 			aria-label="Previous Slide"
+			aria-controls="slider-content"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
 				<g
@@ -42,6 +44,7 @@
 			class="slider__ctrl _next"
 			data-elem-next-button
 			aria-label="Next Slide"
+			aria-controls="slider-content"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
 				<g fill="none" stroke="currentColor" stroke-width="2">
@@ -67,6 +70,8 @@
 		<div
 			class="slider__content"
 			data-elem-content
+			id="slider-content"
+			aria-atomic="false"
 			aria-live="off"
 			tabindex="0"
 		>
@@ -121,16 +126,21 @@
 	<div
 		class="slider _animation-slide"
 		data-component="./carousels/slider/ContentSlider"
+		role="region"
+		aria-roledescription="carousel"
+		aria-label="Basis content slider 2"
 	>
 		<button
 			class="slider__ctrl _prev"
 			data-elem-prev-button
+			aria-controls="slider-2-content"
 		>
 			Prev
 		</button>
 		<button
 			class="slider__ctrl _next"
 			data-elem-next-button
+			aria-controls="slider-2-content"
 		>
 			Next
 		</button>
@@ -150,7 +160,14 @@
 			<div data-elem-dots></div>
 		</div>
 
-		<div class="slider__content" data-elem-content>
+		<div
+			id="slider-2-content"
+			class="slider__content"
+			data-elem-content
+			aria-atomic="false"
+			aria-live="off"
+			tabindex="0"
+		>
 			<div
 				class="slider__slide"
 				role="group"
@@ -174,16 +191,21 @@
 	<div
 		class="slider"
 		data-component="./carousels/slider/ContentSlider"
+		role="region"
+		aria-roledescription="carousel"
+		aria-label="Basis content slider 3"
 	>
 		<button
 			class="slider__ctrl _prev"
 			data-elem-prev-button
+			aria-controls="slider-3-content"
 		>
 			Prev
 		</button>
 		<button
 			class="slider__ctrl _next"
 			data-elem-next-button
+			aria-controls="slider-3-content"
 		>
 			Next
 		</button>
@@ -203,12 +225,19 @@
 			<div data-elem-dots></div>
 		</div>
 
-		<div class="slider__content" data-elem-content>
+		<div
+			id="slider-3-content"
+			class="slider__content"
+			data-elem-content
+			aria-atomic="false"
+			aria-live="off"
+			tabindex="0"
+		>
 			<div
 				class="slider__slide"
 				role="group"
 				aria-roledescription="slide"
-				aria-label="1 of 4"
+				aria-label="1 of 1"
 			>
 				<div class="box _v-1">1</div>
 			</div>

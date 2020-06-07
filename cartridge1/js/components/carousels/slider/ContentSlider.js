@@ -9,6 +9,7 @@ const keyCode = Object.freeze({
 export default class ContentSlider {
 	/*
 	 * ContentSlider
+	 * This is example of "Basic carousel" content slider
 	 * Please see W3C specs https://www.w3.org/TR/wai-aria-practices/#carousel
 	 */
 	constructor(domNode) {
@@ -43,7 +44,9 @@ export default class ContentSlider {
 			return;
 		}
 		if (this.slidesTotal === 2) {
-			// bad case - instead of 2 slides we should have 4
+			// Since we need at least 3 element to place Current-Next-Prev CSS classes
+			// we need to create additional elements so instead of 2 slides we put 4.
+			// Most bad case for this type of slider engine.
 			this.cloneSlides();
 			this.initStructure();
 		}
@@ -156,9 +159,9 @@ export default class ContentSlider {
 			case keyCode.RIGHT:
 				this.goToNextSlide();
 				preventEventActions = true;
-				return;
+				break;
 			default:
-				return;
+				break;
 		}
 
 		if (preventEventActions) {
