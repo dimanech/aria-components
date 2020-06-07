@@ -61,7 +61,7 @@
 	z-index: 1;
 }
 
-/* Buttons */
+/* Controls */
 
 .slider__ctrl {
 	background-color: #fff;
@@ -83,8 +83,10 @@
 	display: block;
 }
 
+.slider__ctrl[aria-busy=true],
 .slider__ctrl[disabled] {
 	color: grey;
+	cursor: progress;
 }
 
 .slider__ctrl._prev {
@@ -95,7 +97,7 @@
 	right: -20px;
 }
 
-/* Play / Pause */
+/* Play / Pause control */
 
 .slider__autoplay-toggle {
 	background: transparent;
@@ -121,7 +123,7 @@
 	opacity: 0;
 }
 
-/* pagination */
+/* Pagination */
 
 .slider__pagination {
 	bottom: 5px;

@@ -108,7 +108,9 @@ export default class ContentSlider {
 
 	toggleAnimationMode(isAnimated) {
 		this.blockedByAnimations = isAnimated;
-		this.sliderContent.setAttribute('aria-live', isAnimated ? 'polite' : 'off'); // TODO
+		this.sliderContent.setAttribute('aria-live', isAnimated ? 'polite' : 'off');
+		this.nextButton.setAttribute('aria-busy', isAnimated);
+		this.prevButton.setAttribute('aria-busy', isAnimated);
 	}
 
 	applySlidesModel() {

@@ -277,7 +277,8 @@
 	<script type="module">
 		import ContentSlider from './ContentSliderAutoplay.js';
 
-		document.querySelectorAll('[data-component="./carousels/slider/ContentSlider"]').forEach(slider => new ContentSlider(slider).init());
+		document.querySelectorAll('[data-component="./carousels/slider/ContentSlider"]')
+			.forEach(slider => new ContentSlider(slider).init());
 	</script>
 </body>
 </html>
