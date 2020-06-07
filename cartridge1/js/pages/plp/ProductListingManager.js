@@ -1,4 +1,4 @@
-import { getContentByUrl } from '../../utils/io.js';
+import { getContentByUrl } from '../../utils/network.js';
 import { render } from '../../utils/render.js';
 
 // actions :

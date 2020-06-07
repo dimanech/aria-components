@@ -22,7 +22,7 @@ export default class ComponentsObserver {
 			if (addedNode.nodeType === addedNode.ELEMENT_NODE
 				&& document.body.contains(addedNode)
 				&& addedNode.hasAttribute('data-component')
-				&& !addedNode.hasAttribute('data-inited')
+				&& !addedNode.hasAttribute('data-initialized')
 			) {
 				this.onAddedComponents(addedNode);
 			}

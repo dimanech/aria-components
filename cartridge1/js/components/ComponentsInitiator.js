@@ -75,7 +75,7 @@ export default class ComponentsInitiator {
 			console.groupEnd();
 		}
 
-		domNode.setAttribute('data-inited', true);
+		domNode.setAttribute('data-initialized', true);
 		this.addComponentToList(name, component);
 	}
 }
