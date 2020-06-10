@@ -2,7 +2,9 @@
 	background: white;
 	bottom: 0;
 	box-sizing: border-box;
-	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	min-height: -webkit-fill-available; /* get proper height with dynamic browser ui elements on iOS */
 	position: fixed;
 	right: 0;
 	top: 0;
@@ -23,4 +25,29 @@
 .dialog-backdrop.m-grabbing .panel {
 	transition: none;
 	user-select: none;
+}
+
+/* panel content */
+
+.panel__header {
+	background-color: #eee;
+	padding: 20px;
+}
+
+.panel__content {
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	/*overscroll-behavior: contain;*/
+}
+
+.panel__content a {
+	border-bottom: 1px solid;
+	display: block;
+	padding: 20px 20px;
+}
+
+.panel__footer {
+	background-color: #666;
+	margin-top: auto;
+	padding: 20px;
 }

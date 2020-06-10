@@ -48,10 +48,10 @@
 	position: fixed;
 	right: 0;
 	top: 0;
+	touch-action: none;
 	transition: var(--transition);
 	transition-property: opacity, background-color;
 	z-index: 1;
-	touch-action: none;
 }
 
 .dialog-backdrop.is-active::after {
@@ -107,4 +107,8 @@
 	position: absolute;
 	right: 20px;
 	top: 10px;
+}
+
+.dialog-backdrop input {
+	touch-action: none;
 }
