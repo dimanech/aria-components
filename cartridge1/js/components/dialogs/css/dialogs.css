@@ -5,13 +5,7 @@
 	--backdrop-opacity: 1;
 }
 
-:focus {
-	outline: solid 4px red;
-}
-
-body {
-	margin: 0;
-}
+/* Page */
 
 .wrapper {
 	padding: 1px 20px; /* prevent of margin collapse */
@@ -25,13 +19,14 @@ body {
 	overflow-y: scroll;
 }
 
+/* Dialog backdrop */
+
 .dialog-backdrop {
 	bottom: 0;
 	left: 0;
 	position: fixed;
 	right: 0;
 	top: 0;
-	touch-action: none;
 	transition: visibility var(--transition);
 	visibility: hidden;
 	z-index: 1;
@@ -56,6 +51,7 @@ body {
 	transition: var(--transition);
 	transition-property: opacity, background-color;
 	z-index: 1;
+	touch-action: none;
 }
 
 .dialog-backdrop.is-active::after {
@@ -73,8 +69,10 @@ body {
 	cursor: grab;
 	transition: none;
 	user-select: none;
-	/*touch-action: pan-x;*/
+	/*touch-action: pan-x;*/ /* TODO */
 }
+
+/* Dialog window */
 
 .modal {
 	background: white;
@@ -103,32 +101,7 @@ body {
 	box-shadow: var(--depth-2); /* move stack dialog or singe dialog to top of stack */
 }
 
-.panel {
-	background: white;
-	bottom: 0;
-	box-sizing: border-box;
-	padding: 40px;
-	position: fixed;
-	right: 0;
-	top: 0;
-	transform: translateX(100%);
-	transition: var(--transition);
-	transition-property: transform, visibility;
-	visibility: hidden;
-	width: 320px;
-	z-index: 3;
-}
-
-.panel.is-open {
-	box-shadow: var(--depth-1);
-	transform: translateX(0);
-	visibility: visible;
-}
-
-.dialog-backdrop.m-grabbing .panel {
-	transition: none;
-	user-select: none;
-}
+/* Dialog content */
 
 .close {
 	position: absolute;

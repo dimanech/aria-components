@@ -1,0 +1,26 @@
+.panel {
+	background: white;
+	bottom: 0;
+	box-sizing: border-box;
+	padding: 40px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	transform: translateX(100%);
+	transition: var(--transition);
+	transition-property: transform, visibility;
+	visibility: hidden;
+	width: 320px;
+	z-index: 3;
+}
+
+.panel.is-open {
+	box-shadow: var(--depth-1);
+	transform: translateX(0);
+	visibility: visible;
+}
+
+.dialog-backdrop.m-grabbing .panel {
+	transition: none;
+	user-select: none;
+}
