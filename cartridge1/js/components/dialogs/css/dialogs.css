@@ -7,15 +7,21 @@
 
 /* Page */
 
-.wrapper {
-	padding: 1px 20px; /* prevent of margin collapse */
+html {
+	height: 100%;
+	overflow-y: scroll; /* important to cut body on iOS, but needs position absolute */
 }
 
 .has-dialog {
 	overflow: hidden;
+	height: 100%;
 }
 
-.has-dialog .wrapper { /* we need a wrapper to handle scroll / no scroll content width bumping */
+.wrapper {
+	padding: 1px 20px; /* prevent of margin collapse */
+}
+
+.has-dialog .wrapper { /* we need a wrapper to handle scroll / no scroll content width bumping caused by scrollbars */
 	overflow-y: scroll;
 }
 
@@ -69,7 +75,6 @@
 	cursor: grab;
 	transition: none;
 	user-select: none;
-	/*touch-action: pan-x;*/ /* TODO */
 }
 
 /* Dialog window */

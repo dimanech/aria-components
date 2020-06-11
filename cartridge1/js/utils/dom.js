@@ -16,6 +16,17 @@ export function closest(element, attributeString) {
 	return null;
 }
 
+export function hasParent(element, parent) {
+	while (element && element !== document) {
+		if (parent === element) {
+			return true
+		}
+		element = element.parentNode;
+	}
+
+	return false;
+}
+
 export function DOMReady(callback) {
 	if (document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading') {
 		callback();

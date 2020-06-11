@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="css/panel.css"/>
 <!--	<script async type="module" src="../../initiator.js"></script>-->
 </head>
-<body data-component="DialogManager">
+<body data-component="DialogManager" tabindex="-1">
 	<div class="wrapper">
 		<h1>This example cover Dialog and Alert Dialog patterns that designed to interrupt user flow</h1>
 		<a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">Alert dialog Page focusable element 1 (Should not be focused if modal open)</a>
@@ -389,6 +389,9 @@
 
 		document.querySelectorAll('[data-component="DialogButton"]')
 			.forEach(item => new DialogButton(item, dialogManager).init());
+
+		import HideSoftwareKeyboard from './utils/HideSoftKeyboard.js';
+		document.querySelectorAll('[role=dialog] input[type=text]').forEach(item => new HideSoftwareKeyboard(item));
 	</script>
 </body>
 </html>
