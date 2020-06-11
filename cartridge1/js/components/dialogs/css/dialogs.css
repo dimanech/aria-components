@@ -9,7 +9,7 @@
 
 html {
 	height: 100%;
-	overflow-y: scroll; /* important to cut body on iOS, but needs position absolute */
+	/*overflow-y: scroll; !* important to cut body on iOS, but reset scroll position *!*/
 }
 
 .has-dialog {
@@ -112,8 +112,4 @@ html {
 	position: absolute;
 	right: 20px;
 	top: 10px;
-}
-
-.dialog-backdrop input {
-	touch-action: none;
 }

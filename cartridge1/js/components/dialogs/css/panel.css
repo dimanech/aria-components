@@ -37,17 +37,16 @@
 .panel__content {
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
-	/*overscroll-behavior: contain;*/
 }
 
 .panel__content a {
 	border-bottom: 1px solid;
 	display: block;
-	padding: 20px 20px;
+	padding: 20px;
 }
 
 .panel__footer {
-	background-color: #666;
+	background-color: #eee;
 	margin-top: auto;
 	padding: 20px;
 }

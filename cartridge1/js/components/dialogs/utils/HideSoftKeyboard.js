@@ -20,7 +20,7 @@ export default class inputKdbToggle {
 	}
 
 	hideKdb() {
-		document.body.focus(); // because focus in dialog could not go out from window - it focus first element in dialog
+		this.input.closest('[role=dialog]').focus();
 	}
 
 	focusHandler() {
