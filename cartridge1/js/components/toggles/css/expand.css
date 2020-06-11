@@ -11,7 +11,7 @@ figure {
 }
 
 .disclosure-control::before {
-	content: "▶";
+	content: "▶︎";
 	display: inline-block;
 }
 

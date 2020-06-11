@@ -22,8 +22,10 @@ export default class AccordionNoRoles extends Accordion {
 
 	initRoles() {
 		this.buttons.forEach(button => {
-			button.setAttribute('role', 'button');
-			button.tabIndex = 0;
+			if (button.tagName === 'DIV') {
+				button.setAttribute('role', 'button');
+				button.tabIndex = 0;
+			}
 			button.setAttribute('aria-controls', button.getAttribute('data-aria-controls-acc'));
 			button.setAttribute('aria-expanded', 'false');
 			document.getElementById(button.getAttribute('data-aria-controls-acc')).setAttribute('role', 'region');

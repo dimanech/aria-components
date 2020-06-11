@@ -64,6 +64,7 @@
 		font: inherit;
 		font-weight: bold;
 		padding: 5px 10px;
+		margin: 0;
 	}
 
 	.pdp-details__tab[aria-selected=true]  {

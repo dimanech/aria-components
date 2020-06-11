@@ -27,9 +27,9 @@ export default class Tabs {
 		this.tabs = Array.from(this.tablist.querySelectorAll('[role=tab]'));
 		// options
 		this.options = {
-			selectionFollowFocus: config?.selectionFollowFocus || !this.isSetToFalse(this.tablist.getAttribute('data-selection-follow-focus')),
-			orientation: config?.orientation || this.tablist.getAttribute('aria-orientation') || 'horizontal',
-			preSelectTab: config?.preSelectTab || this.tablist.getAttribute('data-preselect-tab')
+			selectionFollowFocus: (config && config.selectionFollowFocus) || !this.isSetToFalse(this.tablist.getAttribute('data-selection-follow-focus')),
+			orientation: (config && config.orientation) || this.tablist.getAttribute('aria-orientation') || 'horizontal',
+			preSelectTab: (config && config.preSelectTab) || this.tablist.getAttribute('data-preselect-tab')
 		}
 		// state
 		this.selectedTab = null;
