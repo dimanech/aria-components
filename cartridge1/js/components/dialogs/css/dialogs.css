@@ -9,7 +9,7 @@
 
 html {
 	height: 100%;
-	/*overflow-y: scroll; !* important to cut body on iOS, but reset scroll position *!*/
+	overflow-y: scroll; /* important to cut body on iOS, but reset user scroll position to top */
 }
 
 .has-dialog {
