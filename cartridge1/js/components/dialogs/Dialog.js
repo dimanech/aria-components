@@ -94,9 +94,10 @@ export default class Dialog {
 			case (event.target === this.boundFocusNodeEnd):
 				this.focusFirstDescendant(this.dialogNode);
 				break;
-			case (!this.dialogNode.contains(event.target)):
-				this.focusFirstDescendant(this.dialogNode); // in case when window is animated and user tab
-				break;
+			// TODO: desktop Safari not properly return this.dialogNode.contains(event.target)
+			//case (!this.dialogNode.contains(event.target)):
+			//	this.focusFirstDescendant(this.dialogNode); // in case when window is animated and user tab
+			//	break;
 			default:
 		}
 	}

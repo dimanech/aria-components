@@ -5,25 +5,27 @@
 	--backdrop-opacity: 1;
 }
 
-:focus {
-	outline: solid 4px red;
+/* Page */
+
+html {
+	height: 100%;
+	/*overflow-y: scroll; !* important to cut body on iOS, but reset scroll position *!*/
 }
 
-body {
-	margin: 0;
+.has-dialog {
+	overflow: hidden;
+	height: 100%;
 }
 
 .wrapper {
 	padding: 1px 20px; /* prevent of margin collapse */
 }
 
-.has-dialog {
-	overflow: hidden;
-}
-
-.has-dialog .wrapper { /* we need a wrapper to handle scroll / no scroll content width bumping */
+.has-dialog .wrapper { /* we need a wrapper to handle scroll / no scroll content width bumping caused by scrollbars */
 	overflow-y: scroll;
 }
+
+/* Dialog backdrop */
 
 .dialog-backdrop {
 	bottom: 0;
@@ -31,7 +33,6 @@ body {
 	position: fixed;
 	right: 0;
 	top: 0;
-	touch-action: none;
 	transition: visibility var(--transition);
 	visibility: hidden;
 	z-index: 1;
@@ -53,6 +54,7 @@ body {
 	position: fixed;
 	right: 0;
 	top: 0;
+	touch-action: none;
 	transition: var(--transition);
 	transition-property: opacity, background-color;
 	z-index: 1;
@@ -73,8 +75,9 @@ body {
 	cursor: grab;
 	transition: none;
 	user-select: none;
-	/*touch-action: pan-x;*/
 }
+
+/* Dialog window */
 
 .modal {
 	background: white;
@@ -103,32 +106,7 @@ body {
 	box-shadow: var(--depth-2); /* move stack dialog or singe dialog to top of stack */
 }
 
-.panel {
-	background: white;
-	bottom: 0;
-	box-sizing: border-box;
-	padding: 40px;
-	position: fixed;
-	right: 0;
-	top: 0;
-	transform: translateX(100%);
-	transition: var(--transition);
-	transition-property: transform, visibility;
-	visibility: hidden;
-	width: 320px;
-	z-index: 3;
-}
-
-.panel.is-open {
-	box-shadow: var(--depth-1);
-	transform: translateX(0);
-	visibility: visible;
-}
-
-.dialog-backdrop.m-grabbing .panel {
-	transition: none;
-	user-select: none;
-}
+/* Dialog content */
 
 .close {
 	position: absolute;

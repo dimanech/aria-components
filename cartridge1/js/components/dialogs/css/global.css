@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	font-size: 16px;
+}
+
+input {
+	font-size: 16px; /* prevent iOS scale to input */
+}
+
+:focus,
+button:focus {
+	box-shadow: 0 0 0 1px hsl(195, 100%, 50%), 0 0 0 4px hsl(195, 53%, 79%);
+	outline: none;
+}
+
+button::-moz-focus-inner {
+	border: none;
+}

@@ -1,13 +1,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Dialog example</title>
+	<link rel="stylesheet" href="css/global.css"/>
 	<link rel="stylesheet" href="css/dialogs.css"/>
-	<script async type="module" src="../../initiator.js"></script>
+	<link rel="stylesheet" href="css/panel.css"/>
+<!--	<script async type="module" src="../../initiator.js"></script>-->
 </head>
-<body data-component="DialogManager">
+<body data-component="DialogManager" tabindex="-1">
 	<div class="wrapper">
 		<h1>This example cover Dialog and Alert Dialog patterns that designed to interrupt user flow</h1>
 		<a href="https://www.w3.org/TR/wai-aria-practices/#alertdialog">Alert dialog Page focusable element 1 (Should not be focused if modal open)</a>
@@ -33,12 +35,14 @@
 		<br>
 
 		<div class="dialog-backdrop" data-elem-dialog-backdrop>
-			<div id="alert-1"
-			     class="modal"
-			     role="alertdialog"
-			     aria-modal="true"
-			     aria-label="Cookies"
-			     aria-describedby="alert-1-descr"
+			<div
+				id="alert-1"
+				class="modal"
+				role="alertdialog"
+				aria-modal="true"
+				aria-label="Cookies"
+				aria-describedby="alert-1-descr"
+				tabindex="-1"
 			>
 				<p id="alert-1-descr">This is super important message about some critical error!</p>
 				<button data-dismiss="dialog">No</button>
@@ -57,6 +61,7 @@
 				aria-label="Reset form"
 				aria-describedby="modal-1-descr"
 				data-isForcedToChoice="true"
+				tabindex="-1"
 			>
 				<p id="modal-1-descr">Are you sure that you want to reset form? (You could not escape this dialog until you do not make a choice)</p>
 				<button data-dismiss="dialog">Yes (todo: programmaticaly controlled)</button>
@@ -73,6 +78,7 @@
 				aria-hidden="true"
 				aria-label="Address verification"
 				aria-describedby="dialog-1-descr"
+				tabindex="-1"
 			>
 				<p id="dialog-1-descr">You could escape from this dialog. More over it will guide you through all form steps.</p>
 				<form class="form">
@@ -114,6 +120,7 @@
 				aria-hidden="true"
 				aria-labelledby="dialog-2-label"
 				aria-describedby="dialog-2-desc"
+				tabindex="-1"
 			>
 				<h2 id="dialog-2-label">
 					Verification Result
@@ -228,6 +235,7 @@
 				aria-hidden="true"
 				aria-labelledby="dialog-3-label"
 				aria-describedby="dialog-3-desc"
+				tabindex="-1"
 			>
 				<h2 id="dialog-3-label">
 					Address Added
@@ -259,6 +267,7 @@
 				aria-hidden="true"
 				aria-labelledby="dialog-4-label"
 				aria-describedby="dialog-4-desc"
+				tabindex="-1"
 			>
 				<h2 id="dialog-4-label">
 					End of the Road!
@@ -284,12 +293,33 @@
 				aria-hidden="true"
 				aria-label="MenuPanel menu"
 				data-panel-position="right"
+				tabindex="-1"
 			>
-				<br>
-				<a href="index.html">link 1</a>
-				<br>
-				<a href="index.html">link 2</a>
-				<br>
+				<div class="panel__header">
+					Panel header
+					<a href="index.html">First focusable content</a>
+					<input type="text" />
+				</div>
+				<div class="panel__content">
+					<a href="index.html">link 1</a>
+					<a href="index.html">link 2</a>
+					<a href="index.html">link 1</a>
+					<a href="index.html">link 2</a>
+					<a href="index.html">link 1</a>
+					<a href="index.html">link 2</a>
+					<a href="index.html">link 1</a>
+					<a href="index.html">link 2</a>
+					<a href="index.html">link 1</a>
+					<a href="index.html">link 2</a>
+					<a href="index.html">link 1</a>
+					<a href="index.html">link 2</a>
+					<a href="index.html">link 1</a>
+					<a href="index.html">link end</a>
+				</div>
+				<div class="panel__footer">
+					Panel footer
+				</div>
+
 				<button class="close" data-dismiss="dialog" aria-label="Close dialog" title="Press Esc to close">&times;</button>
 			</div>
 		</div>
@@ -359,5 +389,17 @@
 
 	</div>
 
+	<script type="module">
+		import DialogManager from './DialogManager.js';
+		import DialogButton from './DialogButton.js';
+
+		const dialogManager = new DialogManager().init();
+
+		document.querySelectorAll('[data-component="DialogButton"]')
+			.forEach(item => new DialogButton(item, dialogManager).init());
+
+		import HideSoftwareKeyboard from './utils/HideSoftKeyboard.js';
+		document.querySelectorAll('[role=dialog] input[type=text]').forEach(item => new HideSoftwareKeyboard(item));
+	</script>
 </body>
 </html>

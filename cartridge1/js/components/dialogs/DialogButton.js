@@ -1,7 +1,7 @@
 export default class DialogButton {
-	constructor(domNode, pageComponents) {
+	constructor(domNode, dialogManager) {
 		this.button = domNode;
-		this.dialogManager = pageComponents.DialogManager;
+		this.dialogManager = dialogManager;
 		this.type = this.button.getAttribute('data-dialog-type');
 		this.controlledDialogId = this.button.getAttribute('aria-controls');
 		this.focusAfterOpen = this.button.getAttribute('data-focus-in-modal');
