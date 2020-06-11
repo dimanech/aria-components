@@ -22,6 +22,7 @@
   },
   "scripts": {
     "lint": "eslint ./cartridge1",
+    "build": "webpack",
     "serve": "node server.js",
     "test": "mocha --exit tests-setup.js ./cartridge1/**/*.spec.js && nyc report --reporter=text",
     "coverage": "nyc report --reporter=lcov --reporter=text-lcov"

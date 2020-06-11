@@ -1,7 +1,12 @@
 {
 	"ci": {
 		"collect": {
-			"staticDistDir": "./"
+			"url": ["http://localhost:3000/plp"],
+			"startServerCommand": "node server.js"
+		},
+		"upload": {
+			"target": "lhci",
+			"serverBaseUrl": "https://calm-bastion-07092.herokuapp.com"
 		}
 	}
 }

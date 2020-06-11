@@ -1,7 +1,8 @@
 .slider._animation-parallax._initialized .slider__slide {
 	transition: cubic-bezier(.56,.03,.47,.98) 0.8s;
-	transition-property: transform, visibility;
+	transition-property: transform, visibility, z-index;
 	overflow: hidden;
+	z-index: -1;
 }
 
 .slider._animation-parallax .slider__slide._current {

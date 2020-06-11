@@ -87,4 +87,4 @@ app.use('/endpoint', function(req, res) {
 app.listen(port);
 // to check service worker 1) comment http2.createServer 2) change to app.listen(port);
 //http2.createSecureServer(certs, app).listen(process.env.PORT || port);
-console.log('http://127.0.0.1:' + (process.env.PORT || port));
+console.log('Listen: http://127.0.0.1:' + (process.env.PORT || port));

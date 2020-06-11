@@ -1,6 +1,6 @@
 export function getSearchParamsParsed(url) {
-	const u = new URL(url || window.location);
-	return new URLSearchParams(u.search.slice(1));
+	const location = new URL(url || window.location);
+	return new URLSearchParams(location.search.slice(1));
 }
 
 /**
@@ -8,7 +8,7 @@ export function getSearchParamsParsed(url) {
  * @param {string} name name of params
  * @param {string} value value of param
  */
-export function appendParam(url, name, value) {
+export function appendParamToURL(url, name, value) {
 	const searchParams = getSearchParamsParsed(url);
 	if (searchParams.has(name)) {
 		return url;
@@ -20,10 +20,10 @@ export function appendParam(url, name, value) {
  * @param {string} url initial url
  * @param {object} params params as key value-object
  */
-export function appendParamMultiple(url, params) {
+export function appendParams(url, params) {
 	let resultedURL = url;
 	for (const param in params) {
-		resultedURL = appendParam(resultedURL, param, params[param]);
+		resultedURL = appendParamToURL(resultedURL, param, params[param]);
 	}
 	return resultedURL;
 }

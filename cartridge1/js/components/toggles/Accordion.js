@@ -1,5 +1,3 @@
-// TODO: rename around 2 concepts Header and Panel
-
 const keyCode = Object.freeze({
 	RETURN: 13,
 	SPACE: 32,
@@ -33,8 +31,8 @@ export default class Accordion {
 		this.buttons = Array.from(this.group.querySelectorAll('[aria-controls]'));
 		// options
 		this.options = {
-			allowToggle: config?.allowToggle || Accordion.isAttributeSet(this.group.getAttribute('data-allow-toggle')),
-			allowMultiple: config?.allowMultiple || Accordion.isAttributeSet(this.group.getAttribute('data-allow-multiple'))
+			allowToggle: (config && config.allowToggle) || Accordion.isAttributeSet(this.group.getAttribute('data-allow-toggle')),
+			allowMultiple: (config && config.allowMultiple) || Accordion.isAttributeSet(this.group.getAttribute('data-allow-multiple'))
 		}
 	}
 
