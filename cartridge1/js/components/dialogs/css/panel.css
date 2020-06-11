@@ -4,7 +4,6 @@
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	min-height: -webkit-fill-available; /* get proper height with dynamic browser ui elements on iOS */
 	position: fixed;
 	right: 0;
 	top: 0;
